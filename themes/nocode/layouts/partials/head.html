@@ -1,7 +1,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <!-- TODO: parameterize description instead of hard-code -->
+    <meta name="description" content="secure-thought-transfer-protocol">
     <link rel="stylesheet" type="text/css" href="/css/style.css">
     {{ $title := print .Site.Title " | " .Title }}
     {{ if .IsHome }}{{ $title = .Site.Title }}{{ end }}
