@@ -1,79 +1,78 @@
 :root {
-  --mono-font: San Francisco Mono, Monaco, "Consolas", "Lucida Console",
-    "DejaVu Sans Mono", "Bitstream Vera Sans Mono", monospace;
-  --sans-font: -apple-system, BlinkMacSystemFont, "avenir next", avenir,
-    helvetica, "helvetica neue", ubuntu, roboto, noto, "segoe ui", arial,
-    sans-serif;
+    --mono-font: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+        "Courier New", monospace;
+    --sans-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+        Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+        "Segoe UI Symbol";
 }
 
 body {
-  margin: auto;
-  max-width: 650px;
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-  line-height: 1.6;
-  font-size: 1em;
-  font-family: var(--sans-font);
-}
-
-ul {
-  margin: 0;
-  padding: 0;
-  list-style: none;
+    margin: auto;
+    max-width: 650px;
+    line-height: 1.6;
+    font-size: 1em;
+    font-family: var(--sans-font);
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
 }
 
 a {
-  text-decoration: underline;
-  text-decoration-skip-ink: auto;
-  color: #000;
+    color: #000;
+    text-decoration: underline;
+    text-decoration-skip-ink: auto;
 }
+a:hover {
+    color: #ff6161;
+}
+
 
 .logo {
-  margin: 0;
-  font-size: 1.2em;
+    margin: 0;
+    font-size: 1.2em;
 }
-
 .logo a,
 .main-nav a {
-  padding: 0 15px;
-  text-align: center;
-  display: block;
-  text-decoration: none;
+    display: block;
+    padding: 0 15px;
+    text-align: center;
+    text-decoration: none;
 }
-
 .main-nav a {
-  color: #000;
-  font-size: 1em;
+    color: #000;
+    font-size: 1em;
 }
-
 .logo a:hover,
 .main-nav a:hover {
   color: #ff6161;
 }
+.header ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
 
 .writing {
-  display: grid;
-  grid-column-gap: 5px;
-  grid-row-gap: 5px;
-  grid-template-columns: 1fr max-content;
+    display: grid;
+    grid-column-gap: 5px;
+    grid-row-gap: 5px;
+    grid-template-columns: 1fr max-content;
 }
 
 .meta {
-  font-size: 0.8em;
+    font-size: 0.8em;
 }
 
 .goto {
-  display: flex;
-  justify-content: space-between;
+    display: flex;
+    justify-content: space-between;
 }
-
 .next {
-  justify-content: end;
+    justify-content: end;
 }
 
 footer {
-  text-align: center;
-  font-size: 0.8em;
+    text-align: center;
+    font-size: 0.8em;
 }
 
 /* ================================= 
@@ -81,33 +80,33 @@ footer {
 ==================================== */
 
 @media screen and (max-width: 640px) {
-  .writing {
-    grid-template-columns: 1fr;
-    grid-row-gap: 0;
-  }
-  .writing time {
-    padding-bottom: 20px;
-  }
+    .writing {
+        grid-template-columns: 1fr;
+        grid-row-gap: 0;
+    }
+    .writing time {
+        padding-bottom: 20px;
+    }
 }
 
 @media screen and (min-width: 640px) {
-  .header,
-  .main-nav {
-    display: flex;
-  }
-  .header {
-    flex-direction: column;
-    align-items: center;
-  }
+    .header,
+    .main-nav {
+        display: flex;
+    }
+    .header {
+        flex-direction: column;
+        align-items: center;
+    }
 }
 
 @media screen and (min-width: 1024px) {
-  .header {
-    flex-direction: row;
-    justify-content: space-between;
-  }
-  .writing {
-    grid-column-gap: 5px;
-    grid-template-columns: 1fr max-content;
-  }
+    .header {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    .writing {
+        grid-column-gap: 5px;
+        grid-template-columns: 1fr max-content;
+    }
 }
