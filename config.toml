@@ -17,9 +17,13 @@ sectionPagesMenu = "main"
     url = "/writing/"
     weight = 1
   [[menu.main]]
+    name = "Reading"
+    url = "/reading/"
+    weight = 2
+  [[menu.main]]
     name = "About"
     url = "/about"
-    weight = 2
+    weight = 3
 
 copyright = 'This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.'
 

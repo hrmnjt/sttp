@@ -1,6 +1,9 @@
 :root {
-  --mono-font: San Francisco Mono, Monaco, "Consolas", "Lucida Console", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", monospace;
-  --sans-font: -apple-system, BlinkMacSystemFont, "avenir next", avenir, helvetica, "helvetica neue", ubuntu, roboto, noto, "segoe ui", arial, sans-serif
+  --mono-font: San Francisco Mono, Monaco, "Consolas", "Lucida Console",
+    "DejaVu Sans Mono", "Bitstream Vera Sans Mono", monospace;
+  --sans-font: -apple-system, BlinkMacSystemFont, "avenir next", avenir,
+    helvetica, "helvetica neue", ubuntu, roboto, noto, "segoe ui", arial,
+    sans-serif;
 }
 
 body {
@@ -10,7 +13,7 @@ body {
   text-rendering: optimizeLegibility;
   line-height: 1.6;
   font-size: 1em;
-  font-family: var(--sans-font)
+  font-family: var(--sans-font);
 }
 
 ul {
@@ -51,11 +54,27 @@ a {
   color: #ff6161;
 }
 
+.writing {
+  display: grid;
+  grid-column-gap: 5px;
+  grid-template-columns: 1fr max-content;
+}
+
 /* ================================= 
   Media Queries
 ==================================== */
 
-@media (min-width: 600px) {
+@media screen and (max-width: 600px) {
+  .writing {
+    grid-template-columns: 1fr;
+    grid-row-gap: 0;
+  }
+  .writing time {
+    padding-bottom: 20px;
+  }
+}
+
+@media screen and (min-width: 600px) {
   .header,
   .main-nav {
     display: flex;
@@ -66,9 +85,13 @@ a {
   }
 }
 
-@media (min-width: 800px) {
+@media screen and (min-width: 800px) {
   .header {
     flex-direction: row;
     justify-content: space-between;
+  }
+  .writing {
+    grid-column-gap: 5px;
+    grid-template-columns: 1fr max-content;
   }
 }
