@@ -1,40 +1,33 @@
 {{ define "main" }}
-<section id="main">
-  <h1 id="title">{{ .Title }}</h1>
-  <div>
+<section class="main">
+    <h1 class="title">{{ .Title }}</h1>
+    <p class="meta">
+        Published on {{ .Date.Format "Mon Jan 2, 2006" }}.
+        Estimated read for {{ .ReadingTime }} min.
+    </p>
+    <div>
         <article id="content">
-           {{ .Content }}
+            {{ .Content }}
         </article>
-  </div>
+    </div>
 </section>
-<aside id="meta">
-    <div>
-    <section>
-      <h4 id="date"> {{ .Date.Format "Mon Jan 2, 2006" }} </h4>
-      <h5 id="wordcount"> {{ .WordCount }} Words </h5>
-    </section>
-    {{ with .Params.topics }}
-    <ul id="topics">
-      {{ range . }}
-        <li><a href="{{ "topics" | absURL}}{{ . | urlize }}">{{ . }}</a> </li>
+
+<div>
+    <div class="goto">
+    {{ if .PrevInSection }}
+      {{ with .PrevInSection }}
+      <a class="previous" href="{{.Permalink}}"> << {{.Title}} </a>
       {{ end }}
-    </ul>
+    {{ else }}
+      <a> </a>
     {{ end }}
-    {{ with .Params.tags }}
-    <ul id="tags">
-      {{ range . }}
-        <li> <a href="{{ "tags" | absURL }}{{ . | urlize }}">{{ . }}</a> </li>
+    {{ if .NextInSection }}
+      {{ with .NextInSection }}
+      <a class="next" href="{{.Permalink}}"> {{.Title}} >></a>
       {{ end }}
-    </ul>
+    {{ else }}
+      <a> </a>
     {{ end }}
     </div>
-    <div>
-        {{ with .PrevInSection }}
-          <a class="previous" href="{{.Permalink}}"> {{.Title}}</a>
-        {{ end }}
-        {{ with .NextInSection }}
-          <a class="next" href="{{.Permalink}}"> {{.Title}}</a>
-        {{ end }}
-    </div>
-</aside>
+</div>
 {{ end }}

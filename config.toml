@@ -6,7 +6,6 @@ title = "sttp://"
 theme = "nocode"
 
 [params]
-
   description = "secure-thought-transfer-protocol"
 
 sectionPagesMenu = "main"
