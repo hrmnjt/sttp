@@ -10,10 +10,6 @@ theme = "nocode"
     url = "/writing/"
     weight = 1
   [[menu.main]]
-    name = "Reading"
-    url = "/reading/"
-    weight = 2
-  [[menu.main]]
     name = "About"
-    url = "/about"
-    weight = 3
+    url = "/"
+    weight = 2
