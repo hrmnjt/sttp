@@ -2,6 +2,9 @@ maxPreviewsCached: 10
 vaults:
     -
         fsPath: vault
+        remote:
+          type: git
+          url: git@github.com:hrmnjt/sttp.git
 useFMTitle: true
 useNoteTitleForLink: true
 noAutoCreateOnDefinition: true
