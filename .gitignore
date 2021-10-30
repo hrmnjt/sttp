@@ -1,5 +1,5 @@
 node_modules
 .dendron.*
-build
 .vscode
-.next
+
+docs
