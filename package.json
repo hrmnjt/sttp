@@ -1,0 +1,23 @@
+{
+  "name": "sttp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hrmnjt/sttp.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hrmnjt/sttp/issues"
+  },
+  "homepage": "https://github.com/hrmnjt/sttp#readme",
+  "dependencies": {
+    "@dendronhq/dendron-cli": "^0.68.0"
+  }
+}
