@@ -10,7 +10,8 @@
     "enablePreviewV2": true
   },
   "site": {
-    "siteUrl": "https://hrmnjt.github.io/sttp/",
+    "siteUrl": "https://hrmnjt.github.io",
+    "assetsPrefix": "/sttp",
     "copyAssets": true,
     "siteHierarchies": [
       "root"
