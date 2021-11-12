@@ -1,3 +1,4 @@
+version: 3
 useFMTitle: true
 useNoteTitleForLink: true
 noLegacyNoteRef: true
@@ -8,8 +9,6 @@ dev:
     enablePreviewV2: true
 site:
     copyAssets: true
-    assetsPrefix: sttp
-    siteUrl: 'https://hrmnjt.github.io'
     siteHierarchies:
         - root
     siteRootDir: docs
@@ -22,13 +21,13 @@ site:
         action: useVault
         payload:
             - vault
-version: 3
 commands:
     lookup:
         note:
             selectionMode: extract
             confirmVaultOnCreate: false
             leaveTrace: false
+    randomNote: {}
     insertNote:
         initialValue: templates
     insertNoteLink:
@@ -36,15 +35,10 @@ commands:
         enableMultiSelect: false
     insertNoteIndex:
         enableMarker: false
-    randomNote: {}
 workspace:
     vaults:
         -
             fsPath: vault
-            remote:
-                type: git
-                url: 'git@github.com:hrmnjt/sttp.git'
-            sync: sync
     journal:
         dailyDomain: daily
         name: journal
@@ -54,15 +48,34 @@ workspace:
         name: scratch
         dateFormat: y.MM.dd.HHmmss
         addBehavior: asOwnDomain
+    task:
+        name: ''
+        dateFormat: ''
+        addBehavior: childOfCurrent
+        statusSymbols:
+            '': ' '
+            wip: w
+            done: x
+            assigned: a
+            moved: m
+            blocked: b
+            delegated: l
+            dropped: d
+            pending: 'y'
+        prioritySymbols:
+            H: high
+            M: medium
+            L: low
+        todoIntegration: false
+        createTaskSelectionType: selection2link
     graph:
         zoomSpeed: 1
     enableAutoCreateOnDefinition: false
     enableXVaultWikiLink: false
     enableRemoteVaultInit: true
-    workspaceVaultSyncMode: noCommit
-    enableAutoFoldFrontmatter: true
-    maxPreviewsCached: 10
-    maxNoteLength: 204800
     enableUserTags: true
     enableHashTags: true
-    dendronVersion: 0.65.0
+    workspaceVaultSyncMode: noCommit
+    enableAutoFoldFrontmatter: false
+    maxPreviewsCached: 10
+    maxNoteLength: 204800
