@@ -15,8 +15,8 @@ site:
         - root
     siteRootDir: docs
     usePrettyRefs: true
-    title: Dendron
-    description: Personal knowledge space
+    title: sttp://
+    description: Secure Thought Transfer Protocol - digital garden for hrmnjt or Harmanjeet Singh Nagi
     siteLastModified: true
     gh_edit_branch: main
     duplicateNoteBehavior:
