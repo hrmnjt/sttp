@@ -10,10 +10,10 @@ site:
     assetsPrefix: /sttp
     copyAssets: true
     siteHierarchies:
-        - sttp
+        - root
     siteRootDir: docs
     usePrettyRefs: true
-    title: '🌱 sttp://'
+    title: 'sttp://'
     description: >-
         Secure Thought Transfer Protocol - digital garden for hrmnjt or
         Harmanjeet Singh Nagi
@@ -82,7 +82,7 @@ workspace:
     enableAutoFoldFrontmatter: false
     maxPreviewsCached: 10
     maxNoteLength: 204800
-    dendronVersion: 0.71.0
+    dendronVersion: 0.70.0
 preview:
     enableFMTitle: true
     enableNoteTitleForLink: true
