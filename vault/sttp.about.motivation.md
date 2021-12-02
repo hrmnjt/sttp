@@ -2,8 +2,9 @@
 id: YUctz5hOuwtcDqhJoY7Wp
 title: Motivation
 desc: ''
-updated: 1638432998586
+updated: 1638478450494
 created: 1638402756974
+nav_order: 2
 ---
 
 Why am I tending to a digital garden?
