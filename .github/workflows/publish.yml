@@ -55,4 +55,4 @@ jobs:
         publish_dir: docs/
         force_orphan: true
         # if you have a custom domain, you can uncomment the below and add it here
-        cname: "hrmnjt.dev"
+        cname: "www.hrmnjt.dev"
