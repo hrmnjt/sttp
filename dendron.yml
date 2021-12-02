@@ -7,7 +7,6 @@ dev:
     enablePreviewV2: true
 site:
     siteUrl: 'https://www.hrmnjt.dev'
-    assetsPrefix: /sttp
     copyAssets: true
     siteHierarchies:
         - sttp
