@@ -12,7 +12,7 @@ site:
         - sttp
     siteRootDir: docs
     usePrettyRefs: true
-    title: '🌱 sttp://'
+    title: '🌱'
     description: >-
         Secure Thought Transfer Protocol - digital garden for hrmnjt or
         Harmanjeet Singh Nagi
