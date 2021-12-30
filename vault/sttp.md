@@ -2,13 +2,11 @@
 id: GZPqo3m2S4bA7KAQ1mGbe
 title: sttp://
 desc: ''
-updated: 1638600907892
+updated: 1640473002076
 created: 1638401605019
 ---
 
 Hello World! You have stumbled upon my corner of internet.
-
-# i.e. sttp://secure-thought-transfer-protocol
 
 I'm not sure how you will classify/parse/internalize this website - a digital garden? a personal wiki? a blog? a non-linear manifesto? But for the sake of moving ahead I'm calling it digital garden as of now.
 

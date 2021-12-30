@@ -4,6 +4,7 @@ useNoteTitleForLink: true
 mermaid: true
 useKatex: true
 dev:
+    enableWebUI: false
     enablePreviewV2: true
 site:
     siteUrl: 'https://www.hrmnjt.dev'
