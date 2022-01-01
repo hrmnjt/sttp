@@ -40,7 +40,7 @@ workspace:
         -
             fsPath: vault
     journal:
-        dailyDomain: daily
+        dailyDomain: sttp
         name: journal
         dateFormat: y.MM.dd
         addBehavior: childOfDomain
