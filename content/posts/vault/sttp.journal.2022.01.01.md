@@ -56,7 +56,7 @@ Below could be the structure for the journal notes going ahead. Maybe it might b
 - [[sttp.code.sttp]]
 - [[sttp.code.vam]]
 - [[sttp.code.rfc-tooling]]
-- [[sttp.code.confluent-learning]]
+- [[sttp.code.learn.confluent]]
 
 ## Other things
 
