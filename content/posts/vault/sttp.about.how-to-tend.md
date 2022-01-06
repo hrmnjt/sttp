@@ -2,9 +2,9 @@
 id: f7MOKgLOD87bIDqyS1ycD
 title: Tending to the garden
 desc: ''
-updated: 1638563654266
+updated: 1641485284992
 created: 1638547851884
-nav_order: 3
+nav_order: 1.03
 ---
 
 There are two reason to tend your digital garden
