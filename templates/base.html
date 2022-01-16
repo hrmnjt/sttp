@@ -1,0 +1,75 @@
+{% import "opengraph.html" as social -%}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Character encoding -->
+    <meta charset="utf-8" />
+
+    <!-- Viewport -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    
+    <!-- Description, Author, Keywords -->
+    <meta name="description" content="{{ config.description }}" />
+    <meta name="author" content="hrmnjt" />
+    <meta name="keywords" content="hrmnjt, Harman, Harmanjeet Singh, Harmanjeet Singh Nagi" />
+    <meta name="keywords" content="sttp, Secure Thought Transfer Protocol" />
+
+    {%- block og_preview -%}
+    {{ social::og_preview() }}
+    {%- endblock og_preview -%}
+
+    {% block rss %}
+    <link rel="alternate" type="application/rss+xml" title="{{config.title}}" href="{{ get_url(path="atom.xml",
+        trailing_slash=false) | safe}}">
+    {% endblock %}
+
+    <!-- Favicons and touch icons -->
+    <!-- <link rel="icon" href="/favicon.ico">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png"> -->
+
+    <!-- Stylesheet -->
+    <!-- <link rel="stylesheet" href="css/styles.css?v=1.0"> -->
+    <link rel="stylesheet" href={{ get_url(path="css/base.css") }}>
+
+  </head>
+
+  <body>
+
+    <header>
+        <a class="site-name" href="/">
+            <h1>sttp://secure-thought-transfer-protocol</h1>
+        </a>
+        <div class="site-description">
+            <p>Ramblings on tech, music and open source by <strong>hrmnjt</strong></p>
+        </div>
+    </header>
+
+    <section class="section">
+      <div class="container">{% block content %} {% endblock %}</div>
+    </section>
+
+    <footer>
+        <div class="social">
+            <ul>
+                <li>
+                    <a href="https://github.com/hrmnjt" title="Github">Github</a>
+                </li>
+                <li>
+                    <a href="https://twitter.com/__hrmnjt__" title="Twitter">Twitter</i></a>
+                </li>
+                <li>
+                    <a href="{{ get_url(path="atom.xml", trailing_slash=false) | safe}}" title="{{config.title}}">RSS</a>
+                </li>
+            </ul>
+        </div>
+        <p>
+            © {{ config.title }} {{ now() | date(format="%Y") }}<br>
+            Powered by <a target="_blank" href="https://getzola.org/">Zola</a>
+        </p>
+    </footer>
+    
+  </body>
+</html>
