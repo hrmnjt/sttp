@@ -1,101 +1,20 @@
-languageCode = "en-us"
+# The URL the site will be built for
+base_url = "https://www.hrmnjt.dev"
 
-theme = "cactus"
+# The site title and description; used in feeds by default.
+title = "hrmnjt"
+description = "hrmnjt's landing page"
 
-baseURL = "https://www.hrmnjt.dev"
-title = "sttp://secure-thought-transfer-protocol"
+# Whether to automatically compile all Sass files in the sass directory
+compile_sass = false
 
-author = "hrmnjt"
-copyright = "hrmnjt (Harmanjeet Singh Nagi)" # cactus will use title if copyright is not set
+# Whether to build a search index to be used later on by a JavaScript library
+build_search_index = true
 
-# disqusShortname = "example" # Used when comments is enabled. Cactus will use site title if not set
-# googleAnalytics = "UA-1234-5"
-# summaryLength = 2
+[markdown]
+# Whether to do syntax highlighting
+# Theme can be customised by setting the `highlight_theme` variable to a theme supported by Zola
+highlight_code = true
 
-# Main menu which appears below site header.
-[[menu.main]]
-name = "Home"
-url = "/"
-weight = 1
-
-[[menu.main]]
-name = "Garden"
-url = "/posts"
-weight = 2
-
-[[menu.main]]
-name = "About"
-url = "/posts/vault/sttp.about.hrmnjt"
-weight = 4
-
-[markup]
-  [markup.tableOfContents]
-    endLevel = 0
-    ordered = false
-    startLevel = 0
-  [markup.highlight]
-    codeFences = true
-    guessSyntax = false
-    hl_Lines = ""
-    lineNoStart = 1
-    lineNos = true
-    lineNumbersInTable = false
-    noClasses = true
-    style = "dracula"
-    tabWidth = 4
-
-[params]
-
-  colortheme = "dark" # dark, light, white, or classic
-  rss = true # generate rss feed. default value is false
-  # googleAnalyticsAsync = false # use asynchronous tracking. Synchronous tracking by default
-  showAllPostsArchive = true # default
-
-  # Home page settings
-  description = """\
-  Hello World! You have stumbled upon my corner of internet.
-  
-  I'm not sure how you will classify/parse/internalize this website - a digital garden? a personal wiki? a blog? a non-linear manifesto? But for the sake of moving ahead I'm calling it digital garden as of now.
-  
-  Secure Thought Transfer Protocol (abbr. `sttp`) is raw stream of thoughts; more like [shower thoughts](https://www.reddit.com/r/Showerthoughts/). More accurately, `sttp` is a collection of loosely held opinions/thoughts (in form of notes) that I'm trying to make sense of. It is also an anchor for me to go back in time, incercept the thought and refine it based on present context.
-  
-  Most of the notes (called seeds in garden) might not make sense until they start budding and become evergreen. Unapologetically, I would say they are not supposed to make sense as they are not finalized or permanent.
-  """
-  mainSection = "posts" # your main section
-  mainSectionTitle = "Explore Garden" # your main section
-  showAllPostsOnHomePage = false # default
-  postsOnHomePage = 0 # this option will be ignored if showAllPostsOnHomePage is set to true
-  tagsOverview = false # show tags overview by default.
-  showProjectsList = false # show projects list by default (if projects data file exists).
-  # projectsUrl = "https://github.com/gohugoio" # title link for projects list
-
-  # https://gohugo.io/functions/format/#hugo-date-and-time-templating-reference
-  dateFormat = "2006-01-02" # default
-
-  # Post page settings
-  show_updated = true # default
-  showReadTime = true # default
-
-  # [params.comments]
-  #   enabled = true # default
-  #   engine = "cactus_comments" # only disqus, utterances, and cactus_comments is supported
-  #   [params.comments.utterances]
-  #     repo = "<github_username>/<github_reponame>"
-  #     label = "hugo-site-name" # you can use however you want to label your name in your repo's issues
-  #     theme = "github-light"
-  #   [params.comments.cactuscomments]
-  #     siteName = "your_cactus_comments_sitename" # see https://cactus.chat/ on how to register your site name
-  #     #serverUrl = "" # Defaults to https://matrix.cactus.chat:8448 (Cactus Chat public server)
-  #     #serverName = "" # Defaults to cactus.chat
-
-  # the value of name should be an valid font awesome icon name (brands type)
-  # https://fontawesome.com/icons?d=gallery&s=brands
-  [[params.social]]
-    name = "github"
-    link = "https://github.com/hrmnjt/"
-  [[params.social]]
-    name = "twitter"
-    link = "https://www.twitter.com/__hrmnjt__/"
-  [[params.social]]
-    name = "email"
-    link = "hrmnjt@hrmn.in"  # no need for "mailto:" in the head
+[extra]
+# Put all your custom variables here
