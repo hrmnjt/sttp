@@ -2,16 +2,21 @@
 <html lang="en">
 
 <head>
-  <meta charset="utf-8">
-  <title>MyBlog</title>
+    <!-- Character encoding -->
+    <meta charset="utf-8">
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href={{ get_url(path="css/base.css" ) }}>
+
+    <title>Secure Thoughts Transfer Protocol</title>
 </head>
 
 <body>
-  <section class="section">
-    <div class="container">
-      {% block content %} {% endblock %}
-    </div>
-  </section>
+    <section class="section">
+        <div class="container">
+        {% block content %} {% endblock %}
+        </div>
+    </section>
 </body>
 
 </html>
