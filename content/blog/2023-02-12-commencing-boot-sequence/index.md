@@ -55,11 +55,11 @@ sensible as sttp
 
 This is how it looks right now.
 
-{{ resize_image(path="content/blog/commencing-boot-sequence/2023-02-12-commencing-1-root.png", width=1200, height=200, op="fit_width") }}
+{{ resize_image(path="content/blog/2023-02-12-commencing-boot-sequence/2023-02-12-commencing-1-root.png", width=1200, height=200, op="fit_width") }}
 
-{{ resize_image(path="content/blog/commencing-boot-sequence/2023-02-12-commencing-2-posts.png", width=1200, height=200, op="fit_width") }}
+{{ resize_image(path="content/blog/2023-02-12-commencing-boot-sequence/2023-02-12-commencing-2-posts.png", width=1200, height=200, op="fit_width") }}
 
-{{ resize_image(path="content/blog/commencing-boot-sequence/2023-02-12-commencing-3-blog.png", width=1200, height=200, op="fit_width") }}
+{{ resize_image(path="content/blog/2023-02-12-commencing-boot-sequence/2023-02-12-commencing-3-blog.png", width=1200, height=200, op="fit_width") }}
 
 
 ## content check
