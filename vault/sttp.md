@@ -2,7 +2,7 @@
 id: GZPqo3m2S4bA7KAQ1mGbe
 title: sttp://
 desc: ''
-updated: 1638600557487
+updated: 1638600907892
 created: 1638401605019
 ---
 
@@ -10,7 +10,7 @@ Hello World! You have stumbled upon my corner of internet.
 
 # i.e. sttp://secure-thought-transfer-protocol
 
-I'm not sure how you will classify and render this website - a digital garden? a personal wiki? a blog? a non-linear manifesto? But for the sake of moving ahead I'm calling it digital garden as of now.
+I'm not sure how you will classify/parse/internalize this website - a digital garden? a personal wiki? a blog? a non-linear manifesto? But for the sake of moving ahead I'm calling it digital garden as of now.
 
 Secure Thought Transfer Protocol (abbr. `sttp`) is raw stream of thoughts; more like [shower thoughts](https://www.reddit.com/r/Showerthoughts/). More accurately, `sttp` is a collection of loosely held opinions/thoughts (in form of notes) that I'm trying to make sense of. It is also an anchor for me to go back in time, incercept the thought and refine it based on present context.
 
