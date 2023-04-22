@@ -5,6 +5,7 @@ theme = "cactus"
 baseURL = "https://www.hrmnjt.dev"
 title = "sttp://secure-thought-transfer-protocol"
 
+author = "hrmnjt"
 copyright = "hrmnjt (Harmanjeet Singh Nagi)" # cactus will use title if copyright is not set
 
 # disqusShortname = "example" # Used when comments is enabled. Cactus will use site title if not set
