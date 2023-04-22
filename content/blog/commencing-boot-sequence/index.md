@@ -16,11 +16,12 @@ At this time, after a lot of yak-shaving, I'm setting up the blog - SSG,
 templates, and styling; this post is my approach to track the changes that I do
 to final output. There are going to be lot of changes that I forsee coming but
 at this time my priority is to:
-- [ ] basic styling, on the lines of https://evenbettermotherfucking.website
+- [x] basic styling, on the lines of https://evenbettermotherfucking.website - `DONE:20230212`
 - [ ] deploy
 - [ ] fix content view - root, section, blog
 - [ ] content navigation
 - [ ] search
+- [ ] opengraph
 - [ ] deep-linking and memex
 - [ ] creating a feed (atom, json)
 - [ ] sitemaps, robots.txt, 404 page, archive
@@ -31,20 +32,34 @@ section header. I'm using `date '+%FT%T' | pbcopy` to print the date format.
 ## log: 2023-02-13T00:10:05
 
 Started the blog this evening with base content from Zola overview - 
-https://www.getzola.org/documentation/getting-started/overview/. Post
+()[https://www.getzola.org/documentation/getting-started/overview/]. Post
 completing the steps I have a base setup which resembles Danluu's website
 (http://danluu.com, for the curious) which I have always admired. It seems a 
 little too raw for me, though.
 
-I've since then, done below already
-- removed `first.md` and `second.md`
-- added this post specifically
-
 In the process of searching for minimal styled pages, I've found
 http://motherfuckingwebsite.com, http://bettermotherfuckingwebsite.com,
 https://evenbettermotherfucking.website and
-https://thebestmotherfuckingwebsite.co. I have to tell that I like "Even
-Better" version most and would want to go with that for now.
+https://thebestmotherfuckingwebsite.co. I have to tell that I like "Even Better"
+version most and would want to go with that for now. Adding basic CSS from
+https://github.com/setetres/evenbettermotherfuckingwebsite/blob/0a0e010165124ff1e264879eabcd300d7f120155/index.html
+and to improve syntax highlighting, added CSS properties from 
+https://www.getzola.org/documentation/content/syntax-highlighting/#styling-codeblocks.
+
+Additionally, today I've
+- removed `first.md` and `second.md`
+- added this post specifically
+- changed `index.html`, `base.html` and `blog/_index.md` to make the site look
+sensible as sttp
+- added `resize_image` shortcode
+
+This is how it looks right now.
+
+{{ resize_image(path="content/blog/commencing-boot-sequence/2023-02-12-commencing-1-root.png", width=1200, height=200, op="fit_width") }}
+
+{{ resize_image(path="content/blog/commencing-boot-sequence/2023-02-12-commencing-2-posts.png", width=1200, height=200, op="fit_width") }}
+
+{{ resize_image(path="content/blog/commencing-boot-sequence/2023-02-12-commencing-3-blog.png", width=1200, height=200, op="fit_width") }}
 
 
 ## content check
@@ -122,8 +137,6 @@ Tables aren't part of the core Markdown spec, but Hugo supports them out-of-the-
 This is pre text
 </pre>
 
-#### Code block with backticks
-
 ```
 <!DOCTYPE html>
 <html lang="en">
@@ -137,9 +150,7 @@ This is pre text
 </html>
 ```
 
-#### Code block with backticks and language specified
-
-```html {linenos=true}
+```html,linenos
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -153,18 +164,31 @@ This is pre text
 </html>
 ```
 
-#### Code block indented with four spaces
+```rust,linenos
+use highlighter::highlight;
+let code = "...";
+highlight(code);
+```
 
-    <!doctype html>
-    <html lang="en">
-    <head>
-      <meta charset="utf-8">
-      <title>Example HTML5 Document</title>
-    </head>
-    <body>
-      <p>Test</p>
-    </body>
-    </html>
+```css,linenos
+a {
+    border-bottom: 1px solid #444444;
+    color: #444444;
+    text-decoration: none;
+}
+```
+
+```rust,hl_lines=1 3-5 9
+use highlighter::highlight;
+let code = "...";
+highlight(code);
+```
+
+```rust,hide_lines=1-2
+use highlighter::highlight;
+let code = "...";
+highlight(code);
+```
 
 #### Code block with Hugo's internal highlight shortcode
 
