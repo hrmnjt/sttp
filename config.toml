@@ -1,6 +1,10 @@
 # The URL the site will be built for
 base_url = "https://www.hrmnjt.dev"
 
+# The site title and description; used in feeds by default.
+title = "hrmnjt"
+description = "secure-thought-transfer-protocol"
+
 # Whether to automatically compile all Sass files in the sass directory
 compile_sass = false
 
