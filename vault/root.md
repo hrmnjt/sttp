@@ -15,6 +15,6 @@ Secure Thought Transfer Protocol (abbr. `sttp://`) is a raw stream of thoughts, 
 
 Apologies if you can't understand this in the first go. Actually, nothing in here is supposed to make sense as they are working braindump - thought train. I've put this out in public to enable [[working in public|thoughts.working-in-public]].
 
-Although, if you want to glance through what I'm [[reading]], or [[programming]] please follow through.
+Although, if you want to glance through what I'm [[reading]], or [[code]] please follow through.
 
 > "Be yourself; everyone else is already taken." - Oscar Wilde
