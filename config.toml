@@ -24,7 +24,7 @@ weight = 2
 
 [[menu.main]]
 name = "About"
-url = "/about"
+url = "/posts/vault/sttp.about.hrmnjt"
 weight = 4
 
 [markup]
@@ -51,11 +51,19 @@ weight = 4
   showAllPostsArchive = true # default
 
   # Home page settings
-  description = "Description need to be edited"
+  description = """\
+  Hello World! You have stumbled upon my corner of internet.
+  
+  I'm not sure how you will classify/parse/internalize this website - a digital garden? a personal wiki? a blog? a non-linear manifesto? But for the sake of moving ahead I'm calling it digital garden as of now.
+  
+  Secure Thought Transfer Protocol (abbr. `sttp`) is raw stream of thoughts; more like [shower thoughts](https://www.reddit.com/r/Showerthoughts/). More accurately, `sttp` is a collection of loosely held opinions/thoughts (in form of notes) that I'm trying to make sense of. It is also an anchor for me to go back in time, incercept the thought and refine it based on present context.
+  
+  Most of the notes (called seeds in garden) might not make sense until they start budding and become evergreen. Unapologetically, I would say they are not supposed to make sense as they are not finalized or permanent.
+  """
   mainSection = "posts" # your main section
-  mainSectionTitle = "Garden" # your main section
+  mainSectionTitle = "Explore Garden" # your main section
   showAllPostsOnHomePage = false # default
-  postsOnHomePage = 100000 # this option will be ignored if showAllPostsOnHomePage is set to true
+  postsOnHomePage = 0 # this option will be ignored if showAllPostsOnHomePage is set to true
   tagsOverview = false # show tags overview by default.
   showProjectsList = false # show projects list by default (if projects data file exists).
   # projectsUrl = "https://github.com/gohugoio" # title link for projects list

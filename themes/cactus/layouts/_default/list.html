@@ -7,7 +7,7 @@
     {{ $pages = .Pages }}
   {{ end }}
 
-  {{ range (sort $pages .File.TranslationBaseName "asc") }}
+  {{ range (sort $pages "TranslationBaseName") }}
     <!-- {{ $pageYear := (.Date.Format "2006") }}
     {{ if (ne $pageYear ($.Scratch.Get "year")) }}
     {{ $.Scratch.Set "year" $pageYear }}
