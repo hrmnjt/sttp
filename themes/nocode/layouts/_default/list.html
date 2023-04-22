@@ -6,12 +6,13 @@
         </header>
         {{.Content}}
     </article>
-    <ul>
+    <div class="writing">
     {{ range .Pages.ByPublishDate.Reverse }}
-        <li>
-            <a href="{{.Permalink}}">{{.Date.Format "2006-01-02"}} | {{.Title}}</a>
-        </li>
-    {{ end }}
-    </ul>
+        <div>
+            <a href="{{.Permalink}}">{{.Title}}</a>
+        </div>
+        <time>{{.Date.Format "2006-01-02"}}</time>
+    {{end}}
+    </div>
 </main>
 {{ end }}
