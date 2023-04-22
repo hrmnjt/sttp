@@ -1,12 +1,12 @@
 ---
 id: Cpxmluyo1c0gww3ONSfaD
-title: hrmnjt
+title: About me (hrmnjt)
 desc: ''
-updated: 1638478442176
+updated: 1638600299977
 created: 1638402822255
 nav_order: 99
 ---
 
-I'm Harman (a.k.a `hrmnjt` on internet). I work as an Engineering Manager (Big Data) during the day; I'm trying to find new things to do every night.
+I'm Harman. I work as an Engineering Manager (Big Data) during the day; I'm trying to find new things to do every night. I write [code](https://github.com/hrmnjt) and words (here and [on blue bird site](https://twitter.com/__hrmnjt__))
 
 > Be yourself; everyone else is already taken. - Oscar Wilde

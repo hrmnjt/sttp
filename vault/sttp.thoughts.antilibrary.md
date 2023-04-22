@@ -2,7 +2,7 @@
 id: 8D7BIxuZbOAOGZuKrLLZK
 title: Antilibrary
 desc: ''
-updated: 1638568047174
+updated: 1638569170176
 created: 1635630021034
 ---
 
@@ -15,3 +15,6 @@ List of topics (books, blogs, notes, articles) I wish I would have read or want 
 - [Spending 5K to learn how Database index works](https://briananglin.me/posts/spending-5k-to-learn-how-database-indexes-work/)
 - [It's not all in your head](https://www.firstthings.com/article/2021/12/its-not-all-in-your-head)
 - [Individuals matter](https://danluu.com/people-matter/)
+
+- [Codex Vitae](https://busterbenson.com/beliefs/)
+- [Life in weeks](https://notes.busterbenson.com/life-in-weeks)
