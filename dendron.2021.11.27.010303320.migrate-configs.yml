@@ -1,22 +1,22 @@
-version: 4
+version: 3
 useFMTitle: true
 useNoteTitleForLink: true
+noLegacyNoteRef: true
 mermaid: true
 useKatex: true
+usePrettyRefs: true
 dev:
     enablePreviewV2: true
 site:
-    siteUrl: 'https://hrmnjt.github.io'
+    siteUrl: https://hrmnjt.github.io
     assetsPrefix: /sttp
     copyAssets: true
     siteHierarchies:
-        - sttp
+        - root
     siteRootDir: docs
     usePrettyRefs: true
-    title: '🌱 sttp://'
-    description: >-
-        Secure Thought Transfer Protocol - digital garden for hrmnjt or
-        Harmanjeet Singh Nagi
+    title: sttp://
+    description: Secure Thought Transfer Protocol - digital garden for hrmnjt or Harmanjeet Singh Nagi
     siteLastModified: true
     gh_edit_branch: main
     duplicateNoteBehavior:
@@ -29,7 +29,6 @@ commands:
             selectionMode: extract
             confirmVaultOnCreate: false
             leaveTrace: false
-            bubbleUpCreateNew: true
     randomNote: {}
     insertNote:
         initialValue: templates
@@ -82,10 +81,3 @@ workspace:
     enableAutoFoldFrontmatter: false
     maxPreviewsCached: 10
     maxNoteLength: 204800
-    dendronVersion: 0.71.0
-preview:
-    enableFMTitle: true
-    enableNoteTitleForLink: true
-    enableMermaid: true
-    enablePrettyRefs: true
-    enableKatex: true
