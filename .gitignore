@@ -1,4 +1,5 @@
 # .gitignore
 
 public
+static/img
 .DS_Store
