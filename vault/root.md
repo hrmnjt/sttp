@@ -1,11 +1,13 @@
 ---
 id: root
-title: secure thought transfer protocol
+title: sttp://
 desc: ''
-updated: 1635630077222
+updated: 1636819350379
 created: 1595961348801
 stub: false
 ---
+
+> i.e. Secure Thought Transfer Protocol
 
 Hello World!
 
