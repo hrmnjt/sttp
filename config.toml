@@ -48,11 +48,12 @@ weight = 4
   colortheme = "dark" # dark, light, white, or classic
   rss = true # generate rss feed. default value is false
   # googleAnalyticsAsync = false # use asynchronous tracking. Synchronous tracking by default
-  # showAllPostsArchive = false # default
+  showAllPostsArchive = true # default
 
   # Home page settings
   description = "Description need to be edited"
   mainSection = "posts" # your main section
+  mainSectionTitle = "Garden" # your main section
   showAllPostsOnHomePage = false # default
   postsOnHomePage = 100000 # this option will be ignored if showAllPostsOnHomePage is set to true
   tagsOverview = false # show tags overview by default.

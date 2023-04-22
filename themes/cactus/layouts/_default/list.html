@@ -3,22 +3,22 @@
   <ul class="post-list">
 
   {{ $pages := .Paginator.Pages }}
-  {{ if .Site.Params.showAllPostsArchive }}
+  {{ if .Site.Params.showAllPostsArchive}}
     {{ $pages = .Pages }}
   {{ end }}
 
-  {{ range (sort $pages "Date" "desc") }}
-    {{ $pageYear := (.Date.Format "2006") }}
+  {{ range (sort $pages .File.TranslationBaseName "asc") }}
+    <!-- {{ $pageYear := (.Date.Format "2006") }}
     {{ if (ne $pageYear ($.Scratch.Get "year")) }}
     {{ $.Scratch.Set "year" $pageYear }}
     <h2>{{ $pageYear }}</h2>
-    {{ end }}
+    {{ end }} -->
     <li class="post-item">
       <div class="meta">
-        <time datetime="{{ time .Date }}" itemprop="datePublished">{{ .Date.Format (.Site.Params.dateFormat | default "2006-01-02") }}</time>
+        <time datetime="{{ time .Date }}" itemprop="datePublished">{{ (time (div .Params.updated 1000)).Format (.Site.Params.dateFormat | default "2006-01-02") }}</time>
       </div>
       <span>    
-        <a class="" href="{{ .Permalink }}">{{ if .Title }} {{ .Title }} {{ else }} Untitled {{ end }}</a>
+        <a class="" href="{{ .Permalink }}">{{ with .File }}{{ .TranslationBaseName }}{{ end }}</a>
       </span>
     </li>
     {{ end }}
