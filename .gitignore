@@ -1,6 +1,1 @@
-# .gitignore
-
-## Hugo
-.hugo_build.lock
-resources
 public
