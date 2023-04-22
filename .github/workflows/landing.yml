@@ -4,7 +4,7 @@ name: Landing deploy to gh-pages
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   deploy:
