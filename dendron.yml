@@ -8,6 +8,7 @@ usePrettyRefs: true
 dev:
     enablePreviewV2: true
 site:
+    siteUrl: https://hrmnjt.github.io/sttp/
     copyAssets: true
     siteHierarchies:
         - root

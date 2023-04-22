@@ -1,0 +1,16 @@
+<h1 id="dendron"><a aria-hidden="true" class="anchor-heading" href="#dendron"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Dendron</h1>
+<h2 id="bootstraping-on-local-for-the-first-time"><a aria-hidden="true" class="anchor-heading" href="#bootstraping-on-local-for-the-first-time"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Bootstraping on local for the first time</h2>
+<h3 id="installing"><a aria-hidden="true" class="anchor-heading" href="#installing"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Installing</h3>
+<p><a href="https://wiki.dendron.so/notes/23a1b942-99af-45c8-8116-4f4bb7dccd21/#installation">https://wiki.dendron.so/notes/23a1b942-99af-45c8-8116-4f4bb7dccd21/#installation</a></p>
+<p>Installing <code>dendron-cli</code> locally instead of globally</p>
+<pre class="language-bash"><code class="language-bash"><span class="token function">npm</span> <span class="token function">install</span> @dendronhq/dendron-cli
+</code></pre>
+<h2 id="preview"><a aria-hidden="true" class="anchor-heading" href="#preview"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Preview</h2>
+<pre><code>./node_modules/.bin/dendron buildSite  --stage dev --serve
+</code></pre>
+<h2 id="build"><a aria-hidden="true" class="anchor-heading" href="#build"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Build</h2>
+<pre><code>./node_modules/.bin/dendron buildSite --stage prod
+</code></pre>
+<h2 id="expose-with-caddy"><a aria-hidden="true" class="anchor-heading" href="#expose-with-caddy"><svg aria-hidden="true" viewBox="0 0 16 16"><use xlink:href="#svg-link"></use></svg></a>Expose with caddy</h2>
+<pre><code>caddy run
+</code></pre>

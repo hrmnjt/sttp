@@ -1,0 +1,872 @@
+{
+  "notes": {
+    "403": {
+      "id": "403",
+      "title": "This page has not yet sprouted",
+      "vault": {
+        "fsPath": "vault"
+      },
+      "type": "note",
+      "desc": "",
+      "links": [],
+      "anchors": {},
+      "fname": "403",
+      "updated": 1636745742478,
+      "created": 1636745742478,
+      "parent": null,
+      "children": [],
+      "data": {}
+    },
+    "root": {
+      "id": "root",
+      "title": "secure thought transfer protocol",
+      "vault": {
+        "fsPath": "vault"
+      },
+      "type": "note",
+      "desc": "",
+      "links": [
+        {
+          "type": "wiki",
+          "from": {
+            "fname": "root",
+            "id": "root",
+            "vaultName": "vault"
+          },
+          "value": "thoughts.working-in-public",
+          "alias": "working in public",
+          "position": {
+            "start": {
+              "line": 8,
+              "column": 194,
+              "offset": 562
+            },
+            "end": {
+              "line": 8,
+              "column": 242,
+              "offset": 610
+            },
+            "indent": []
+          },
+          "xvault": false,
+          "sameFile": false,
+          "to": {
+            "fname": "thoughts.working-in-public"
+          }
+        },
+        {
+          "type": "wiki",
+          "from": {
+            "fname": "root",
+            "id": "root",
+            "vaultName": "vault"
+          },
+          "value": "reading",
+          "alias": "reading",
+          "position": {
+            "start": {
+              "line": 10,
+              "column": 50,
+              "offset": 662
+            },
+            "end": {
+              "line": 10,
+              "column": 61,
+              "offset": 673
+            },
+            "indent": []
+          },
+          "xvault": false,
+          "sameFile": false,
+          "to": {
+            "fname": "reading"
+          }
+        },
+        {
+          "type": "wiki",
+          "from": {
+            "fname": "root",
+            "id": "root",
+            "vaultName": "vault"
+          },
+          "value": "code",
+          "alias": "code",
+          "position": {
+            "start": {
+              "line": 10,
+              "column": 66,
+              "offset": 678
+            },
+            "end": {
+              "line": 10,
+              "column": 74,
+              "offset": 686
+            },
+            "indent": []
+          },
+          "xvault": false,
+          "sameFile": false,
+          "to": {
+            "fname": "code"
+          }
+        }
+      ],
+      "anchors": {},
+      "fname": "root",
+      "updated": 1635630077222,
+      "created": 1595961348801,
+      "parent": null,
+      "children": [
+        "recUayScf9Q4prCoNsMVI",
+        "klCH9tqrcEg3zef7NOXJn",
+        "qYEUe14q618fE8JFtiby2",
+        "8D7BIxuZbOAOGZuKrLLZK",
+        "KEfH7xSmO1tV7Oei42c6J"
+      ],
+      "data": {},
+      "contentHash": "dd442242786c122bc0f3a93fbee86f7f",
+      "custom": {
+        "stub": false,
+        "nav_order": 0,
+        "permalink": "/"
+      }
+    },
+    "KEfH7xSmO1tV7Oei42c6J": {
+      "id": "KEfH7xSmO1tV7Oei42c6J",
+      "title": "Thoughts",
+      "vault": {
+        "fsPath": "vault"
+      },
+      "type": "note",
+      "desc": "",
+      "links": [],
+      "anchors": {},
+      "fname": "thoughts",
+      "updated": 1636735260731,
+      "created": 1635631830527,
+      "parent": "root",
+      "children": [
+        "RnQbWj3chyHyBDAmTZF4g"
+      ],
+      "data": {},
+      "contentHash": "df878ff539ba313bd6ea96546e5ce7e8",
+      "custom": {}
+    },
+    "RnQbWj3chyHyBDAmTZF4g": {
+      "id": "RnQbWj3chyHyBDAmTZF4g",
+      "title": "Working in Public",
+      "vault": {
+        "fsPath": "vault"
+      },
+      "type": "note",
+      "desc": "",
+      "links": [
+        {
+          "from": {
+            "fname": "root",
+            "vaultName": "vault"
+          },
+          "type": "backlink",
+          "position": {
+            "start": {
+              "line": 8,
+              "column": 194,
+              "offset": 562
+            },
+            "end": {
+              "line": 8,
+              "column": 242,
+              "offset": 610
+            },
+            "indent": []
+          },
+          "value": "thoughts.working-in-public"
+        }
+      ],
+      "anchors": {},
+      "fname": "thoughts.working-in-public",
+      "updated": 1635630086567,
+      "created": 1635629881580,
+      "parent": "KEfH7xSmO1tV7Oei42c6J",
+      "children": [],
+      "data": {},
+      "contentHash": "5883997c859d4890a4ce9c7a5ac0f4c6",
+      "custom": {}
+    },
+    "8D7BIxuZbOAOGZuKrLLZK": {
+      "id": "8D7BIxuZbOAOGZuKrLLZK",
+      "title": "reading",
+      "vault": {
+        "fsPath": "vault"
+      },
+      "type": "note",
+      "desc": "",
+      "links": [
+        {
+          "from": {
+            "fname": "root",
+            "vaultName": "vault"
+          },
+          "type": "backlink",
+          "position": {
+            "start": {
+              "line": 10,
+              "column": 50,
+              "offset": 662
+            },
+            "end": {
+              "line": 10,
+              "column": 61,
+              "offset": 673
+            },
+            "indent": []
+          },
+          "value": "reading"
+        }
+      ],
+      "anchors": {},
+      "fname": "reading",
+      "updated": 1636264892050,
+      "created": 1635630021034,
+      "parent": "root",
+      "children": [],
+      "data": {},
+      "contentHash": "dd9b8da0b578b358a3a8df596301e2af",
+      "custom": {}
+    },
+    "qYEUe14q618fE8JFtiby2": {
+      "id": "qYEUe14q618fE8JFtiby2",
+      "title": "Programming",
+      "vault": {
+        "fsPath": "vault"
+      },
+      "type": "note",
+      "desc": "",
+      "links": [],
+      "anchors": {},
+      "fname": "programming",
+      "updated": 1636735234280,
+      "created": 1636735234280,
+      "parent": "root",
+      "children": [
+        "szPCHxqSop3u52PxKzPaS",
+        "CzE2Pvfay0aiBT4055cP5"
+      ],
+      "data": {},
+      "contentHash": "05d3def144e0acb243ea4c270f625773",
+      "custom": {}
+    },
+    "CzE2Pvfay0aiBT4055cP5": {
+      "id": "CzE2Pvfay0aiBT4055cP5",
+      "title": "Spark",
+      "vault": {
+        "fsPath": "vault"
+      },
+      "type": "note",
+      "desc": "",
+      "links": [],
+      "anchors": {},
+      "fname": "programming.spark",
+      "updated": 1635631830527,
+      "created": 1635631830527,
+      "parent": "qYEUe14q618fE8JFtiby2",
+      "children": [
+        "P7sCkUZQZt1CyKwq5jDOr"
+      ],
+      "data": {},
+      "contentHash": "a25ca6b0431a178d00eb71807c8c4c08",
+      "stub": false,
+      "custom": {
+        "stub": true
+      }
+    },
+    "P7sCkUZQZt1CyKwq5jDOr": {
+      "id": "P7sCkUZQZt1CyKwq5jDOr",
+      "title": "Sparklens",
+      "vault": {
+        "fsPath": "vault"
+      },
+      "type": "note",
+      "desc": "",
+      "links": [],
+      "anchors": {},
+      "fname": "programming.spark.sparklens",
+      "updated": 1635630172814,
+      "created": 1635630171095,
+      "parent": "CzE2Pvfay0aiBT4055cP5",
+      "children": [],
+      "data": {},
+      "contentHash": "403f4a47e10ebd8f9c389ba018c524d4",
+      "custom": {}
+    },
+    "szPCHxqSop3u52PxKzPaS": {
+      "id": "szPCHxqSop3u52PxKzPaS",
+      "title": "Blog",
+      "vault": {
+        "fsPath": "vault"
+      },
+      "type": "note",
+      "desc": "",
+      "links": [],
+      "anchors": {},
+      "fname": "programming.blog",
+      "updated": 1635631830528,
+      "created": 1635631830528,
+      "parent": "qYEUe14q618fE8JFtiby2",
+      "children": [
+        "z03Zb5d8ECtDMeyA3ds1n"
+      ],
+      "data": {},
+      "contentHash": "aa764c80949650ce687af5156a1d276d",
+      "stub": false,
+      "custom": {
+        "stub": true
+      }
+    },
+    "z03Zb5d8ECtDMeyA3ds1n": {
+      "id": "z03Zb5d8ECtDMeyA3ds1n",
+      "title": "Publish",
+      "vault": {
+        "fsPath": "vault"
+      },
+      "type": "note",
+      "desc": "",
+      "links": [],
+      "anchors": {},
+      "fname": "programming.blog.publish",
+      "updated": 1635631830528,
+      "created": 1635631830528,
+      "parent": "szPCHxqSop3u52PxKzPaS",
+      "children": [
+        "BlKHqxiVAbkfMQPypgLCH",
+        "Fv19jBaCzf2TllJK00aMf"
+      ],
+      "data": {},
+      "contentHash": "25230d1877ee1fdd7838dcdfa7d82358",
+      "stub": false,
+      "custom": {
+        "stub": true
+      }
+    },
+    "Fv19jBaCzf2TllJK00aMf": {
+      "id": "Fv19jBaCzf2TllJK00aMf",
+      "title": "Primer",
+      "vault": {
+        "fsPath": "vault"
+      },
+      "type": "note",
+      "desc": "",
+      "links": [],
+      "anchors": {},
+      "fname": "programming.blog.publish.primer",
+      "updated": 1635630134213,
+      "created": 1635630132209,
+      "parent": "z03Zb5d8ECtDMeyA3ds1n",
+      "children": [],
+      "data": {},
+      "contentHash": "f8cc9b86ff3a1b09a4afe58b25bd3ba3",
+      "custom": {}
+    },
+    "BlKHqxiVAbkfMQPypgLCH": {
+      "id": "BlKHqxiVAbkfMQPypgLCH",
+      "title": "Dendron",
+      "vault": {
+        "fsPath": "vault"
+      },
+      "type": "note",
+      "desc": "",
+      "links": [],
+      "anchors": {
+        "bootstraping-on-local-for-the-first-time": {
+          "type": "header",
+          "text": "Bootstraping on local for the first time",
+          "value": "bootstraping-on-local-for-the-first-time",
+          "line": 9,
+          "column": 0
+        },
+        "installing": {
+          "type": "header",
+          "text": "Installing",
+          "value": "installing",
+          "line": 11,
+          "column": 0
+        },
+        "preview": {
+          "type": "header",
+          "text": "Preview",
+          "value": "preview",
+          "line": 20,
+          "column": 0
+        },
+        "build": {
+          "type": "header",
+          "text": "Build",
+          "value": "build",
+          "line": 26,
+          "column": 0
+        },
+        "expose-with-caddy": {
+          "type": "header",
+          "text": "Expose with caddy",
+          "value": "expose-with-caddy",
+          "line": 32,
+          "column": 0
+        }
+      },
+      "fname": "programming.blog.publish.dendron",
+      "updated": 1635632901874,
+      "created": 1635631390891,
+      "parent": "z03Zb5d8ECtDMeyA3ds1n",
+      "children": [],
+      "data": {},
+      "contentHash": "48e8e1beb003d81bce5b5c482bfe2cd4",
+      "custom": {}
+    },
+    "klCH9tqrcEg3zef7NOXJn": {
+      "id": "klCH9tqrcEg3zef7NOXJn",
+      "title": "External",
+      "vault": {
+        "fsPath": "vault"
+      },
+      "type": "note",
+      "desc": "",
+      "links": [],
+      "anchors": {},
+      "fname": "external",
+      "updated": 1636542669574,
+      "created": 1636542669574,
+      "parent": "root",
+      "children": [
+        "n7fXhCNO7mjabTNVDC5WM",
+        "TSBeWQuVpv4rmCJihCuSw",
+        "x7sI0jKiK4JDBlY8YuONG",
+        "9jIGbnFFClvaZSpyngxNc",
+        "IHHq9wPBklykHdSseE1K4",
+        "beViSkFjiVDELwYBEuSgh",
+        "kWnKiCh1ShFNAQgMeev27"
+      ],
+      "data": {},
+      "contentHash": "94fbccc5779061cd6f30d8a2582100e7",
+      "custom": {}
+    },
+    "kWnKiCh1ShFNAQgMeev27": {
+      "id": "kWnKiCh1ShFNAQgMeev27",
+      "title": "This Project Will Only Take 2 Hours",
+      "vault": {
+        "fsPath": "vault"
+      },
+      "type": "note",
+      "desc": "",
+      "links": [],
+      "anchors": {},
+      "fname": "external.this-project-will-only-take-2-hours",
+      "updated": 1636551988170,
+      "created": 1636551985976,
+      "parent": "klCH9tqrcEg3zef7NOXJn",
+      "children": [],
+      "data": {},
+      "contentHash": "d78690bcda22cd2c9d83fde77c4d1aaf",
+      "custom": {}
+    },
+    "beViSkFjiVDELwYBEuSgh": {
+      "id": "beViSkFjiVDELwYBEuSgh",
+      "title": "Spending 5k to Learn How Database Indexes Work",
+      "vault": {
+        "fsPath": "vault"
+      },
+      "type": "note",
+      "desc": "",
+      "links": [],
+      "anchors": {},
+      "fname": "external.spending-5k-to-learn-how-database-indexes-work",
+      "updated": 1636548769961,
+      "created": 1636548580545,
+      "parent": "klCH9tqrcEg3zef7NOXJn",
+      "children": [],
+      "data": {},
+      "contentHash": "b8cfda3c4d450745b1fd49dddbb7b354",
+      "custom": {}
+    },
+    "IHHq9wPBklykHdSseE1K4": {
+      "id": "IHHq9wPBklykHdSseE1K4",
+      "title": "Solving Unknown Problems",
+      "vault": {
+        "fsPath": "vault"
+      },
+      "type": "note",
+      "desc": "",
+      "links": [],
+      "anchors": {},
+      "fname": "external.solving-unknown-problems",
+      "updated": 1636552049784,
+      "created": 1636552047280,
+      "parent": "klCH9tqrcEg3zef7NOXJn",
+      "children": [],
+      "data": {},
+      "contentHash": "8de8d7f4f9c24c9731a840f39aca2360",
+      "custom": {}
+    },
+    "9jIGbnFFClvaZSpyngxNc": {
+      "id": "9jIGbnFFClvaZSpyngxNc",
+      "title": "Serverless Kakfa on Aws",
+      "vault": {
+        "fsPath": "vault"
+      },
+      "type": "note",
+      "desc": "",
+      "links": [],
+      "anchors": {},
+      "fname": "external.serverless-kakfa-on-aws",
+      "updated": 1636544537542,
+      "created": 1636542691897,
+      "parent": "klCH9tqrcEg3zef7NOXJn",
+      "children": [],
+      "data": {},
+      "contentHash": "b0ea864372e1cefda0a69dfc6b52dbf8",
+      "custom": {}
+    },
+    "x7sI0jKiK4JDBlY8YuONG": {
+      "id": "x7sI0jKiK4JDBlY8YuONG",
+      "title": "Features They Wanted",
+      "vault": {
+        "fsPath": "vault"
+      },
+      "type": "note",
+      "desc": "",
+      "links": [],
+      "anchors": {},
+      "fname": "external.features-they-wanted",
+      "updated": 1636552008356,
+      "created": 1636552006417,
+      "parent": "klCH9tqrcEg3zef7NOXJn",
+      "children": [],
+      "data": {},
+      "contentHash": "a5b25d3c62df3a0773cf0f32c526fd1d",
+      "custom": {}
+    },
+    "TSBeWQuVpv4rmCJihCuSw": {
+      "id": "TSBeWQuVpv4rmCJihCuSw",
+      "title": "Dont Do Interviews Do Discussions",
+      "vault": {
+        "fsPath": "vault"
+      },
+      "type": "note",
+      "desc": "",
+      "links": [],
+      "anchors": {
+        "how": {
+          "type": "header",
+          "text": "How",
+          "value": "how",
+          "line": 22,
+          "column": 0
+        }
+      },
+      "fname": "external.dont-do-interviews-do-discussions",
+      "updated": 1636551967155,
+      "created": 1636548934995,
+      "parent": "klCH9tqrcEg3zef7NOXJn",
+      "children": [],
+      "data": {},
+      "contentHash": "8c87dbf729e46ba3990bf06132adb549",
+      "custom": {}
+    },
+    "n7fXhCNO7mjabTNVDC5WM": {
+      "id": "n7fXhCNO7mjabTNVDC5WM",
+      "title": "Developing Game Engine",
+      "vault": {
+        "fsPath": "vault"
+      },
+      "type": "note",
+      "desc": "",
+      "links": [],
+      "anchors": {},
+      "fname": "external.developing-game-engine",
+      "updated": 1636548537751,
+      "created": 1636548509568,
+      "parent": "klCH9tqrcEg3zef7NOXJn",
+      "children": [],
+      "data": {},
+      "contentHash": "5f8a05e1decd852bef89bdb99d7f372d",
+      "custom": {}
+    },
+    "recUayScf9Q4prCoNsMVI": {
+      "id": "recUayScf9Q4prCoNsMVI",
+      "title": "programming",
+      "vault": {
+        "fsPath": "vault"
+      },
+      "type": "note",
+      "desc": "",
+      "links": [
+        {
+          "from": {
+            "fname": "root",
+            "vaultName": "vault"
+          },
+          "type": "backlink",
+          "position": {
+            "start": {
+              "line": 10,
+              "column": 66,
+              "offset": 678
+            },
+            "end": {
+              "line": 10,
+              "column": 74,
+              "offset": 686
+            },
+            "indent": []
+          },
+          "value": "code"
+        }
+      ],
+      "anchors": {},
+      "fname": "code",
+      "updated": 1635631957137,
+      "created": 1635630024821,
+      "parent": "root",
+      "children": [],
+      "data": {},
+      "contentHash": "4813a38170aefcfe5bd63b0f1dfb7215",
+      "custom": {}
+    }
+  },
+  "domains": [
+    {
+      "id": "root",
+      "title": "secure thought transfer protocol",
+      "vault": {
+        "fsPath": "vault"
+      },
+      "type": "note",
+      "desc": "",
+      "links": [
+        {
+          "type": "wiki",
+          "from": {
+            "fname": "root",
+            "id": "root",
+            "vaultName": "vault"
+          },
+          "value": "thoughts.working-in-public",
+          "alias": "working in public",
+          "position": {
+            "start": {
+              "line": 8,
+              "column": 194,
+              "offset": 562
+            },
+            "end": {
+              "line": 8,
+              "column": 242,
+              "offset": 610
+            },
+            "indent": []
+          },
+          "xvault": false,
+          "sameFile": false,
+          "to": {
+            "fname": "thoughts.working-in-public"
+          }
+        },
+        {
+          "type": "wiki",
+          "from": {
+            "fname": "root",
+            "id": "root",
+            "vaultName": "vault"
+          },
+          "value": "reading",
+          "alias": "reading",
+          "position": {
+            "start": {
+              "line": 10,
+              "column": 50,
+              "offset": 662
+            },
+            "end": {
+              "line": 10,
+              "column": 61,
+              "offset": 673
+            },
+            "indent": []
+          },
+          "xvault": false,
+          "sameFile": false,
+          "to": {
+            "fname": "reading"
+          }
+        },
+        {
+          "type": "wiki",
+          "from": {
+            "fname": "root",
+            "id": "root",
+            "vaultName": "vault"
+          },
+          "value": "code",
+          "alias": "code",
+          "position": {
+            "start": {
+              "line": 10,
+              "column": 66,
+              "offset": 678
+            },
+            "end": {
+              "line": 10,
+              "column": 74,
+              "offset": 686
+            },
+            "indent": []
+          },
+          "xvault": false,
+          "sameFile": false,
+          "to": {
+            "fname": "code"
+          }
+        }
+      ],
+      "anchors": {},
+      "fname": "root",
+      "updated": 1635630077222,
+      "created": 1595961348801,
+      "parent": null,
+      "children": [
+        "recUayScf9Q4prCoNsMVI",
+        "klCH9tqrcEg3zef7NOXJn",
+        "qYEUe14q618fE8JFtiby2",
+        "8D7BIxuZbOAOGZuKrLLZK",
+        "KEfH7xSmO1tV7Oei42c6J"
+      ],
+      "data": {},
+      "contentHash": "dd442242786c122bc0f3a93fbee86f7f",
+      "custom": {
+        "stub": false,
+        "nav_order": 0,
+        "permalink": "/"
+      },
+      "body": "\nHello World!\n\nI'm Harman (a.k.a `hrmnjt` on internet). I work as an Engineering Manager (Big Data) during the day; I'm trying to find new things to do every night.\n\nSecure Thought Transfer Protocol (abbr. `sttp://`) is a raw stream of thoughts, and also (sometimes) medium for me to travel back in time to intercept thoughts from past - to improve and tend to them. \n\nApologies if you can't understand this in the first go. Actually, nothing in here is supposed to make sense as they are working braindump - thought train. I've put this out in public to enable [[working in public|thoughts.working-in-public]].\n\nAlthough, if you want to glance through what I'm [[reading]], or [[code]] please follow through.\n\n> \"Be yourself; everyone else is already taken.\" - Oscar Wilde\n"
+    }
+  ],
+  "noteIndex": {
+    "id": "root",
+    "title": "secure thought transfer protocol",
+    "vault": {
+      "fsPath": "vault"
+    },
+    "type": "note",
+    "desc": "",
+    "links": [
+      {
+        "type": "wiki",
+        "from": {
+          "fname": "root",
+          "id": "root",
+          "vaultName": "vault"
+        },
+        "value": "thoughts.working-in-public",
+        "alias": "working in public",
+        "position": {
+          "start": {
+            "line": 8,
+            "column": 194,
+            "offset": 562
+          },
+          "end": {
+            "line": 8,
+            "column": 242,
+            "offset": 610
+          },
+          "indent": []
+        },
+        "xvault": false,
+        "sameFile": false,
+        "to": {
+          "fname": "thoughts.working-in-public"
+        }
+      },
+      {
+        "type": "wiki",
+        "from": {
+          "fname": "root",
+          "id": "root",
+          "vaultName": "vault"
+        },
+        "value": "reading",
+        "alias": "reading",
+        "position": {
+          "start": {
+            "line": 10,
+            "column": 50,
+            "offset": 662
+          },
+          "end": {
+            "line": 10,
+            "column": 61,
+            "offset": 673
+          },
+          "indent": []
+        },
+        "xvault": false,
+        "sameFile": false,
+        "to": {
+          "fname": "reading"
+        }
+      },
+      {
+        "type": "wiki",
+        "from": {
+          "fname": "root",
+          "id": "root",
+          "vaultName": "vault"
+        },
+        "value": "code",
+        "alias": "code",
+        "position": {
+          "start": {
+            "line": 10,
+            "column": 66,
+            "offset": 678
+          },
+          "end": {
+            "line": 10,
+            "column": 74,
+            "offset": 686
+          },
+          "indent": []
+        },
+        "xvault": false,
+        "sameFile": false,
+        "to": {
+          "fname": "code"
+        }
+      }
+    ],
+    "anchors": {},
+    "fname": "root",
+    "updated": 1635630077222,
+    "created": 1595961348801,
+    "parent": null,
+    "children": [
+      "recUayScf9Q4prCoNsMVI",
+      "klCH9tqrcEg3zef7NOXJn",
+      "qYEUe14q618fE8JFtiby2",
+      "8D7BIxuZbOAOGZuKrLLZK",
+      "KEfH7xSmO1tV7Oei42c6J"
+    ],
+    "data": {},
+    "contentHash": "dd442242786c122bc0f3a93fbee86f7f",
+    "custom": {
+      "stub": false,
+      "nav_order": 0,
+      "permalink": "/"
+    },
+    "body": "\nHello World!\n\nI'm Harman (a.k.a `hrmnjt` on internet). I work as an Engineering Manager (Big Data) during the day; I'm trying to find new things to do every night.\n\nSecure Thought Transfer Protocol (abbr. `sttp://`) is a raw stream of thoughts, and also (sometimes) medium for me to travel back in time to intercept thoughts from past - to improve and tend to them. \n\nApologies if you can't understand this in the first go. Actually, nothing in here is supposed to make sense as they are working braindump - thought train. I've put this out in public to enable [[working in public|thoughts.working-in-public]].\n\nAlthough, if you want to glance through what I'm [[reading]], or [[code]] please follow through.\n\n> \"Be yourself; everyone else is already taken.\" - Oscar Wilde\n"
+  },
+  "vaults": [
+    {
+      "fsPath": "vault"
+    }
+  ]
+}
