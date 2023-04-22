@@ -2,7 +2,7 @@
 id: A9qtgVPky3KI4k7IdY2P3
 title: On Request for Comments
 desc: ''
-updated: 1640042342946
+updated: 1641075884596
 created: 1640031605464
 ---
 
@@ -35,6 +35,7 @@ ADR abbv. Architecture Decision Records are similar concept that has its root wi
 
 ### Tooling
 #todo
+
 ## References
 
 - [Structured RFC process - Phil Calado](https://philcalcado.com/2018/11/19/a_structured_rfc_process.html)
