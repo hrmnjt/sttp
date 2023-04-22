@@ -29,7 +29,7 @@ When I was starting to create a digital garden, it was an extension of the same 
 
 I'm right now experimenting with [Dendron](https://wiki.dendron.so). It ticks a lot of boxes for me and aligns with the idea of note taking in your code editor i.e. VSCode for me. The project is in active development phase and has a lot of features which are maturing over time.
 
-The best part about it is being open source and establishing a community which fosters knowledge management regardless of the tool which is being used. I'm part of their active community and am trying to contribute to the project as well. In the process I'm [[dogfooding|sttp.thoughts.dogfooding]] with Dendron.
+The best part about it is being open source and establishing a community which fosters knowledge management regardless of the tool which is being used. I'm part of their active community and am trying to contribute to the project as well. In the process I'm [[dogfooding|sttp.thoughts.anthropology.dogfooding]] with Dendron.
 
 This site is published by seeds planted in Dendron and hosted via Github Pages. This way I don't have to manage the web nerdery and go back to just think with writing.
 
