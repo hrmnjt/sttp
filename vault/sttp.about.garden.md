@@ -2,7 +2,7 @@
 id: 31y84pzVxC70NyDW6XPx3
 title: sttp and Digital Garden
 desc: ''
-updated: 1638486426571
+updated: 1638552144492
 created: 1638401784800
 nav_order: 1
 ---
@@ -15,6 +15,8 @@ Secure Thought Transfer Protocol (abbr. `sttp`) is raw stream of thoughts. More 
 
 Most of the notes (called seeds in garden) might not make sense until they start budding and become evergreen. Unapologetically, I would say they are not supposed to make sense as they are not finalized or permanent.
 
+You may also read [[how I tend to my digital garden|sttp.about.how-to-tend]].
+
 ## Why does it resemble HTTP?
 
 Years ago, a collegue of mine, [Shashwat](https://www.linkedin.com/in/shashwat-kashyap-ab7375a2/) and I were having the casual chat about shower thoughts and protocols. This is after a long day of boring work when you get to actually talk about something that you are passionate about, something that moves you. At this time, I used to send daily mails to our team with top 5 shower thoughts (minus NSFW) so that people might start their day with something to enjoy and smile about.
@@ -25,11 +27,11 @@ When I was starting to create a digital garden, it was an extension of the same 
 
 ## How are you tending to your garden?
 
-I'm right now experimenting with [Dendron](https://wiki.dendron.so). It ticks a lot of boxes for me and aligns with the idea of [[note taking in your code editor]] i.e. VSCode for me. The project is in active development phase and has a lot of features which are maturing over time.
+I'm right now experimenting with [Dendron](https://wiki.dendron.so). It ticks a lot of boxes for me and aligns with the idea of note taking in your code editor i.e. VSCode for me. The project is in active development phase and has a lot of features which are maturing over time.
 
-The best part about it is being open source and establishing a community which fosters knowledge management regardless of the tool which is being used.
+The best part about it is being open source and establishing a community which fosters knowledge management regardless of the tool which is being used. I'm part of their active community and am trying to contribute to the project as well. In the process I'm [[dogfooding|thought.dogfooding]] with Dendron.
 
-This site is published by seeds planted in Dendron and hosted via Github Pages. This way I don't have to manage the web nerdery and go back to just [[think with writing]].
+This site is published by seeds planted in Dendron and hosted via Github Pages. This way I don't have to manage the web nerdery and go back to just think with writing.
 
 ## But isn't digital garden a blog?
 
@@ -45,3 +47,4 @@ Also there are lot of public gardens that can show a different version or taste 
 - https://wiki.nikitavoloboev.xyz/
 - https://cerebrarium.garden/
 - https://notes.andymatuschak.org/z4SDCZQeRo4xFEQ8H4qrSqd68ucpgE6LU155C
+
