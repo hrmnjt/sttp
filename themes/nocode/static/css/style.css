@@ -1,0 +1,74 @@
+:root {
+  --mono-font: San Francisco Mono, Monaco, "Consolas", "Lucida Console", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", monospace;
+  --sans-font: -apple-system, BlinkMacSystemFont, "avenir next", avenir, helvetica, "helvetica neue", ubuntu, roboto, noto, "segoe ui", arial, sans-serif
+}
+
+body {
+  margin: 0 auto;
+  max-width: 650px;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  line-height: 1.6;
+  font-size: 1em;
+  font-family: var(--sans-font)
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+h2,
+h3,
+a {
+  color: #000;
+}
+
+a {
+  text-decoration: none;
+}
+
+.logo {
+  margin: 0;
+  font-size: 1.2em;
+}
+
+.logo a,
+.main-nav a {
+  padding: 0 15px;
+  text-align: center;
+  display: block;
+}
+
+.main-nav a {
+  color: #000;
+  font-size: 1em;
+}
+
+.logo a:hover,
+.main-nav a:hover {
+  color: #ff6161;
+}
+
+/* ================================= 
+  Media Queries
+==================================== */
+
+@media (min-width: 600px) {
+  .header,
+  .main-nav {
+    display: flex;
+  }
+  .header {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+@media (min-width: 800px) {
+  .header {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}

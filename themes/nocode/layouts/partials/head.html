@@ -1,10 +1,14 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- TODO: parameterize description instead of hard-code -->
     <meta name="description" content="secure-thought-transfer-protocol">
     <link rel="stylesheet" type="text/css" href="/css/style.css">
-    {{ $title := print .Site.Title " | " .Title }}
+    {{ $title := print .Title " - " .Site.Title }}
     {{ if .IsHome }}{{ $title = .Site.Title }}{{ end }}
-    <title>{{ $title }}</title>
-</head>
+    <title>
+        {{ $title }}
+    </title>
+    {{ with .OutputFormats.Get "rss" -}}
+        {{ printf `<link rel="%s" type="%s" href="%s" title="%s" />` .Rel .MediaType.Type .Permalink $.Site.Title | safeHTML }}
+    {{ end -}}
+  </head>

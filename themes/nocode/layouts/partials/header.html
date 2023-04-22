@@ -1,10 +1,17 @@
-<div id="nav-border">
-    <nav id="nav">
-        {{ range .Site.Menus.main }}
-        <a class="nav-link" href="{{ .URL }}">
-        {{ $text := print .Name | safeHTML }}
-        {{ $text }}
+<header class="header">
+    <h1 class="logo">
+        <a href="/">
+            sttp://secure-thought-transfer-protocol
         </a>
+    </h1>
+    <ul class="main-nav">
+        {{ range .Site.Menus.main }}
+        <li>
+            <a href="{{ .URL }}">
+                {{ $text := print .Name | safeHTML }}
+                {{ $text }}
+            </a>
+        </li>
         {{ end }}
-    </nav>
-</div>
+    </ul>
+</header>
