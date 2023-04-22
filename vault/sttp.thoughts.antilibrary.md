@@ -2,8 +2,9 @@
 id: 8D7BIxuZbOAOGZuKrLLZK
 title: Antilibrary
 desc: ''
-updated: 1638569170176
+updated: 1639959643998
 created: 1635630021034
+nav_order: 1
 ---
 
 List of topics (books, blogs, notes, articles) I wish I would have read or want to read again while thinking about it.
@@ -18,3 +19,4 @@ List of topics (books, blogs, notes, articles) I wish I would have read or want 
 
 - [Codex Vitae](https://busterbenson.com/beliefs/)
 - [Life in weeks](https://notes.busterbenson.com/life-in-weeks)
+- [Skills for a product manager](https://www.ravi-mehta.com/product-manager-skills/)

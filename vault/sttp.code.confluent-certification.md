@@ -7,5 +7,5 @@ created: 1638703240358
 ---
 
 Developer path:
-- [[sttp.learning.confluent.installing-confluent]]
+- [[sttp.code.confluent-learning.installing-confluent]]
 
