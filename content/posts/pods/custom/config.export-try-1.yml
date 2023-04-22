@@ -1,0 +1,39 @@
+# description: configuration ID
+# type: string
+# required: true
+podId: export-try-1
+
+# description: optional description for the pod
+# type: string
+# description: TODO
+
+# description: export scope of the pod
+# type: string
+# required: true
+exportScope: Vault
+
+# description: type of pod
+# type: string
+# required: true
+podType: MarkdownExportV2
+
+# description: How to convert the wikilinks
+# type: boolean
+wikiLinkToURL: false
+
+# description: export destination. Specify either a file path or 'clipboard' to export to your clipboard
+# type: string
+# required: true
+destination: /Users/hsingh/code/sttp/export-try-1
+
+# description: undefined
+# type: boolean
+convertTagNotesToLinks: false
+
+# description: undefined
+# type: boolean
+convertUserNotesToLinks: false
+
+# description: undefined
+# type: boolean
+addFrontmatterTitle: true
