@@ -2,9 +2,9 @@
 id: 31y84pzVxC70NyDW6XPx3
 title: sttp and Digital Garden
 desc: ''
-updated: 1638552144492
+updated: 1641485277759
 created: 1638401784800
-nav_order: 1
+nav_order: 1.01
 ---
 
 In order to explain, the structure of this about section is like FAQs, or rather like In-Frequently Asked Question (iFAQs) as I call it. Please read through.

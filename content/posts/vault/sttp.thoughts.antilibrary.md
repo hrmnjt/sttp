@@ -2,9 +2,8 @@
 id: 8D7BIxuZbOAOGZuKrLLZK
 title: Antilibrary
 desc: ''
-updated: 1639959643998
+updated: 1641485331705
 created: 1635630021034
-nav_order: 1
 ---
 
 List of topics (books, blogs, notes, articles) I wish I would have read or want to read again while thinking about it.
