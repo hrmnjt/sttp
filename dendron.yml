@@ -6,7 +6,7 @@ useKatex: true
 dev:
     enablePreviewV2: true
 site:
-    siteUrl: 'https://hrmnjt.github.io'
+    siteUrl: 'https://www.hrmnjt.dev'
     assetsPrefix: /sttp
     copyAssets: true
     siteHierarchies:
