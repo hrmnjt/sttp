@@ -1,5 +1,5 @@
-<div id="nav-border" class="container">
-    <nav id="nav" class="nav justify-content-center">
+<div id="nav-border">
+    <nav id="nav">
         {{ range .Site.Menus.main }}
         <a class="nav-link" href="{{ .URL }}">
         {{ $text := print .Name | safeHTML }}

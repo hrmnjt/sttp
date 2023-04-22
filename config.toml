@@ -1,8 +1,14 @@
 baseURL = "http://example.org/"
 languageCode = "en-us"
-title = "My New Hugo Site"
+
+title = "sttp://"
 
 theme = "nocode"
+
+[params]
+  description = "secure-thought-transfer-protocol"
+
+sectionPagesMenu = "main"
 
 [menu]
   [[menu.main]]
@@ -17,3 +23,8 @@ theme = "nocode"
     name = "Tags"
     url = "/tags/"
     weight = 3
+
+copyright = 'This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.'
+
+[author]
+  name = 'My Name Here'
