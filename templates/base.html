@@ -1,62 +1,22 @@
-{% import "opengraph.html" as social -%}
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <!-- Character encoding -->
-    <meta charset="utf-8" />
-
-    <!-- Viewport -->
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-    <!-- Description, Author, Keywords -->
-    <meta name="description" content="{{ config.description }}" />
-    <meta name="author" content="hrmnjt" />
-    <meta name="keywords"
-        content="hrmnjt, Harman, Harmanjeet, Singh, Nagi, sttp, secure-thought-transfer-protocol, secure, thought, transfer, protocol" />
-
-    <!-- Opengraph -->
-    {%- block og_preview -%}
-    {{ social::og_preview() }}
-    {%- endblock og_preview -%}
-
-    <!-- Atom RSS -->
-    {% block rss %}
-    <link rel="alternate" type="application/rss+xml" title="{{config.title}}" href="{{ get_url(path=" atom.xml",
-        trailing_slash=false) | safe}}">
-    {% endblock %}
-
-    <!-- Favicons and touch icons -->
-    <!-- <link rel="icon" href="/favicon.ico">
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png"> -->
+    <meta charset="utf-8">
 
     <!-- Stylesheet -->
-    <!-- <link rel="stylesheet" href="css/styles.css?v=1.0"> -->
     <link rel="stylesheet" href={{ get_url(path="css/base.css" ) }}>
 
+    <title>Secure Thoughts Transfer Protocol</title>
 </head>
 
-<body class="pa4 pa4-m pa4-l pa4-ns mw8 code">
-
-    <section>
-        <div>{% block content %} {% endblock %}</div>
-    </section>
-
-    <footer>
-        <div class="mt4">
-            <a href="https://github.com/hrmnjt" title="Github" class="dib green dim">Github</a>
-            <a href="https://twitter.com/__hrmnjt__" title="Twitter" class="dib green dim">Twitter</i></a>
-            <a href="{{ get_url(path=" atom.xml", trailing_slash=false) | safe}}" title="{{config.title}}"
-                class="dib green dim">
-                RSS
-            </a>
+<body>
+    <section class="section">
+        <div class="container">
+        {% block content %} {% endblock %}
         </div>
-        <p class="f6 mid-gray"> © {{ config.title }} {{ now() | date(format="%Y") }}</p>
-    </footer>
-
+    </section>
 </body>
 
 </html>
