@@ -15,6 +15,10 @@ site:
     description: Personal knowledge space
     siteLastModified: true
     gh_edit_branch: main
+    duplicateNoteBehavior:
+        action: useVault
+        payload:
+            - vault
 commands:
     lookup:
         note:
@@ -32,7 +36,9 @@ commands:
     insertNoteIndex:
         enableMarker: false
 workspace:
-    vaults: []
+    vaults:
+        -
+            fsPath: vault
     journal:
         dailyDomain: daily
         name: journal
