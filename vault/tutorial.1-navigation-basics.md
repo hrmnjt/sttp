@@ -2,9 +2,11 @@
 id: vXh-HmSTsmgGA9j9IzcZh
 title: Navigation Basics
 desc: ''
-updated: 1624934444826
+updated: 1634859065645
 created: 1624332288808
 ---
+
+doest this work
 
 Let's do a brief overview on how to navigate the Dendron UI.
 
