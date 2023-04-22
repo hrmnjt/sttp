@@ -1,0 +1,24 @@
+# On every push this script is executed
+name: Landing page deploy to GH-pages
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2 
+
+      - name: Install and Run Zola
+        run: |
+          sudo snap install --edge zola
+          zola build
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
+          cname: www.hrmnjt.dev
