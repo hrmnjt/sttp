@@ -1,5 +1,10 @@
 # .gitignore
 
-public
-static/img
+# MacOS stuff
 .DS_Store
+
+# Zola stuff
+# public is build folder and is futile to version control
+public
+# are processed_images needed? they are basically resized static images.
+static/processed_images
