@@ -1,5 +1,5 @@
 +++
-title = "New updates on sttp://basic-styling"
+title = "New updates for sttp://basic-styling"
 date = 2023-02-13
 +++
 
