@@ -1,5 +1,5 @@
 +++
-title = "Commencing boot sequence"
+title = "commencing boot sequence"
 date = 2023-02-12
 +++
 
