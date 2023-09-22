@@ -22,6 +22,10 @@ a {
     list-style: none;
 }
 
+.pagedate {
+    font-family: monospace;
+}
+
 code {
     font-size: 90%;
     border-width: 1px;
