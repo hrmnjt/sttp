@@ -7,14 +7,13 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, viewport-fit=cover">
 
-    <!-- Stylesheet -->
-    <link rel="stylesheet" href={{ get_url(path="css/base.css" ) }}>
-
+    <!-- Title -->
     <title>
         {% block title %}{{ config.title }}{% endblock title %}
         {% if page %} - {{ page.title }} {% endif %}
     </title>
 
+    <!-- Description -->
     {% if page %}
         {% if page.description %}
             <meta name="description" content="{{ page.description }}" />
@@ -25,9 +24,13 @@
         <meta name="description" content="{{ config.description }}" />
     {% endif %}
 
+    <!-- Feed -->
     {% block rss %}
         <link rel="alternate" type="application/rss+xml" title="RSS" href="{{ get_url(path="rss.xml", trailing_slash=false) }}">
     {% endblock %}
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href={{ get_url(path="css/base.css" ) }}>
 
 </head>
 
