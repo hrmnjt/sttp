@@ -1,7 +1,6 @@
 +++
 title = "git organized"
 date = 2023-12-01
-draft = false
 +++
 
 Git is core part of my daily workflow (work or otherwise) and there are far too
@@ -11,10 +10,10 @@ increase productivity.
 ## folders, aliases and visual feedback
 
 Before today, I organized all repositories in freedesktop.org
-`xdg-user-dirs(1)`[^1] inspired `$HOME/code` folder which would have all my
-personal and work-related folders. I can't trace back why I do so but I would
-congratulate my past self to not organize folders aggressively and follow a
-convention (even without knowing it too well).
+`xdg-user-dirs(1)`[^1] inspired `$HOME/code` folder for both personal and work
+repos. I can't trace back why I do so but I would thank my past self to not 
+organize folders aggressively and follow a convention (even without knowing it
+too well).
 
 One of the things that ick-ed about above method was work and personal repos
 mixed together in one folder. I'm easily distracted and all repos in one
