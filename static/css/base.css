@@ -1,22 +1,46 @@
 /* Static CSS for the website */
+@charset "utf-8";
 
 /* `body` and `a` CSS properties are taken from
 https://github.com/setetres/evenbettermotherfuckingwebsite/blob/0a0e010165124ff1e264879eabcd300d7f120155/index.html */
-body {
-    background: #f2f2f2;
-    color: #444444;
-    line-height: 1.6;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    font-size: 16px;
-    margin: 5% auto;
-    max-width: 73%;
-}
 
-a {
-    border-bottom: 1px solid #444444;
-    color: #444444;
-    text-decoration: none;
-}
+/* general style */
+body    { font: 16px/24px -apple-system, BlinkMacSystemFont, "Segoe UI",
+          Roboto, Helvetica, Arial, sans-serif;
+          margin: 5% auto; max-width: 73%;
+          background: #f2f2f2; color: #444444; }
+a       { color: #4caf50;
+          border-bottom: 1px solid; text-decoration: none; }
+
+/* headings */
+h1, h2, h3, h4, h5, h6      { color: #000000; margin: 18px 0 24px 0; }
+h1 a, h2 a, h3 a, h4 a,
+h5 a, h6 a                  { text-decoration: none; }
+h1 a:hover, h2 a:hover,
+h3 a:hover                  { text-decoration: underline; }
+h1                          { font-size: 48px; line-height: 36px; }
+h2                          { font-size: 36px; line-height: 24px; }
+h3                          { font-size: 24px; line-height: 12px; }
+
+/* blockquotes */
+blockquote          { background: #e4e4e4; quotes: "\201C""\201D";
+                      border-left: 8px solid #4caf50; border-radius: 8px;
+                      margin: 1.5em 10px; padding: 0.5em 10px; }
+blockquote:before   { color: #444444; content: open-quote; font-size: 4em;
+                      line-height: 0.1em; margin-right: 0.25em;
+                      vertical-align: -0.4em; }
+blockquote p        { display: inline; }
+
+/* tables */
+table           { border: 1px solid #ddd; border-collapse: collapse; }
+td, th          { padding: 2px 12px; border: 1px solid #ddd; }
+figure          { margin: 0px; overflow: auto; }
+
+/* specifics */
+.blogposts          { list-style: none; }
+.pagedate           { font-family: monospace; }
+
+
 
 /* "tinker till I get it right" section */
 pre {
@@ -47,10 +71,3 @@ pre table {
     border-collapse: collapse;
 }
 
-.blogposts {
-    list-style: none;
-}
-
-.pagedate {
-    font-family: monospace;
-}
