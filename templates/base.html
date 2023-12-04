@@ -53,6 +53,7 @@
         <meta property="og:type" content="{{ type }}">
         <meta property="og:url" content="{{ permalink | safe }}">
     {% if og_image %}
+        <!-- The recommended image ratio for an og:image is 1.91:1. The optimal size would be 1200 x 630. -->
         <meta property="og:image" content="{{ get_url(path=og_image) }}">
         <meta name="twitter:image" content="{{ get_url(path=og_image) }}">
     {% endif %}
