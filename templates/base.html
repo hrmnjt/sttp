@@ -7,11 +7,60 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, viewport-fit=cover">
     <meta name="theme-color" content="#f2f2f2" />
 
-    <!-- Title -->
-    <title>
-        {% if page %} {{ page.title }} | {% endif %}
-        {% block title %}{{ config.title }}{% endblock title %}
-    </title>
+    {% if page %}
+        {% set permalink = page.permalink %}
+        {% if page.title %}
+            {% set title = page.title %}
+        {% elif config.title %}
+            {% set title = page.title %}
+        {% endif %}
+        {% set description = page.description %}
+        {% set type = "article" %}
+        {% if page and page.og_image %}
+            {% set og_image = page.og_image %}
+        {% endif %}
+        {% if config.default_og_image %}
+            {% set og_image = config.default_og_image %}
+        {% endif %}
+    {% elif section %}
+        {% set permalink = section.permalink %}
+        {% if section.title %}
+            {% set title = section.title %}
+        {% elif config.title %}
+            {% set title = config.title %}
+        {% endif %}
+        {% set description = section.description | default(value=config.description) %}
+        {% set type = "website" %}
+        {% if section and section.og_image %}
+            {% set og_image = section.og_image %}
+        {% elif config.default_og_image %}
+            {% set og_image = config.default_og_image %}
+        {% endif %}
+    {% else %}
+        {# For 404 #}
+        {% set permalink = config.base_url %}
+        {% set title = "404" %}
+        {% set description = "Page not found" %}
+        {% set type = "website" %}
+        {% if config.default_og_image %}
+            {% set og_image = config.default_og_image %}
+        {% endif %}
+    {% endif %}
+        <meta name="description" content="{{ description | safe }}">
+
+        <meta property="og:title" content="{{ title | safe }}">
+        <meta property="og:description" content="{{ description | safe }}">
+        <meta property="og:type" content="{{ type }}">
+        <meta property="og:url" content="{{ permalink | safe }}">
+    {% if og_image %}
+        <meta property="og:image" content="{{ get_url(path=og_image) }}">
+        <meta name="twitter:image" content="{{ get_url(path=og_image) }}">
+    {% endif %}
+        <meta name="twitter:card" content="summary">
+        <meta name="twitter:description" content="{{ description | safe }}">
+        <meta name="twitter:title" content="{{ title | safe }}">
+        <meta property="twitter:domain" content="{{ config.base_url | replace(from="https://", to="") }}">
+        <meta property="twitter:url" content="{{ permalink | safe }}">
 
     <!-- Description -->
     {% if page %}
@@ -23,6 +72,13 @@
     {% elif config.description %}
         <meta name="description" content="{{ config.description }}" />
     {% endif %}
+
+    <!-- Title -->
+    {% block title %}
+        <title>
+            {% if page %} {{ page.title }} | {% endif %} {{ config.title }}
+        </title>
+    {% endblock title %}
 
     <!-- Feed -->
     {% block rss %}
