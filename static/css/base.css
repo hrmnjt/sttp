@@ -1,15 +1,11 @@
 /* Static CSS for the website */
 @charset "utf-8";
 
-/* `body` and `a` CSS properties are taken from
-https://github.com/setetres/evenbettermotherfuckingwebsite/blob/0a0e010165124ff1e264879eabcd300d7f120155/index.html */
-
-/* general style */
-body    { font: 18px/26px -apple-system, BlinkMacSystemFont, "Segoe UI",
-          Roboto, Helvetica, Arial, sans-serif;
-          background: #f2f2f2; color: #444444; }
-a       { color: #4caf50;
-          border-bottom: 1px solid; text-decoration: none; }
+/* body */
+body                        { font: 18px/26px -apple-system, BlinkMacSystemFont,
+                                "Segoe UI", Roboto, Helvetica, Arial,
+                                sans-serif; background: #f2f2f2;
+                                color: #444444; }
 
 /* headings */
 h1, h2, h3, h4, h5, h6      { color: #000000; margin: 18px 0 24px 0; }
@@ -21,25 +17,37 @@ h1                          { font-size: 48px; line-height: 48px; }
 h2                          { font-size: 36px; line-height: 36px; }
 h3                          { font-size: 24px; line-height: 12px; }
 
+/* links */
+a                           { color: #00c000; border-bottom: 1px solid;
+                                text-decoration: none; }
+
 /* blockquotes */
-blockquote          { background: #e4e4e4; quotes: "\201C""\201D";
-                      border-left: 8px solid #4caf50; border-radius: 8px;
-                      margin: 1.5em 10px; padding: 0.5em 10px; }
-blockquote:before   { color: #444444; content: open-quote; font-size: 4em;
-                      line-height: 0.1em; margin-right: 0.25em;
-                      vertical-align: -0.4em; }
-blockquote p        { display: inline; }
+blockquote                  { background: #eaeaea; quotes: "\201C""\201D";
+                                border-left: 8px solid #00c000;
+                                border-radius: 8px; margin: 1.5em 10px;
+                                padding: 0.5em 10px; }
+blockquote:before           { color: #444444; content: open-quote;
+                                font-size: 4em; line-height: 0.1em;
+                                margin-right: 0.25em; vertical-align: -0.4em; }
+blockquote p                { display: inline; }
 
 /* tables */
-table           { border: 1px solid #ddd; border-collapse: collapse; }
-td, th          { padding: 2px 12px; border: 1px solid #ddd; }
-figure          { margin: 0px; overflow: auto; }
+table                       { border: 1px solid #eaeaea;
+                                border-collapse: collapse; }
+td, th                      { padding: 2px 12px; border: 1px solid #eaeaea; }
+figure                      { margin: 0px; overflow: auto; }
 
-/* code - block, annotations and inline */
-pre                         { padding: 1rem; overflow: auto;
-                              background: #f2f2f2 !important; }
-code                        { border: solid 1px #4caf50; padding: 2px;
-                              border-radius: 5px; font-size: 16px}
+/* code blocks */
+pre                         { padding: 1rem; overflow: auto; max-width: none;
+                                background: #eaeaea !important;
+                                border-radius: 10px;
+                                white-space: pre-wrap;       /* css-3 */
+                                white-space: -moz-pre-wrap;  /* Mozilla */
+                                white-space: -pre-wrap;      /* Opera 4-6 */
+                                white-space: -o-pre-wrap;    /* Opera 7 */
+                                word-wrap: break-word;       /* IE 5.5+ */}
+code                        { background: #eaeaea; padding: 3px;
+                                border-radius: 5px; font-size: 16px}
 pre code                    { border: none; }
 h1 code                     { font-size: 46px; }
 h2 code                     { font-size: 34px; }
@@ -47,25 +55,31 @@ h3 code                     { font-size: 22px; }
 pre[data-linenos]           { padding: 1rem 0; }
 pre table td                { padding: 0; border: none; }
 pre table td:nth-of-type(1) { text-align: center; user-select: none; }
-pre mark                    { display: block; }
 pre table                   { border-collapse: collapse; border: none;
-                              width: 100%; }
+                                width: 100%; }
+pre mark                    { display: block; }
 
 /* specifics */
-div.container               { max-width: 1024px; margin: 48px auto; padding: 0 40px; }
-div.header                  { float: left; height: 25px; margin-bottom: 42px; }
+div.container               { max-width: 1024px; margin: 48px auto;
+                                padding: 0 40px; }
+div.sitename                { float: left; height: 25px; margin-bottom: 42px; }
 div.navigation              { float: right; height: 25px; margin-bottom: 42px; }
 div.navigation ul           { margin: 0; padding: 0; list-style: none; }
 div.navigation ul li        { display: inline; margin: 0 2px; padding: 0 10px; }
-div.content                 { clear: both; margin: 0 30px; line-height: 1.6; }
-span.pagedate           { font-family: monospace; }
+div.content                 { clear: both; margin: 0 30px; }
+div.footer                  { display: inline; float: right; text-align: right;
+                                color: #b5b5b5; margin: 24px 10px; }
+div.footer p                { margin: 0px; }
+div.footer p a              { color: #b5b5b5 }
+span.pagedate               { font-family: monospace; }
 
 /* mobile */
 @media only screen and (max-width: 800px) {
-    div.content { padding: 0; margin: 0; }
-    div.header { height: auto; margin: 0; }
-    div.navigation { margin-bottom: 20px; }
-    h1 { font-size: 42px; line-height: 44px; }
-    h2 { font-size: 36px; line-height: 38px; }
-    h3 { font-size: 28px; line-height: 30px; }
+    div.container           { padding: 12px; margin: 0; }
+    div.content             { padding: 0; margin: 0; }
+    div.sitename            { height: auto; margin: 0; }
+    div.navigation          { margin-bottom: 20px; }
+    h1                      { font-size: 36px; line-height: 36px; }
+    h2                      { font-size: 28px; line-height: 28px; }
+    h3                      { font-size: 22px; line-height: 22px; }
 }

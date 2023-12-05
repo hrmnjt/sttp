@@ -100,16 +100,23 @@
 <body>
     <div class="container">
         <div class="header">
-            <a href="{{ get_url(path='/') }}">hrmnjt's</a> secure thought transfer protocol
-        </div>
-        <div class="navigation">
-            <ul>
-                <li><a href="{{ get_url(path='/') }}">home</a></li>
-                <li><a href="{{ get_url(path='@/blog/_index.md') }}">blog</a></li>
-            </ul>
+            <div class="sitename">
+                <a href="{{ get_url(path='/') }}">hrmnjt's</a> secure thought transfer protocol
+            </div>
+            <div class="navigation">
+                <ul>
+                    <!-- <li><a href="{{ get_url(path='/') }}">home</a></li> -->
+                    <li><a href="{{ get_url(path='@/blog/_index.md') }}">blog</a></li>
+                </ul>
+            </div>
         </div>
         <div class="content">
             {% block content %} {% endblock %}
+        </div>
+        <div class="footer">
+            <p>© Copyright 2023 by Harmanjeet Singh. Content: CC BY-SA; Design: MIT.</p>
+            <p>Built using Zola; hosted on Cloudflare Pages; source code sr.ht.</p>
+            <p>Subscribe to <a href="{{ get_url(path='/atom.xml') }}">RSS</a> feed.</p>
         </div>
     </div>
 </body>
