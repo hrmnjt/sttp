@@ -8,7 +8,8 @@ body                        { font: 18px/26px -apple-system, BlinkMacSystemFont,
                                 color: #444444; }
 
 /* headings */
-h1, h2, h3, h4, h5, h6      { color: #000000; margin: 18px 0 24px 0; }
+h1, h2, h3, h4, h5, h6      { color: #000000; margin: 18px 0 24px 0;
+                                font-weight: 400;}
 h1 a, h2 a, h3 a, h4 a,
 h5 a, h6 a                  { text-decoration: none; }
 h1 a:hover, h2 a:hover,
@@ -71,7 +72,12 @@ div.footer                  { display: inline; float: right; text-align: right;
                                 color: #b5b5b5; margin: 24px 10px; }
 div.footer p                { margin: 0px; }
 div.footer p a              { color: #b5b5b5 }
-span.pagedate               { font-family: monospace; }
+div.posts                   { margin: 25px 100px; }
+div.posts table             { border: none; }
+div.posts td, th            { padding: 20px 12px; border: none;
+                                vertical-align: top; }
+div.posts a                 { border-bottom: none; }
+td.pagedate                 { font-family: monospace; color: #b5b5b5; }
 
 /* mobile */
 @media only screen and (max-width: 800px) {
@@ -79,6 +85,7 @@ span.pagedate               { font-family: monospace; }
     div.content             { padding: 0; margin: 0; }
     div.sitename            { height: auto; margin: 0; }
     div.navigation          { margin-bottom: 20px; }
+    div.posts               { margin: 0; }
     h1                      { font-size: 36px; line-height: 36px; }
     h2                      { font-size: 28px; line-height: 28px; }
     h3                      { font-size: 22px; line-height: 22px; }
