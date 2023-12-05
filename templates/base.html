@@ -98,12 +98,20 @@
 </head>
 
 <body>
-    <section class="section">
-        <div class="container">
-        <a href="{{ get_url(path='/') }}">hrmnjt</a> . <a href="{{ get_url(path='@/blog/_index.md') }}">blog</a>
-        {% block content %} {% endblock %}
+    <div class="container">
+        <div class="header">
+            <a href="{{ get_url(path='/') }}">hrmnjt's</a> secure thought transfer protocol
         </div>
-    </section>
+        <div class="navigation">
+            <ul>
+                <li><a href="{{ get_url(path='/') }}">home</a></li>
+                <li><a href="{{ get_url(path='@/blog/_index.md') }}">blog</a></li>
+            </ul>
+        </div>
+        <div class="content">
+            {% block content %} {% endblock %}
+        </div>
+    </div>
 </body>
 
 </html>
