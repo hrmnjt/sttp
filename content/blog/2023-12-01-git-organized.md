@@ -1,6 +1,7 @@
 +++
 title = "git organized"
 date = 2023-12-01
+description = "improvements to dev workflow and Git"
 +++
 
 Git is core part of my daily workflow (work or otherwise) and there are far too
@@ -205,17 +206,17 @@ make me 1% better tomorrow. Only time will tell!
 
 ## footnotes
 
-[^1] [Freedesktop `xdg-user-dirs(1)`](https://wiki.archlinux.org/title/XDG_user_directories)
+[^1]: [Freedesktop `xdg-user-dirs(1)`](https://wiki.archlinux.org/title/XDG_user_directories)
 is now widely adopted industry norm for folder organization in user-home
 directory.
 
-[^2] [Powerlevel10k](https://github.com/romkatv/powerlevel10k) is command 
+[^2]: [Powerlevel10k](https://github.com/romkatv/powerlevel10k) is command 
 line prompt for zsh which focuses on speed, flexibility and out-of-box
 experience. Git symbols in prompt with Powerlevel10k are explained in
 [documentation](https://github.com/romkatv/powerlevel10k#what-do-different-symbols-in-git-status-mean).
 
-[^3] [starship.rs](https://starship.rs/) is rust-based command line prompt.
+[^3]: [starship.rs](https://starship.rs/) is rust-based command line prompt.
 
-[^4] [Exa](https://github.com/ogham/exa) is a rust-based replacement for `ls(1)`
+[^4]: [Exa](https://github.com/ogham/exa) is a rust-based replacement for `ls(1)`
 i.e. default list directory command in *nix systems. [Git integration](https://the.exa.website/features/git)
 baked into it with `--git` flag.

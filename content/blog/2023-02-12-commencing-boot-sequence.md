@@ -1,6 +1,7 @@
 +++
 title = "commencing boot sequence"
 date = 2023-02-12
+description = "look ma! I revived my blog"
 +++
 
 Hello, world!

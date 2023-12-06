@@ -1,12 +1,14 @@
 +++
-title = "pbe (abbr. personalized blogging environment)"
+title = "pbe: setting up basics"
 date = 2023-11-30
+description = "personal log of website changes focusing on core functionalities"
 +++
 
 The term "PBE" is a play on the an acronym IDE i.e. Integrated Development 
-Environment. The core idea of the post to check on all personalizations I wanted
-to do on this blogging setup and also stay as reference to how certain elements
-on the website might behave.
+Environment and abbreviation for "personalized blogging environment". The core
+idea of the post to check on all personalizations I wanted to do on this
+blogging setup and also stay as reference to how certain elements on the 
+website might behave.
 
 ## why the hell did it take you 10 months to do this?
 
@@ -52,7 +54,7 @@ a {
 }
 ```
 
-### deploy when I push
+## deploy when I push
 
 I use Cloudflare DNS to manage the domain `hrmnjt.dev` and there were 2 easy
 options for me to run a continuous deployment flow - Github Actions + Github 
@@ -96,20 +98,20 @@ block-quotes, tables and footnotes.
 
 ## footnotes
 
-[^1] [Zola Overview](https://www.getzola.org/documentation/getting-started/overview/)
+[^1]: [Zola Overview](https://www.getzola.org/documentation/getting-started/overview/)
 is a "quick start" for Zola following which one can create a minimal blogging
 theme which is good enough.
 
-[^2] [danluu.com](https://danluu.com/), [macwright.com](https://macwright.com/),
+[^2]: [danluu.com](https://danluu.com/), [macwright.com](https://macwright.com/),
 [xeiaso.net](https://xeiaso.net/)
 
-[^3] [evenbettermotherf***ing.website](https://evenbettermotherfucking.website)
+[^3]: [evenbettermotherf***ing.website](https://evenbettermotherfucking.website)
 has a simple CSS suggestion which emphasizes on minimalism.
 
-[^4] [Cloudflare Pages Docs](https://developers.cloudflare.com/pages/framework-guides/deploy-anything/)
+[^4]: [Cloudflare Pages Docs](https://developers.cloudflare.com/pages/framework-guides/deploy-anything/)
 and [Example Cloudflare build for one commit](https://github.com/hrmnjt/sttp/runs/17053983005)
 
-[^5] Zola provides out-of-box setup for [feeds](https://www.getzola.org/documentation/templates/feeds/),
+[^5]: Zola provides out-of-box setup for [feeds](https://www.getzola.org/documentation/templates/feeds/),
 [sitemap](https://www.getzola.org/documentation/templates/sitemap/),
 [robots.txt](https://www.getzola.org/documentation/templates/robots/) and
 [404 page](https://www.getzola.org/documentation/templates/404/).

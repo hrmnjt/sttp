@@ -60,19 +60,8 @@
         <meta name="twitter:card" content="summary">
         <meta name="twitter:description" content="{{ description | safe }}">
         <meta name="twitter:title" content="{{ title | safe }}">
-        <meta property="twitter:domain" content="{{ config.base_url | replace(from="https://", to="") }}">
-        <meta property="twitter:url" content="{{ permalink | safe }}">
-
-    <!-- Description -->
-    {% if page %}
-        {% if page.description %}
-            <meta name="description" content="{{ page.description }}" />
-        {% elif config.description %}
-            <meta name="description" content="{{ config.description }}" />
-        {% endif %}
-    {% elif config.description %}
-        <meta name="description" content="{{ config.description }}" />
-    {% endif %}
+        <meta property="twitter:site" content="@__hrmnjt__">
+        <meta property="twitter:creator" content="@__hrmnjt__">
 
     <!-- Title -->
     {% block title %}
@@ -105,7 +94,6 @@
             </div>
             <div class="navigation">
                 <ul>
-                    <!-- <li><a href="{{ get_url(path='/') }}">home</a></li> -->
                     <li><a href="{{ get_url(path='@/blog/_index.md') }}">blog</a></li>
                 </ul>
             </div>
