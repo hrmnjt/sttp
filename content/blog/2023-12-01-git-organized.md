@@ -204,7 +204,7 @@ make me 1% better tomorrow. Only time will tell!
 
 ---
 
-## footnotes
+### footnotes
 
 [^1]: [Freedesktop `xdg-user-dirs(1)`](https://wiki.archlinux.org/title/XDG_user_directories)
 is now widely adopted industry norm for folder organization in user-home

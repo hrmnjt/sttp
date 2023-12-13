@@ -10,7 +10,7 @@ idea of the post to check on all personalizations I wanted to do on this
 blogging setup and also stay as reference to how certain elements on the 
 website might behave.
 
-## why the hell did it take you 10 months to do this?
+> why the hell did it take you 10 months to do this?
 
 ![Ackchyually](/img/ackchyually.png)
 
@@ -27,7 +27,7 @@ At this point though, all these have become a mush and need maintenance, so I'm
 trying to revive the blog and in a devlog approach fix these mushy items into
 clean interfaces which allow me to go faster on my day to day.
 
-## first, basic styling
+> i wonder if the site wasn't as raw?
 
 When I started this website, I used Zola Overview [^1] to get started with the
 base content and styling which is the rudimentary setup that one should ideally
@@ -54,7 +54,7 @@ a {
 }
 ```
 
-## deploy when I push
+> i wonder if site would refresh when I push push
 
 I use Cloudflare DNS to manage the domain `hrmnjt.dev` and there were 2 easy
 options for me to run a continuous deployment flow - Github Actions + Github 
@@ -62,7 +62,7 @@ Pages or Cloudflare Pages. I chose latter to try this out. Steps that one has
 to follow are from Cloudflare Pages Docs. It executes the build process on
 every commit and creates a staging and production link [^4].
 
-## navigation
+> i wonder if there was a better way to find content
 
 Zola has sane and easy defaults for `index`, `section` and `page` templates and
 at this point of time I don't think I need anything more than this for 
@@ -74,14 +74,15 @@ Right now, we have three places to navigate to
 - `/blog/post1` which uses `page` template and routes to individual post. This
 is also what I suppose will be centerpiece.
 
-## feed, sitemap, robot.txt, 404 page
+> is there a feed, sitemap? what happens on a random url? will this appear on
+google search?
 
-Zola already solves for most of this as out-of-box options and this was simplest
-to solve. Feed, sitemap and robot.txt are default generated if configured based
-on documentation[^5]. Adding these options and few lines of code in templates
-made it easy to finish this item from checklist.
+Zola already solves for most of above as out-of-box options. Feed, sitemap and 
+robot.txt are default generated if configured based on documentation[^5]. Adding
+these options and few lines of code in templates made it easy to finish this
+item from checklist.
 
-## Is this concluded?
+> are you done?
 
 There is a famous ad jingle for Pepsi which says, "Dil maaange more!", which
 loosely translates to infinite wishes. Site is functional, blogs are readable
@@ -96,7 +97,7 @@ block-quotes, tables and footnotes.
 
 ---
 
-## footnotes
+### footnotes
 
 [^1]: [Zola Overview](https://www.getzola.org/documentation/getting-started/overview/)
 is a "quick start" for Zola following which one can create a minimal blogging
