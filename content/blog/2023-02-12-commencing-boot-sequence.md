@@ -1,5 +1,6 @@
 +++
 title = "commencing boot sequence"
+slug = "boot"
 date = 2023-02-12
 description = "look ma! I revived my blog"
 +++

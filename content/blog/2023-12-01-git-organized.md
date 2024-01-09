@@ -1,5 +1,6 @@
 +++
 title = "git organized"
+slug = "gitorg"
 date = 2023-12-01
 description = "improvements to dev workflow and Git"
 +++

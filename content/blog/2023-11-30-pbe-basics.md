@@ -1,5 +1,6 @@
 +++
 title = "pbe: setting up basics"
+slug = "pbe"
 date = 2023-11-30
 description = "personal log of website changes focusing on core functionalities"
 +++
