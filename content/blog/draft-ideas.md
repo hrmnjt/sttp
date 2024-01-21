@@ -7,9 +7,11 @@ description = "draft ideas"
 
 airflow trunk based development
 
+https://registerspill.thorstenball.com/p/how-fast-is-your-shell; https://registerspill.thorstenball.com/p/which-command-did-you-run-1731-days
+
 duckdb from airflow with s3 parquet with iceberg
 
-https://luke.hsiao.dev/blog/housing-documentation/
+cli for datetime diff - what is 8 hours from now; how many sundays in 2024
 
 karabiner, maybe
 
