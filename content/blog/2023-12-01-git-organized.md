@@ -13,7 +13,7 @@ increase productivity.
 
 Before today, I organized all repositories in freedesktop.org
 `xdg-user-dirs(1)`[^1] inspired `$HOME/code` folder for both personal and work
-repos. I can't trace back why I do so but I would thank my past self to not 
+repos. I can't trace back why I do so but I would thank my past self to not
 organize folders aggressively and follow a convention (even without knowing it
 too well).
 
@@ -55,7 +55,7 @@ alias opm="cd ~/code/github.com/maf/"
 
 ## separation of concerns
 
-As I mentioned above, work and personal repos required me to create local 
+As I mentioned above, work and personal repos required me to create local
 `.gitconfig` files which would specify `user.email` and `user.name` values.
 Scaffolding for a new project would involve setting these configurations for
 new repository which added to number of things I need to care for. Folder
@@ -203,6 +203,12 @@ And below is how prompt and exa works right now.
 It has been very satisfying to make these changes. I hope I like them and they
 make me 1% better tomorrow. Only time will tell!
 
+**Update (2024-02-18)**  
+These changes were amazing for my local git workflow especially the folder
+setup and listening to FOSDEM talk from Scott Chacon I added a few more nifty
+changes to git workflow; wrote about them in
+[git more organized](@/blog/2024-02-18-git-more-organized.md)
+
 ---
 
 ### footnotes
@@ -211,7 +217,7 @@ make me 1% better tomorrow. Only time will tell!
 is now widely adopted industry norm for folder organization in user-home
 directory.
 
-[^2]: [Powerlevel10k](https://github.com/romkatv/powerlevel10k) is command 
+[^2]: [Powerlevel10k](https://github.com/romkatv/powerlevel10k) is command
 line prompt for zsh which focuses on speed, flexibility and out-of-box
 experience. Git symbols in prompt with Powerlevel10k are explained in
 [documentation](https://github.com/romkatv/powerlevel10k#what-do-different-symbols-in-git-status-mean).
