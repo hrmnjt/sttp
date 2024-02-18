@@ -2,7 +2,7 @@
 title = "git more organized"
 slug = "gitmoreorg"
 date = 2024-02-18
-description = "add something here"
+description = "more improvements to local Git workflow"
 +++
 
 Like last year, I was watching FOSDEM'24 this year from home. There were many
