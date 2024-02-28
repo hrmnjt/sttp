@@ -1,7 +1,7 @@
 +++
-title = "git organized"
+title = "git organized (part I)"
 slug = "gitorg"
-date = 2023-12-01
+date = 2023-12-06
 description = "improvements to dev workflow and Git"
 +++
 

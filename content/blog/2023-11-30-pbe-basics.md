@@ -1,5 +1,5 @@
 +++
-title = "pbe: setting up basics"
+title = "pbe (part I): setting up basics"
 slug = "pbe"
 date = 2023-11-30
 description = "personal log of website changes focusing on core functionalities"
@@ -95,6 +95,9 @@ I shall come back to improve my PBE and the list of improvement item may include
 OpenGraph tags, minimal search, and CSS styling to improve image width,
 block-quotes, tables and footnotes.
 
+**Update (2023-12-05)**  
+I made more changes to the website logic which I documented in 
+[pbe (part II): visual facelift](@/blog/2023-12-05-pbe-css.md)
 
 ---
 

@@ -1,5 +1,5 @@
 +++
-title = "git more organized"
+title = "git organized (part II)"
 slug = "gitmoreorg"
 date = 2024-02-18
 description = "more improvements to local Git workflow"
@@ -16,7 +16,7 @@ thread where a lot of people wrote their favorite `gitconfig` options. I would
 definitely recommend reading that thread (full of hidden treasures).
 
 This post is a follow up to previous post
-"[git organized](@/blog/2023-12-01-git-organized.md)" where I'm trying to add
+"[git organized](@/blog/2023-12-06-git-organized.md)" where I'm trying to add
 comments for future me to refer when I forget why I did something I did. It would be pure joy if anyone else reads this and finds it interesting enough to
 try a few options.
 
