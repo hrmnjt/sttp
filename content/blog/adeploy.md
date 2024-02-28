@@ -1,7 +1,7 @@
 +++
-title = "branching strategy with airflow"
+title = "2024-01-21 branching strategy with airflow"
 slug = "adeploy"
-date = 2024-01-21
+date = 2000-01-01
 draft = true
 description = "real developers commit to master"
 +++
