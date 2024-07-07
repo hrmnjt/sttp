@@ -16,6 +16,7 @@ minify_html = true
 
 # When set to "true", a feed is automatically generated.
 generate_feeds = true
+feed_filenames = ['atom.xml', 'rss.xml']
 
 [markdown]
 # Whether to do syntax highlighting
