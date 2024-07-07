@@ -203,11 +203,11 @@ And below is how prompt and exa works right now.
 It has been very satisfying to make these changes. I hope I like them and they
 make me 1% better tomorrow. Only time will tell!
 
-**Update (2024-02-18)**  
+**Update (2024-02-18)**
 These changes were amazing for my local git workflow especially the folder
 setup and listening to FOSDEM talk from Scott Chacon I added a few more nifty
 changes to git workflow; wrote about them in
-[git more organized](@/blog/2024-02-18-git-more-organized.md)
+[git organized](@/notes/2024-02-18-git-organized-2.md)
 
 ---
 
