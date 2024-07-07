@@ -2,9 +2,23 @@
 
 {% block content %}
 
-<pre class="language-bash" data-lang="bash" style="background:#fefbec;color:#6e6b5e"><code class="language-bash" data-lang="bash"><span style="color:#d73737">cat </span><span>&lt;&lt; </span><span style="color:#b854d4">EOF </span><span>&gt; /dev/null
-</span><span style="color:#60ac39">hrmnjt is a software tinkerer and engineering nerd
-</span><span style="color:#b854d4">EOF
-</span></code></pre>
+{{ section.content | safe }}
+
+<h2> Notes </h2>
+<div class="posts">
+    <table>
+        <tbody>
+            {% for page in section.pages %}
+            <tr>
+                <td class="pagedate">{{ page.date }}</td>
+                <td>
+                    <a href="{{ page.permalink | safe }}">{{ page.title }}</a>
+                    {% if page.description %} - {{ page.description }} {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 
 {% endblock content %}

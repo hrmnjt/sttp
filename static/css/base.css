@@ -75,7 +75,7 @@ div.footer                  { display: inline; float: right; text-align: right;
                                 color: #b5b5b5; margin: 24px 10px; }
 div.footer p                { margin: 0px; }
 div.footer p a              { color: #b5b5b5 }
-div.posts                   { margin: 25px 100px; }
+/* div.posts                   { margin: 25px 100px; } */
 div.posts table             { border: none; }
 div.posts td, th            { padding: 12px 12px; border: none;
                                 vertical-align: top; }

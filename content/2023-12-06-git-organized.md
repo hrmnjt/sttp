@@ -207,7 +207,7 @@ make me 1% better tomorrow. Only time will tell!
 These changes were amazing for my local git workflow especially the folder
 setup and listening to FOSDEM talk from Scott Chacon I added a few more nifty
 changes to git workflow; wrote about them in
-[git organized](@/notes/2024-02-18-git-organized-2.md)
+[git organized](@/2024-02-18-git-organized-2.md)
 
 ---
 
