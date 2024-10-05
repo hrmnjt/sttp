@@ -2,10 +2,9 @@
 sort_by = "date"
 +++
 
-```bash
-cat << EOF > /dev/null
-hrmnjt is a software tinkerer and engineering nerd
+# Shards
 
-this site is permanently in state of rebuild; content link will be preserved though.
-EOF
-```
+> shard · /SHärd/ · noun — a piece of broken ceramic, metal, glass, or rock,
+> typically having sharp edges.
+
+These are my rough, uncut thoughts that haven't been polished enough.
