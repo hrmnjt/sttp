@@ -19,3 +19,6 @@ https://en.wikipedia.org/wiki/Hungarian_notation; https://en.wikipedia.org/wiki/
 
 https://seirdy.one/meta/ for blog ideas
 
+parquet-tools (https://github.com/hangxie/parquet-tools) using duckdb
+
+Comparing parquet-tools, duckdb, and fastparquet speed to read parquet
