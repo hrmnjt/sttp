@@ -4,13 +4,13 @@ title = 'sttp://'
 theme = 'sttp'
 
 [[menus.main]]
-name = 'Home'
+name = 'root'
 pageRef = '/'
 weight = 10
 
 [[menus.main]]
-name = 'Posts'
-pageRef = '/posts'
+name = 'shards'
+pageRef = '/shards'
 weight = 20
 
 [[menus.main]]
