@@ -8,3 +8,6 @@
 public
 # are processed_images needed? they are basically resized static images.
 static/processed_images
+
+# Hugo stuff
+.hugo_build.lock
