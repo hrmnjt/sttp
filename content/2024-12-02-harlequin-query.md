@@ -20,7 +20,7 @@ and when I do `just hqp DATASET` I get Harlequin TUI
 
 ![harlequin tui](/img/harlequin-duckdb-query.png)
 
-Fin.
+EOF
 
 ---
 
