@@ -1,9 +1,9 @@
 {{ define "main" }}
-    {{ $pages := where site.RegularPages "Type" "shards" }}
-    {{ $groupedPages := $pages.GroupByDate "2006" }}
+    <!-- {{ $pages := where site.RegularPages "Type" "shards" }} -->
+    <!-- {{ $groupedPages := $pages.GroupByDate "2006" }} -->
 
-    {{ range $groupedPages }}
-        <div class="year-divider">{{ .Key }}</div>
+    <!-- {{ range $groupedPages }} -->
+        <!-- <div class="year-divider">{{ .Key }}</div> -->
         <ul class="shard-list">
             {{ range .Pages }}
                 <li class="shard-item">
@@ -12,5 +12,5 @@
                 </li>
             {{ end }}
         </ul>
-    {{ end }}
+    <!-- {{ end }} -->
 {{ end }}
