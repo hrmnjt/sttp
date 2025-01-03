@@ -2,6 +2,9 @@ baseURL = 'https://hrmnjt.dev'
 languageCode = 'en-us'
 title = 'hrmnjt.dev::sttp:://secure_thought_transfer_protocol'
 
+# Disable taxonomy pages
+disableKinds = ['taxonomy', 'term']
+
 [permalinks]
   shards = '/:year/:month/:day/:filename/'
 
@@ -19,6 +22,3 @@ title = 'hrmnjt.dev::sttp:://secure_thought_transfer_protocol'
 # [params]
 #   description = 'A blog of rough drafts and unpolished thoughts'
 #   author = 'Your Name'
-
-# Disable taxonomy pages
-disableKinds = ['taxonomy', 'term']
