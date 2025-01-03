@@ -1,24 +1,24 @@
-baseURL = 'https://example.org/'
+baseURL = 'https://example.com'
 languageCode = 'en-us'
-title = 'sttp://'
-theme = 'sttp'
+title = 'Your Blog Title'
 
-[[menus.main]]
-name = 'root'
-pageRef = '/'
-weight = 10
+# Disable taxonomy pages
+disableKinds = ['taxonomy', 'term']
 
-[[menus.main]]
-name = 'shards'
-pageRef = '/shards'
-weight = 20
+[permalinks]
+  shards = '/:year/:month/:day/:filename/'
 
-[[menus.main]]
-name = 'Tags'
-pageRef = '/tags'
-weight = 30
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+  [markup.highlight]
+    codeFences = true
+    guessSyntax = false
+    lineNos = false
+    noClasses = false
+    tabWidth = 2
 
-[module]
-  [module.hugoVersion]
-    extended = false
-    min = "0.116.0"
+[params]
+  description = 'A blog of rough drafts and unpolished thoughts'
+  author = 'Your Name'
