@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }} - {{ site.Title }}{{ end }}</title>
+    <style>
+        {{ readFile "assets/css/main.css" | safeCSS }}
+    </style>
+</head>
+<body>
+    <header>
+        <h1><a href="/">{{ site.Title }}</a></h1>
+    </header>
+
+    <main>
+        {{ block "main" . }}{{ end }}
+    </main>
+
+    <footer>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/about/">About</a>
+            <a href="/index.xml">RSS</a>
+            <a href="/colophon/">Colophon</a>
+        </nav>
+        <p>© {{ now.Format "2006" }} {{ site.Params.author }}. All rights reserved.</p>
+    </footer>
+</body>
+</html>

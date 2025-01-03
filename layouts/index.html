@@ -1,0 +1,16 @@
+{{ define "main" }}
+    {{ $pages := where site.RegularPages "Type" "shards" }}
+    {{ $groupedPages := $pages.GroupByDate "2006" }}
+
+    {{ range $groupedPages }}
+        <div class="year-divider">{{ .Key }}</div>
+        <ul class="shard-list">
+            {{ range .Pages }}
+                <li class="shard-item">
+                    <span class="shard-date">{{ .Date.Format "2006-01-02" }}</span>
+                    <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+                </li>
+            {{ end }}
+        </ul>
+    {{ end }}
+{{ end }}
