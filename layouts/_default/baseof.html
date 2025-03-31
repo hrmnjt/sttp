@@ -3,10 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
     <title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }} - {{ site.Title }}{{ end }}</title>
+    <meta name="description" content="{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }} - {{ site.Title }}{{ end }}">
+
+    <link rel="canonical" href="{{ .Permalink }}">
+    <link rel="icon" href="{{ "favicon.ico" | relURL }}">
+    <link rel="apple-touch-icon" href="{{ "apple-touch-icon.png" | relURL }}">
+
+    {{ $style := resources.Get "css/main.css" | resources.Minify }}
+    <link rel="stylesheet" href="{{ $style.RelPermalink }}">
     <style>
         {{ readFile "assets/css/main.css" | safeCSS }}
     </style>
+
+    <meta name="theme-color" content="#008900">
 </head>
 <body>
     <header>
@@ -20,8 +32,10 @@
     <footer>
         <nav>
             <a href="/">Index</a>
-            <!-- <a href="/about/">About</a> -->
             <a href="/index.xml">RSS</a>
+
+            <!-- TODO: come back to this someday -->
+            <!-- <a href="/about/">About</a> -->
             <!-- <a href="/colophon/">Colophon</a> -->
         </nav>
         <p>© {{ now.Format "2006" }} {{ site.Params.author }}. All rights reserved.</p>

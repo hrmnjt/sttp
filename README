@@ -2,7 +2,7 @@ Harman's blog
 
 
 TODO
-- about page commented
-- colophon page commented
-- description, author and other <head> elements
 - shard definition on listing page
+- bring new posts and merge; check all posts content
+- fix post content for older blogs
+- fix cloudflare publishing
