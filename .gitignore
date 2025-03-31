@@ -1,10 +1,8 @@
 # .gitignore
 
-# MacOS stuff
-.DS_Store
-
-# Zola stuff
-# public is build folder and is futile to version control
+# Hugo local build
 public
-# are processed_images needed? they are basically resized static images.
-static/processed_images
+.hugo_build.lock
+
+# Zed
+.zed

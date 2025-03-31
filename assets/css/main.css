@@ -1,0 +1,280 @@
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: ui-monospace, "Cascadia Mono", "Segoe UI Mono",
+                 "Liberation Mono", Menlo, Monaco, Consolas, monospace;
+    line-height: 1.6;
+    color: #222;
+    background: #fff;
+    padding: 16px;
+}
+
+@media screen and (min-width: 768px) {
+    body {
+        padding: 32px 48px;
+        max-width: 1000px;  /* Comfortable width for 88-120 characters */
+    }
+}
+
+/* Typography and Spacing */
+h1, h2 {
+    font-size: 1.4em;
+    margin: 1.8em 0 1em;
+    font-weight: 600;
+}
+
+h1:first-child {
+    margin-top: 0;
+}
+
+h2 {
+    font-size: 1.2em;
+}
+
+p {
+    margin-bottom: 1.2em;
+}
+
+/* Links */
+a {
+    color: #008900;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.15em;
+}
+
+a:hover {
+    color: #008900;
+}
+
+a[href^="http"]::after {
+    content: "[external]";
+    font-size: 0.8em;
+    margin-left: 0.3em;
+    color: #666;
+}
+
+/* Code */
+code {
+    font-family: inherit;
+    background: #f5f5f5;
+    padding: 0.1em 0.3em;
+    border-radius: 3px;
+    font-size: 0.95em;
+}
+
+pre {
+    background: #f8f9fa;
+    padding: 16px;
+    overflow-x: auto;
+    margin: 1.4em 0;
+    border-radius: 3px;
+    border: 1px solid #eee;
+}
+
+pre code {
+    padding: 0;
+    background: none;
+}
+
+/* Syntax Highlighting */
+.highlight {
+    background: #f8f9fa;
+}
+
+/* Keywords */
+.highlight .k, .highlight .kd {
+    color: #000000;
+    font-weight: bold;
+}
+
+/* Function names */
+.highlight .nf, .highlight .nx {
+    color: #008900;
+}
+
+/* Strings */
+.highlight .s, .highlight .s1, .highlight .s2 {
+    color: #067d17;
+}
+
+/* Comments */
+.highlight .c, .highlight .c1, .highlight .cm {
+    color: #666666;
+    font-style: italic;
+}
+
+/* Numbers */
+.highlight .mi, .highlight .mf {
+    color: #5b2da8;
+}
+
+/* Operators */
+.highlight .o {
+    color: #000000;
+}
+
+/* Built-in functions */
+.highlight .nb {
+    color: #008900;
+}
+
+/* Parentheses, brackets */
+.highlight .p {
+    color: #444444;
+}
+
+/* Header and Footer */
+header {
+    margin-bottom: 32px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #eee;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1.4em;
+}
+
+footer {
+    margin-top: 48px;
+    padding-top: 16px;
+    border-top: 1px solid #eee;
+    font-size: 0.9em;
+}
+
+footer nav {
+    margin-bottom: 16px;
+}
+
+footer nav a {
+    margin-right: 16px;
+}
+
+/* Footnotes */
+.footnotes {
+    margin-top: 32px;
+    padding-top: 16px;
+    border-top: 1px solid #eee;
+    font-size: 0.9em;
+}
+
+.footnotes hr {
+    display: none;
+}
+
+.footnote-ref {
+    text-decoration: none;
+    padding: 0 0.2em;
+}
+
+.footnote-backref {
+    text-decoration: none;
+    margin-left: 0.5em;
+    font-size: 0.9em;
+    color: #666;
+}
+
+/* Reset any existing content */
+.footnote-backref::before,
+.footnote-backref::after {
+    content: none;
+}
+
+/* Hide the actual content of backref */
+.footnote-backref {
+    font-size: 0;
+}
+
+/* Add our custom text */
+.footnote-backref::after {
+    content: "[return]";
+    font-size: 0.9rem;
+}
+
+/* Shard List */
+.shard-list {
+    list-style: none;
+}
+
+.shard-item {
+    margin-bottom: 16px;
+    display: flex;
+    gap: 16px;
+    align-items: baseline;
+}
+
+.shard-date {
+    color: #666;
+    font-size: 0.9em;
+    min-width: 6.5em;
+}
+
+/* Year divider */
+.year-divider {
+    margin: 32px 0 16px;
+    font-weight: bold;
+    color: #666;
+    font-size: 0.9em;
+}
+
+.year-divider:first-of-type {
+    margin-top: 0;
+}
+
+/* Article date */
+.article-date {
+    color: #666;
+    font-size: 0.9em;
+    margin: 16px 0 24px;
+}
+
+/* Article spacing */
+article > * + * {
+    margin-top: 1.2em;
+}
+
+article > * + h2 {
+    margin-top: 1.8em;
+}
+
+/* Lists in content */
+article ul, article ol {
+    margin-left: 1.5em;
+    margin-bottom: 1.2em;
+}
+
+article li + li {
+    margin-top: 0.5em;
+}
+
+/* Blockquotes styling */
+blockquote {
+    margin: 1.2em 0;
+    padding: 0.8em 1em;
+    border-left: 3px solid #008900;
+    background: #f8f9fa;
+    color: #444;
+    font-size: 0.95em;
+}
+
+blockquote > :last-child {
+    margin-bottom: 0;
+}
+
+/* Tables */
+table {
+    margin: 1.2em 0;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th, td {
+    padding: 8px;
+    border: 1px solid #eee;
+    text-align: left;
+}
