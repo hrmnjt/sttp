@@ -3,3 +3,6 @@
 # Hugo local build
 public
 .hugo_build.lock
+
+# Zed
+.zed
