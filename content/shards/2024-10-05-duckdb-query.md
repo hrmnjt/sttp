@@ -90,4 +90,4 @@ right now to read Parquet files, which ones of them are faster and would it be
 faster if `parquet-tools` used DuckDB backend instead of Arrow implementation in
 Go. For later :)
 
-Fin.
+EOF

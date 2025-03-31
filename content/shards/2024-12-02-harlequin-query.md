@@ -1,5 +1,5 @@
 +++
-title = "reading files with duckdb and harlequin"
+title = "reading files in style with duckdb and harlequin"
 slug = "readdatawithharlequin"
 date = 2024-12-02
 description = "(extended) swiss army knife to read data"
@@ -20,7 +20,7 @@ and when I do `just hqp DATASET` I get Harlequin TUI
 
 ![harlequin tui](/img/harlequin-duckdb-query.png)
 
-Fin.
+EOF
 
 ---
 
