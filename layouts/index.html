@@ -17,7 +17,7 @@
     <h2>Archive</h2>
     <p>Content from older versions of sttp://</p>
     <ul class="shard-list">
-        {{ $cutoffDate := time "2025-01-01" }}
+        {{ $cutoffDate := time "2024-01-01" }}
         {{ range where .Site.RegularPages "Date.Unix" "lt" $cutoffDate.Unix }}
             <li class="shard-item">
                 <span class="shard-date">{{ .Date.Format "2006-01-02" }}</span>
