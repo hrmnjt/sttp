@@ -1,7 +1,7 @@
 ---
 title: "Side project idea list"
 heading: "Side project idea list"
-slug: "2019-12-30T01:40:05+04:00"
+slug: "sideproj1"
 
 author: "hrmnjt"
 date: 2019-12-30T01:40:05+04:00

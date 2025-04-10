@@ -1,7 +1,7 @@
 ---
 title: "Sphinx for documentation"
 heading: "Sphinx for documentation"
-slug: "2020-01-10T19:24:11+04:00"
+slug: "sphinxfordocs"
 
 author: "hrmnjt"
 date: 2020-01-10T19:24:11+04:00

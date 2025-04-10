@@ -1,7 +1,7 @@
 ---
 title: "LaTex based resume"
 heading: "LaTex based resume"
-slug: "2020-01-01T23:56:59+04:00"
+slug: "latexresume"
 
 author: "hrmnjt"
 date: 2020-01-01T23:56:59+04:00

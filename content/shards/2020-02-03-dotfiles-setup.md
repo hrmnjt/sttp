@@ -1,7 +1,7 @@
 ---
 title: "Dotfiles: setting up"
 heading: "Dotfiles: setting up"
-slug: "2020-02-03T21:44:11+04:00"
+slug: "init-dotfiles"
 
 author: "hrmnjt"
 date: 2020-02-03T21:44:11+04:00
