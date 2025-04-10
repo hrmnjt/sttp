@@ -7,7 +7,7 @@ disableKinds = ['taxonomy', 'term']
 disableHugoGeneratorInject = true
 
 [permalinks]
-  shards = '/:year/:month/:day/:filename/'
+  shards = '/:year/:month/:day/:slug/'
 
 [markup]
   [markup.goldmark]
