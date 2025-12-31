@@ -50,6 +50,22 @@
     box-sizing: border-box;
 }
 
+/* Skip to content link (hidden, shows on focus) */
+.skip-to-content {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: var(--accent);
+    color: var(--bg-primary);
+    padding: 8px;
+    text-decoration: none;
+    z-index: 100;
+}
+
+.skip-to-content:focus {
+    top: 0;
+}
+
 body {
     font-family:
         ui-monospace, "Cascadia Mono", "Segoe UI Mono", "Liberation Mono",
@@ -273,6 +289,21 @@ footer nav a {
     color: var(--text-secondary);
     font-size: 0.9em;
     min-width: 6.5em;
+    flex-shrink: 0;
+}
+
+/* Responsive list on small screens */
+@media screen and (max-width: 600px) {
+    .shard-item {
+        flex-direction: column;
+        gap: 4px;
+        align-items: flex-start;
+    }
+    
+    .shard-date {
+        min-width: auto;
+        font-size: 0.85em;
+    }
 }
 
 /* Year divider */
@@ -285,6 +316,12 @@ footer nav a {
 
 .year-divider:first-of-type {
     margin-top: 0;
+}
+
+/* Article container - optimized for reading */
+article {
+    max-width: 800px;
+    margin: 0 auto;
 }
 
 /* Article date */
@@ -301,6 +338,17 @@ article > * + * {
 
 article > * + h2 {
     margin-top: 1.8em;
+}
+
+/* Improved line height for article content */
+article p {
+    line-height: 1.7;
+    margin-bottom: 1.4em;
+}
+
+article li {
+    line-height: 1.7;
+    margin-bottom: 0.6em;
 }
 
 /* Lists in content */

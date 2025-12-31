@@ -36,11 +36,13 @@
     {{ partial "schema.html" . }}
 </head>
 <body>
+    <a href="#main" class="skip-to-content">Skip to main content</a>
+    
     <header>
         <a href="/">{{ .Site.Title }}</a>
     </header>
 
-    <main>
+    <main id="main">
         {{ block "main" . }}{{ end }}
     </main>
 
