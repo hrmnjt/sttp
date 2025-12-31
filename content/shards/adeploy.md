@@ -6,7 +6,7 @@ draft = true
 description = "real developers commit to master"
 +++
 
-{{< img src="/img/real-programmers.jpg" alt="Real programmers commit to master" >}}
+{{< img-optimized src="real-programmers.jpg" alt="Real programmers commit to master" >}}
 
 ## context specific opinions
 

@@ -25,7 +25,7 @@ For the latest version of my thoughts (now with 73% fewer bugs!), please check o
 ---
 # Snigdha and Harman: Invitation
 
-{{< img src="/img/snigdha-and-harman.jpeg" alt="Snigdha and Harman" >}}
+{{< img-optimized src="snigdha-and-harman.jpeg" alt="Snigdha and Harman" >}}
 
 We met 8 years back and back then none of us knew that we are going to spend
 lots of time staying together being significant to one another. What started as

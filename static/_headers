@@ -1,0 +1,30 @@
+# Cache headers for Cloudflare Pages
+# https://developers.cloudflare.com/pages/configuration/headers/
+
+# Processed images - cache for 1 year (fingerprinted URLs)
+# Hugo fingerprints these, so they won't change unless content changes
+/images/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Favicons - cache for 30 days (rarely change)
+/*.ico
+  Cache-Control: public, max-age=2592000
+
+/apple-touch-icon.png
+  Cache-Control: public, max-age=2592000
+
+# Web manifest - cache for 7 days
+/site.webmanifest
+  Cache-Control: public, max-age=604800
+
+# CSS files - cache for 30 days
+/css/*
+  Cache-Control: public, max-age=2592000
+
+# RSS feed - cache for 1 hour (content changes)
+/index.xml
+  Cache-Control: public, max-age=3600
+
+# HTML pages - cache for 1 hour (or don't cache)
+/*
+  Cache-Control: public, max-age=3600, must-revalidate
