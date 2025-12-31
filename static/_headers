@@ -1,5 +1,25 @@
-# Cache headers for Cloudflare Pages
+# Security and Cache headers for Cloudflare Pages
 # https://developers.cloudflare.com/pages/configuration/headers/
+
+# Global security headers (applies to all routes)
+/*
+  # Prevent MIME type sniffing
+  X-Content-Type-Options: nosniff
+  
+  # Prevent clickjacking
+  X-Frame-Options: SAMEORIGIN
+  
+  # Enable XSS protection
+  X-XSS-Protection: 1; mode=block
+  
+  # Control referrer information
+  Referrer-Policy: strict-origin-when-cross-origin
+  
+  # Disable features not used
+  Permissions-Policy: geolocation=(), microphone=(), camera=(), payment=()
+  
+  # Force HTTPS
+  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
 
 # Processed images - cache for 1 year (fingerprinted URLs)
 # Hugo fingerprints these, so they won't change unless content changes
