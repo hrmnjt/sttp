@@ -22,3 +22,10 @@ disableHugoGeneratorInject = true
 
 [params]
   author = 'hrmnjt'
+  description = 'Rough, unpolished thoughts and ideas'
+
+# Output formats
+[outputs]
+  home = ['HTML', 'RSS']
+  page = ['HTML']
+  section = ['HTML', 'RSS']
