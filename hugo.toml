@@ -6,6 +6,9 @@ title = 'hrmnjt.dev::sttp://secure_thought_transfer_protocol'
 disableKinds = ['taxonomy', 'term']
 disableHugoGeneratorInject = true
 
+# Minification
+minify = true
+
 [permalinks]
   shards = '/:year/:month/:day/:slug/'
 
