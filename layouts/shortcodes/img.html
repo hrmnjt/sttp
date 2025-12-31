@@ -1,0 +1,39 @@
+{{- /*
+  Responsive image shortcode with WebP fallback and lazy loading
+  
+  Usage:
+    {{< img src="/img/example.png" alt="Description" >}}
+    
+  Parameters:
+    src  - Image path (required) - use original format (png or jpg)
+    alt  - Alt text (required)
+    title - Optional title attribute
+    
+  Features:
+    - Automatically uses WebP if available
+    - Falls back to original format if WebP not supported
+    - Adds lazy loading
+    - Uses <picture> element for modern browsers
+*/ -}}
+
+{{- $src := .Get "src" -}}
+{{- $alt := .Get "alt" -}}
+{{- $title := .Get "title" -}}
+
+{{- if not $src -}}
+  {{- errorf "img shortcode: 'src' parameter is required" -}}
+{{- end -}}
+
+{{- if not $alt -}}
+  {{- errorf "img shortcode: 'alt' parameter is required" -}}
+{{- end -}}
+
+{{- /* Extract filename without extension */ -}}
+{{- $parts := split $src "." -}}
+{{- $filename := delimit (slice (index $parts 0) (index $parts 1)) "." -}}
+{{- $webp_src := printf "%s.webp" (index $parts 0) -}}
+
+<picture>
+  <source srcset="{{ $webp_src }}" type="image/webp">
+  <img src="{{ $src }}" alt="{{ $alt }}"{{ if $title }} title="{{ $title }}"{{ end }} loading="lazy">
+</picture>

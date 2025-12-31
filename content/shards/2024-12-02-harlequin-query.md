@@ -14,11 +14,11 @@ So, I extended earlier utility function [^3] to add a harlequin edit mode.
 
 Now, when I do `just npq DATASET` I get the default duckdb CLI
 
-![duckdb cli](/img/duckdb-query.png)
+{{< img src="/img/duckdb-query.png" alt="duckdb cli" >}}
 
 and when I do `just hqp DATASET` I get Harlequin TUI
 
-![harlequin tui](/img/harlequin-duckdb-query.png)
+{{< img src="/img/harlequin-duckdb-query.png" alt="harlequin tui" >}}
 
 EOF
 
