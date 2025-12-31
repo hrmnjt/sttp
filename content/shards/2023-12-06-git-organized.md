@@ -196,7 +196,7 @@ alias l="exa --long --tree --level=1 --time-style=long-iso --group-directories-f
 
 And below is how prompt and exa works right now.
 
-![git-organized-prompt](/img/git-organized-prompt.png)
+{{< img-optimized src="git-organized-prompt.png" alt="git-organized-prompt" >}}
 
 ## concluding
 

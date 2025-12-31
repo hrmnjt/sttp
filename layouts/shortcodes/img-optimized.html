@@ -1,0 +1,49 @@
+{{- /*
+  Hugo image processing shortcode with automatic WebP conversion and fingerprinting
+  
+  Usage:
+    {{< img-optimized src="duckdb-query.png" alt="Description" >}}
+    
+  Parameters:
+    src  - Image filename (required) - without /img/ prefix
+    alt  - Alt text (required)
+    title - Optional title attribute
+    
+  Features:
+    - Automatically converts PNG/JPEG to WebP
+    - Fingerprints output based on content (cache busting)
+    - Falls back to original format if WebP not supported
+    - Adds lazy loading
+    - Uses <picture> element for modern browsers
+*/ -}}
+
+{{- $src := .Get "src" -}}
+{{- $alt := .Get "alt" -}}
+{{- $title := .Get "title" -}}
+
+{{- if not $src -}}
+  {{- errorf "img-optimized shortcode: 'src' parameter is required" -}}
+{{- end -}}
+
+{{- if not $alt -}}
+  {{- errorf "img-optimized shortcode: 'alt' parameter is required" -}}
+{{- end -}}
+
+{{- /* Get the original image from assets/images */ -}}
+{{- $image := resources.Get (printf "images/%s" $src) -}}
+
+{{- if not $image -}}
+  {{- errorf (printf "img-optimized shortcode: image not found at assets/images/%s" $src) -}}
+{{- end -}}
+
+{{- /* Process to WebP */ -}}
+{{- $webp := $image.Process "webp" -}}
+
+{{- /* Get file extension for fallback link */ -}}
+{{- $parts := split $src "." -}}
+{{- $ext := index $parts (sub (len $parts) 1) -}}
+
+<picture>
+  <source srcset="{{ $webp.RelPermalink }}" type="image/webp">
+  <img src="{{ $image.RelPermalink }}" alt="{{ $alt }}"{{ if $title }} title="{{ $title }}"{{ end }} loading="lazy">
+</picture>

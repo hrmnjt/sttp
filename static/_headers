@@ -1,0 +1,57 @@
+# Security and Cache headers for Cloudflare Pages
+# https://developers.cloudflare.com/pages/configuration/headers/
+
+# Global security headers (applies to all routes)
+/*
+  # Prevent MIME type sniffing
+  X-Content-Type-Options: nosniff
+  
+  # Prevent clickjacking
+  X-Frame-Options: SAMEORIGIN
+  
+  # Enable XSS protection
+  X-XSS-Protection: 1; mode=block
+  
+  # Control referrer information
+  Referrer-Policy: strict-origin-when-cross-origin
+  
+  # Disable features not used
+  Permissions-Policy: geolocation=(), microphone=(), camera=(), payment=()
+  
+  # Force HTTPS
+  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+  
+  # Content Security Policy - strict policy (no external resources)
+  # default-src: only allow from same origin
+  # script-src: disable all scripts (no JavaScript)
+  # style-src: allow inline styles (for theme-color) and stylesheets
+  # img-src: allow images from self and data URIs
+  Content-Security-Policy: default-src 'self'; script-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; frame-ancestors 'none'
+
+# Processed images - cache for 1 year (fingerprinted URLs)
+# Hugo fingerprints these, so they won't change unless content changes
+/images/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Favicons - cache for 30 days (rarely change)
+/*.ico
+  Cache-Control: public, max-age=2592000
+
+/apple-touch-icon.png
+  Cache-Control: public, max-age=2592000
+
+# Web manifest - cache for 7 days
+/site.webmanifest
+  Cache-Control: public, max-age=604800
+
+# CSS files - cache for 30 days
+/css/*
+  Cache-Control: public, max-age=2592000
+
+# RSS feed - cache for 1 hour (content changes)
+/index.xml
+  Cache-Control: public, max-age=3600
+
+# HTML pages - cache for 1 hour (or don't cache)
+/*
+  Cache-Control: public, max-age=3600, must-revalidate
