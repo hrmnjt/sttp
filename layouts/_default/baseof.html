@@ -27,6 +27,7 @@
     <link rel="manifest" href="{{ "site.webmanifest" | relURL }}">
 
     {{ $style := resources.Get "css/main.css" | resources.Minify }}
+    <link rel="preload" as="style" href="{{ $style.RelPermalink }}">
     <link rel="stylesheet" href="{{ $style.RelPermalink }}">
 
     <meta name="theme-color" content="#1a1a1a" media="(prefers-color-scheme: dark)">
