@@ -21,6 +21,7 @@
     <meta name="twitter:description" content="{{ if .IsHome }}{{ .Site.Params.description }}{{ else }}{{ .Summary | plainify | truncate 160 }}{{ end }}">
 
     <link rel="canonical" href="{{ .Permalink }}">
+    <link rel="alternate" type="application/rss+xml" title="{{ .Site.Title }}" href="/index.xml">
     <link rel="icon" href="{{ "favicon.ico" | relURL }}">
     <link rel="apple-touch-icon" href="{{ "apple-touch-icon.png" | relURL }}">
     <link rel="manifest" href="{{ "site.webmanifest" | relURL }}">
@@ -30,6 +31,8 @@
 
     <meta name="theme-color" content="#1a1a1a" media="(prefers-color-scheme: dark)">
     <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+    
+    {{ partial "schema.html" . }}
 </head>
 <body>
     <header>

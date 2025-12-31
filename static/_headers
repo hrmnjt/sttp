@@ -20,6 +20,13 @@
   
   # Force HTTPS
   Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+  
+  # Content Security Policy - strict policy (no external resources)
+  # default-src: only allow from same origin
+  # script-src: disable all scripts (no JavaScript)
+  # style-src: allow inline styles (for theme-color) and stylesheets
+  # img-src: allow images from self and data URIs
+  Content-Security-Policy: default-src 'self'; script-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; frame-ancestors 'none'
 
 # Processed images - cache for 1 year (fingerprinted URLs)
 # Hugo fingerprints these, so they won't change unless content changes
