@@ -386,6 +386,14 @@ blockquote > :last-child {
     margin-bottom: 0;
 }
 
+/* Images */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 1.4em 0;
+}
+
 /* Tables */
 table {
     margin: 1.2em 0;
