@@ -13,6 +13,11 @@
     --external-link-color: #999;
     --blockquote-bg: #252525;
     --blockquote-text: #ccc;
+    --syntax-keyword: #ff79c6;
+    --syntax-string: #4dd71f;
+    --syntax-comment: #6272a4;
+    --syntax-number: #bd93f9;
+    --syntax-operator: #ff79c6;
 }
 
 @media (prefers-color-scheme: light) {
@@ -30,6 +35,11 @@
         --external-link-color: #666;
         --blockquote-bg: #f8f9fa;
         --blockquote-text: #444;
+        --syntax-keyword: #d73585;
+        --syntax-string: #00aa00;
+        --syntax-comment: #999;
+        --syntax-number: #0000dd;
+        --syntax-operator: #d73585;
     }
 }
 
@@ -126,7 +136,7 @@ pre code {
 /* Keywords */
 .highlight .k,
 .highlight .kd {
-    color: #000000;
+    color: var(--syntax-keyword);
     font-weight: bold;
 }
 
@@ -140,26 +150,26 @@ pre code {
 .highlight .s,
 .highlight .s1,
 .highlight .s2 {
-    color: var(--accent);
+    color: var(--syntax-string);
 }
 
 /* Comments */
 .highlight .c,
 .highlight .c1,
 .highlight .cm {
-    color: #666666;
+    color: var(--syntax-comment);
     font-style: italic;
 }
 
 /* Numbers */
 .highlight .mi,
 .highlight .mf {
-    color: #5b2da8;
+    color: var(--syntax-number);
 }
 
 /* Operators */
 .highlight .o {
-    color: #000000;
+    color: var(--syntax-operator);
 }
 
 /* Built-in functions */
@@ -238,6 +248,13 @@ footer nav a {
 .footnote-backref::after {
     content: "[return]";
     font-size: 0.9rem;
+}
+
+/* Separators */
+.archive-separator {
+    margin: 2rem 0;
+    border: none;
+    border-top: 2px solid var(--text-secondary);
 }
 
 /* Shard List */

@@ -1,8 +1,7 @@
-# .gitignore
-
-# Hugo local build
-public
+# Hugo build output and cache
+public/
+resources/_gen/
 .hugo_build.lock
 
-# Zed
+# Editor
 .zed

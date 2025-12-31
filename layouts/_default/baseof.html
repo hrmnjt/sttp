@@ -14,9 +14,6 @@
 
     {{ $style := resources.Get "css/main.css" | resources.Minify }}
     <link rel="stylesheet" href="{{ $style.RelPermalink }}">
-    <style>
-        {{ readFile "assets/css/main.css" | safeCSS }}
-    </style>
 
     <meta name="theme-color" content="#1a1a1a" media="(prefers-color-scheme: dark)">
     <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">

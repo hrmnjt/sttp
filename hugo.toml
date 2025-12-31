@@ -20,6 +20,5 @@ disableHugoGeneratorInject = true
     noClasses = false
     tabWidth = 2
 
-# [params]
-#   description = 'A blog of rough drafts and unpolished thoughts'
-#   author = 'Your Name'
+[params]
+  author = 'hrmnjt'
