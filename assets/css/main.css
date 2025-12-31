@@ -1,3 +1,38 @@
+/* CSS Custom Properties */
+:root {
+    /* Dark theme (default) */
+    --bg-primary: #1a1a1a;
+    --text-primary: #e8e8e8;
+    --text-secondary: #999;
+    --border-color: #333;
+    --code-bg: #2a2a2a;
+    --pre-bg: #0d0d0d;
+    --code-border: #444;
+    --accent: #4dd71f;
+    --accent-hover: #4dd71f;
+    --external-link-color: #999;
+    --blockquote-bg: #252525;
+    --blockquote-text: #ccc;
+}
+
+@media (prefers-color-scheme: light) {
+    :root {
+        /* Light theme */
+        --bg-primary: #fff;
+        --text-primary: #222;
+        --text-secondary: #666;
+        --border-color: #eee;
+        --code-bg: #f5f5f5;
+        --pre-bg: #f8f9fa;
+        --code-border: #eee;
+        --accent: #008900;
+        --accent-hover: #008900;
+        --external-link-color: #666;
+        --blockquote-bg: #f8f9fa;
+        --blockquote-text: #444;
+    }
+}
+
 /* Reset and Base Styles */
 * {
     margin: 0;
@@ -6,23 +41,25 @@
 }
 
 body {
-    font-family: ui-monospace, "Cascadia Mono", "Segoe UI Mono",
-                 "Liberation Mono", Menlo, Monaco, Consolas, monospace;
+    font-family:
+        ui-monospace, "Cascadia Mono", "Segoe UI Mono", "Liberation Mono",
+        Menlo, Monaco, Consolas, monospace;
     line-height: 1.6;
-    color: #222;
-    background: #fff;
+    color: var(--text-primary);
+    background: var(--bg-primary);
     padding: 16px;
 }
 
 @media screen and (min-width: 768px) {
     body {
         padding: 32px 48px;
-        max-width: 1000px;  /* Comfortable width for 88-120 characters */
+        max-width: 1000px; /* Comfortable width for 88-120 characters */
     }
 }
 
 /* Typography and Spacing */
-h1, h2 {
+h1,
+h2 {
     font-size: 1.4em;
     margin: 1.8em 0 1em;
     font-weight: 600;
@@ -42,38 +79,38 @@ p {
 
 /* Links */
 a {
-    color: #008900;
+    color: var(--accent);
     text-decoration-thickness: 1px;
     text-underline-offset: 0.15em;
 }
 
 a:hover {
-    color: #008900;
+    color: var(--accent-hover);
 }
 
 a[href^="http"]::after {
-    content: "[external]";
+    content: "[ext]";
     font-size: 0.8em;
     margin-left: 0.3em;
-    color: #666;
+    color: var(--external-link-color);
 }
 
 /* Code */
 code {
     font-family: inherit;
-    background: #f5f5f5;
+    background: var(--code-bg);
     padding: 0.1em 0.3em;
     border-radius: 3px;
     font-size: 0.95em;
 }
 
 pre {
-    background: #f8f9fa;
+    background: var(--pre-bg);
     padding: 16px;
     overflow-x: auto;
     margin: 1.4em 0;
     border-radius: 3px;
-    border: 1px solid #eee;
+    border: 1px solid var(--code-border);
 }
 
 pre code {
@@ -83,33 +120,40 @@ pre code {
 
 /* Syntax Highlighting */
 .highlight {
-    background: #f8f9fa;
+    background: var(--pre-bg);
 }
 
 /* Keywords */
-.highlight .k, .highlight .kd {
+.highlight .k,
+.highlight .kd {
     color: #000000;
     font-weight: bold;
 }
 
 /* Function names */
-.highlight .nf, .highlight .nx {
-    color: #008900;
+.highlight .nf,
+.highlight .nx {
+    color: var(--accent);
 }
 
 /* Strings */
-.highlight .s, .highlight .s1, .highlight .s2 {
-    color: #067d17;
+.highlight .s,
+.highlight .s1,
+.highlight .s2 {
+    color: var(--accent);
 }
 
 /* Comments */
-.highlight .c, .highlight .c1, .highlight .cm {
+.highlight .c,
+.highlight .c1,
+.highlight .cm {
     color: #666666;
     font-style: italic;
 }
 
 /* Numbers */
-.highlight .mi, .highlight .mf {
+.highlight .mi,
+.highlight .mf {
     color: #5b2da8;
 }
 
@@ -120,7 +164,7 @@ pre code {
 
 /* Built-in functions */
 .highlight .nb {
-    color: #008900;
+    color: var(--accent);
 }
 
 /* Parentheses, brackets */
@@ -132,7 +176,7 @@ pre code {
 header {
     margin-bottom: 32px;
     padding-bottom: 16px;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid var(--border-color);
 }
 
 header h1 {
@@ -143,7 +187,7 @@ header h1 {
 footer {
     margin-top: 48px;
     padding-top: 16px;
-    border-top: 1px solid #eee;
+    border-top: 1px solid var(--border-color);
     font-size: 0.9em;
 }
 
@@ -159,7 +203,7 @@ footer nav a {
 .footnotes {
     margin-top: 32px;
     padding-top: 16px;
-    border-top: 1px solid #eee;
+    border-top: 1px solid var(--border-color);
     font-size: 0.9em;
 }
 
@@ -176,7 +220,7 @@ footer nav a {
     text-decoration: none;
     margin-left: 0.5em;
     font-size: 0.9em;
-    color: #666;
+    color: var(--text-secondary);
 }
 
 /* Reset any existing content */
@@ -209,7 +253,7 @@ footer nav a {
 }
 
 .shard-date {
-    color: #666;
+    color: var(--text-secondary);
     font-size: 0.9em;
     min-width: 6.5em;
 }
@@ -218,7 +262,7 @@ footer nav a {
 .year-divider {
     margin: 32px 0 16px;
     font-weight: bold;
-    color: #666;
+    color: var(--text-secondary);
     font-size: 0.9em;
 }
 
@@ -228,7 +272,7 @@ footer nav a {
 
 /* Article date */
 .article-date {
-    color: #666;
+    color: var(--text-secondary);
     font-size: 0.9em;
     margin: 16px 0 24px;
 }
@@ -243,7 +287,8 @@ article > * + h2 {
 }
 
 /* Lists in content */
-article ul, article ol {
+article ul,
+article ol {
     margin-left: 1.5em;
     margin-bottom: 1.2em;
 }
@@ -256,9 +301,9 @@ article li + li {
 blockquote {
     margin: 1.2em 0;
     padding: 0.8em 1em;
-    border-left: 3px solid #008900;
-    background: #f8f9fa;
-    color: #444;
+    border-left: 3px solid var(--accent);
+    background: var(--blockquote-bg);
+    color: var(--blockquote-text);
     font-size: 0.95em;
 }
 
@@ -273,8 +318,9 @@ table {
     width: 100%;
 }
 
-th, td {
+th,
+td {
     padding: 8px;
-    border: 1px solid #eee;
+    border: 1px solid var(--border-color);
     text-align: left;
 }
