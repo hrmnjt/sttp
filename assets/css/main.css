@@ -83,7 +83,7 @@ body {
 @media screen and (min-width: 768px) {
     body {
         padding: 32px 48px;
-        max-width: 1000px; /* Comfortable width for 88-120 characters */
+        max-width: 900px; /* Comfortable width for 88-120 characters */
     }
 }
 
@@ -93,6 +93,8 @@ h2 {
     font-size: 1.4em;
     margin: 1.8em 0 1em;
     font-weight: 600;
+    letter-spacing: 0.02em;
+    text-align: left;
 }
 
 h1:first-child {
@@ -130,7 +132,7 @@ code {
     font-family: inherit;
     background: var(--code-bg);
     padding: 0.1em 0.3em;
-    border-radius: 3px;
+    border-radius: 0;
     font-size: 0.95em;
 }
 
@@ -139,8 +141,8 @@ pre {
     padding: 16px;
     overflow-x: auto;
     margin: 1.4em 0;
-    border-radius: 3px;
-    border: 1px solid var(--code-border);
+    border-radius: 0;
+    border: 1px dotted var(--code-border);
 }
 
 pre code {
@@ -206,7 +208,7 @@ pre code {
 header {
     margin-bottom: 32px;
     padding-bottom: 16px;
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: 1px dashed var(--border-color);
 }
 
 header h1 {
@@ -217,7 +219,7 @@ header h1 {
 footer {
     margin-top: 48px;
     padding-top: 16px;
-    border-top: 1px solid var(--border-color);
+    border-top: 1px dotted var(--border-color);
     font-size: 0.9em;
 }
 
@@ -233,7 +235,7 @@ footer nav a {
 .footnotes {
     margin-top: 32px;
     padding-top: 16px;
-    border-top: 1px solid var(--border-color);
+    border-top: 1px dashed var(--border-color);
     font-size: 0.9em;
 }
 
@@ -274,7 +276,7 @@ footer nav a {
 .archive-separator {
     margin: 2rem 0;
     border: none;
-    border-top: 2px solid var(--text-secondary);
+    border-top: 1px dashed var(--border-color);
 }
 
 /* Shard List */
@@ -322,10 +324,14 @@ footer nav a {
     margin-top: 0;
 }
 
+/* Main content container */
+main {
+    margin: 0;
+}
+
 /* Article container - optimized for reading */
 article {
-    max-width: 800px;
-    margin: 0 auto;
+    margin: 0;
 }
 
 /* Article date */
@@ -370,7 +376,7 @@ article li + li {
 blockquote {
     margin: 1.2em 0;
     padding: 0.8em 1em;
-    border-left: 3px solid var(--accent);
+    border-left: 2px dashed var(--accent);
     background: var(--blockquote-bg);
     color: var(--blockquote-text);
     font-size: 0.95em;
@@ -390,6 +396,6 @@ table {
 th,
 td {
     padding: 8px;
-    border: 1px solid var(--border-color);
+    border: 1px dotted var(--border-color);
     text-align: left;
 }
