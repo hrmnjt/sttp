@@ -1,24 +1,16 @@
----
-title: "Using GoLang Present for coded presentations"
-heading: "Using GoLang Present for coded presentations"
-slug: "coded-presentation"
-
-author: "hrmnjt"
-date: 2019-05-30T23:23:18+05:30
-
-showpagemeta: true
-migrated: true
-
-description: "Are you lazy programmer who wants to make a rich presentation with cheap efforts?"
-tags: ["technical", "golang", "til", "code", "presentations"]
-categories: ["technical", "golang"]
----
++++
+title = "Using GoLang Present for coded presentations"
+slug = "coded-presentation"
+date = 2019-05-30
+migrated = true
+description = "Are you lazy programmer who wants to make a rich presentation with cheap efforts?"
++++
 
 Are you lazy programmer who wants to make a rich presentation with cheap efforts?
 
 In a hurry? TL;DR:
 
-* [skip to project details]({{<ref "#project-usage">}})
+* [skip to project details](#project-usage)
 * [check out code](https://github.com/hrmnjt/way-to-go-present)
 * [check out an example presentation](https://talks.godoc.org/github.com/hrmnjt/way-to-go-present/example.slide)
 
@@ -73,8 +65,6 @@ want to present
 illegible fonts, or overcrowded texts - nothing is more annoying than these
 * **my_presentation_last_final_v10_20190530_without_animations.pptx** - no
 version control = sad life
-
-{{< figure src="https://imgs.xkcd.com/comics/slideshow.gif" text="Source: XKCD 1264" >}}
 
 I needed a lazier way of solving these problems and hence the hunt started.
 

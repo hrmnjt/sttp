@@ -1,18 +1,10 @@
----
-title: "Starting the microblog"
-heading: "Starting the microblog"
-slug: "start-microblog"
-
-author: "hrmnjt"
-date: 2019-12-10T21:48:45+04:00
-
-migrated: true
-showpagemeta: true
-
-description: "Starting the microblog"
-tags: ["sttp"]
-categories: ["micro"]
----
++++
+title = "Starting the microblog"
+slug = "start-microblog"
+date = 2019-12-10
+migrated = true
+description = "Starting the microblog"
++++
 
 ## Concern 1: I don't like posting updates to Twitter. Why? Because:
 - I'm a slow thinker

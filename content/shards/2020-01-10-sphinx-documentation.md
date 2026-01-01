@@ -1,18 +1,10 @@
----
-title: "Sphinx for documentation"
-heading: "Sphinx for documentation"
-slug: "sphinxfordocs"
-
-author: "hrmnjt"
-date: 2020-01-10T19:24:11+04:00
-
-migrated: true
-showpagemeta: true
-
-description: "Sphinx for documentation"
-tags: ["sttp"]
-categories: ["micro"]
----
++++
+title = "Sphinx for documentation"
+slug = "sphinxfordocs"
+date = 2020-01-10
+migrated = true
+description = "Sphinx for documentation"
++++
 
 # Sphinx for documentation
 

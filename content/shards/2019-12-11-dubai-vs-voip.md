@@ -1,18 +1,10 @@
----
-title: "Dubai vs VOIP"
-heading: "2019-12-11T01:06:02+04:00 - Dubai vs VOIP"
-slug: "dubai-vs-voip"
-
-author: "hrmnjt"
-date: 2019-12-11T01:06:02+04:00
-
-migrated: true
-showpagemeta: true
-
-description: "Dubai vs VOIP"
-tags: ["sttp"]
-categories: ["micro"]
----
++++
+title = "Dubai vs VOIP"
+slug = "dubai-vs-voip"
+date = 2019-12-11
+migrated = true
+description = "Dubai vs VOIP"
++++
 
 Dubai, or should I say UAE have had an ever long issue with VoIP. Club it with
 the costly telecom plans compared to other countries, it becomes borderline

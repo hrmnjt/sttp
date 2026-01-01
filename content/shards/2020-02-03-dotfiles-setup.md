@@ -1,18 +1,10 @@
----
-title: "Dotfiles: setting up"
-heading: "Dotfiles: setting up"
-slug: "init-dotfiles"
-
-author: "hrmnjt"
-date: 2020-02-03T21:44:11+04:00
-
-migrated: true
-showpagemeta: true
-
-description: "Dotfiles: setting up"
-tags: ["sttp"]
-categories: ["micro"]
----
++++
+title = "Dotfiles: setting up"
+slug = "init-dotfiles"
+date = 2020-02-03
+migrated = true
+description = "Dotfiles: setting up"
++++
 
 # Dotfiles: setting up
 

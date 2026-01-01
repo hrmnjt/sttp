@@ -1,18 +1,10 @@
----
-title: "LaTex based resume"
-heading: "LaTex based resume"
-slug: "latexresume"
-
-author: "hrmnjt"
-date: 2020-01-01T23:56:59+04:00
-
-migrated: true
-showpagemeta: true
-
-description: "LaTex based resume"
-tags: ["sttp"]
-categories: ["micro"]
----
++++
+title = "LaTex based resume"
+slug = "latexresume"
+date = 2020-01-01
+migrated = true
+description = "LaTex based resume"
++++
 
 # LaTex based resume
 
