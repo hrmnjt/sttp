@@ -27,6 +27,7 @@
     <link rel="manifest" href="{{ "site.webmanifest" | relURL }}">
 
     {{ $style := resources.Get "css/main.css" | resources.Minify }}
+    <link rel="preload" as="style" href="{{ $style.RelPermalink }}">
     <link rel="stylesheet" href="{{ $style.RelPermalink }}">
 
     <meta name="theme-color" content="#1a1a1a" media="(prefers-color-scheme: dark)">
@@ -35,11 +36,25 @@
     {{ partial "schema.html" . }}
 </head>
 <body>
+    <a href="#main" class="skip-to-content">Skip to main content</a>
+    
     <header>
         <a href="/">{{ .Site.Title }}</a>
     </header>
 
-    <main>
+    {{ if and (not .IsHome) .Draft }}
+        <div class="draft-notice">
+            [draft] — bleeding edge; edits incoming
+        </div>
+    {{ end }}
+
+    {{ if and (not .IsHome) .Params.migrated }}
+        <div class="migrated-notice">
+            [migrated] — from older version of sttp; thinking has evolved
+        </div>
+    {{ end }}
+
+    <main id="main">
         {{ block "main" . }}{{ end }}
     </main>
 

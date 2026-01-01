@@ -1,34 +1,16 @@
----
-title: "Using GoLang Present for coded presentations"
-heading: "Using GoLang Present for coded presentations"
-slug: "coded-presentation"
-
-author: "hrmnjt"
-date: 2019-05-30T23:23:18+05:30
-
-draft: false
-showpagemeta: true
-
-description: "Are you lazy programmer who wants to make a rich presentation with cheap efforts?"
-tags: ["technical", "golang", "til", "code", "presentations"]
-categories: ["technical", "golang"]
----
-
-⚠️ **Time Capsule Alert!** ⚠️
-
-This post is a digital fossil excavated from my ancient blog archives. Like finding your embarrassing high school photos, this content represents Past Me™ (who knew significantly less than Current Me).
-
-Side effects may include: broken links, missing images, and opinions I've since upgraded. My brain has received several critical software updates since writing this.
-
-For the latest version of my thoughts (now with 73% fewer bugs!), please check out my more recent posts.
-
----
++++
+title = "using GoLang Present for coded presentations"
+slug = "coded-presentation"
+date = 2019-05-30
+migrated = true
+description = "Are you lazy programmer who wants to make a rich presentation with cheap efforts?"
++++
 
 Are you lazy programmer who wants to make a rich presentation with cheap efforts?
 
 In a hurry? TL;DR:
 
-* [skip to project details]({{<ref "#project-usage">}})
+* [skip to project details](#project-usage)
 * [check out code](https://github.com/hrmnjt/way-to-go-present)
 * [check out an example presentation](https://talks.godoc.org/github.com/hrmnjt/way-to-go-present/example.slide)
 

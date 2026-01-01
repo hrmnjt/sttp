@@ -2,6 +2,7 @@
 title = "build libraries before frameworks"
 slug = "lib-n-framework"
 date = 2025-05-04
+publishedDraft = true
 +++
 
 Start of this year, we had a re-org at work, which merged 2 data engineering
@@ -88,4 +89,4 @@ cost i.e. ownership of control flow.
 
 Libraries are more generic in their implementation.
 
-EOF
+...more thoughts...

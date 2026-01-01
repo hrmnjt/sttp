@@ -7,7 +7,8 @@ disableKinds = ['taxonomy', 'term']
 disableHugoGeneratorInject = true
 
 # Minification
-minify = true
+[minify]
+  minifyOutput = true
 
 [permalinks]
   shards = '/:year/:month/:day/:slug/'
@@ -20,8 +21,9 @@ minify = true
     codeFences = true
     guessSyntax = false
     lineNos = false
-    noClasses = false
+    noClasses = true
     tabWidth = 2
+    style = "monokai-sublime"
 
 [params]
   author = 'hrmnjt'

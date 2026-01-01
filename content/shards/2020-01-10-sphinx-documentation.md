@@ -1,30 +1,10 @@
----
-title: "Sphinx for documentation"
-heading: "Sphinx for documentation"
-slug: "sphinxfordocs"
-
-author: "hrmnjt"
-date: 2020-01-10T19:24:11+04:00
-
-draft: true
-showpagemeta: true
-
-description: "Sphinx for documentation"
-tags: ["sttp"]
-categories: ["micro"]
----
-
-⚠️ **Time Capsule Alert!** ⚠️
-
-This post is a digital fossil excavated from my ancient blog archives. Like finding your embarrassing high school photos, this content represents Past Me™ (who knew significantly less than Current Me).
-
-Side effects may include: broken links, missing images, and opinions I've since upgraded. My brain has received several critical software updates since writing this.
-
-For the latest version of my thoughts (now with 73% fewer bugs!), please check out my more recent posts.
-
----
-
-# Sphinx for documentation
++++
+title = "sphinx for documentation"
+slug = "sphinxfordocs"
+date = 2020-01-10
+migrated = true
+description = "Sphinx for documentation"
++++
 
 Sphinx is awesome if you have to use it for open source documentation for python projects. Some of the things that I particularly like about that is:
 - code is automatically included as a part of your documentation
@@ -244,5 +224,3 @@ clean:
 ```
 
 This structure is simple and would suit needs for any of the project that needs documentation - open source or private. I'm open to feedback and constructive criticism. Please let me know if any of this doesn't make sense or should be done in different way.
-
-**Update** - I have been using mkdocs more and more now given the awesome material theme which makes the documentation look awesome. Will be sharing a blog about the same soon.

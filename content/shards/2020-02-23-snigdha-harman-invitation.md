@@ -1,29 +1,9 @@
----
-title: "Snigdha and Harman: Invitation"
-heading: "Snigdha and Harman: Invitation"
-slug: "snigdha-harman-invitation"
-
-author: "hrmnjt"
-date: 2020-02-23T00:25:11+04:00
-
-draft: false
-showpagemeta: true
-
-description: "Snigdha and Harman: Invitation"
-tags: ["sttp"]
-categories: ["micro"]
----
-
-⚠️ **Time Capsule Alert!** ⚠️
-
-This post is a digital fossil excavated from my ancient blog archives. Like finding your embarrassing high school photos, this content represents Past Me™ (who knew significantly less than Current Me).
-
-Side effects may include: broken links, missing images, and opinions I've since upgraded. My brain has received several critical software updates since writing this.
-
-For the latest version of my thoughts (now with 73% fewer bugs!), please check out my more recent posts.
-
----
-# Snigdha and Harman: Invitation
++++
+title = "snigdha and harman: an invitation"
+slug = "snigdha-harman-invitation"
+date = 2020-02-23
+description = "Snigdha and Harman: Invitation"
++++
 
 {{< img-optimized src="snigdha-and-harman.jpeg" alt="Snigdha and Harman" >}}
 
@@ -74,17 +54,6 @@ have you as a part of them. See you!
 Best,
 Snigdha Gupta &
 Harmanjeet Singh (+971 50 393 7005, hrmnjt@hrmn.in)
-
-<!--
-What started as a friendship 8 year back then has evolved to a promise that we now hold to each other to stay together for time to come.
-More mushiness (as Milady demands!) - https://hrmn.in/microblog/2020-02-23t002511+0400/
-
-Join us when we start our adventure and formalize this bond with our families at our marriage and reception, this April.
-
-Major events:
-- Marriage ceremony - Wed, Apr 15th 2020 @ Patna
-- Reception - Sat, Apr 18th 2020 @ Jamshedpur
--->
 
 ## Update (March 21st, 2020)
 

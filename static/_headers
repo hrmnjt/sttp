@@ -44,9 +44,9 @@
 /site.webmanifest
   Cache-Control: public, max-age=604800
 
-# CSS files - cache for 30 days
+# CSS files - cache for 6 months (Hugo fingerprints changes automatically)
 /css/*
-  Cache-Control: public, max-age=2592000
+  Cache-Control: public, max-age=15552000, immutable
 
 # RSS feed - cache for 1 hour (content changes)
 /index.xml

@@ -1,28 +1,10 @@
----
-title: "Starting the microblog"
-heading: "Starting the microblog"
-slug: "start-microblog"
-
-author: "hrmnjt"
-date: 2019-12-10T21:48:45+04:00
-
-draft: false
-showpagemeta: true
-
-description: "Starting the microblog"
-tags: ["sttp"]
-categories: ["micro"]
----
-
-⚠️ **Time Capsule Alert!** ⚠️
-
-This post is a digital fossil excavated from my ancient blog archives. Like finding your embarrassing high school photos, this content represents Past Me™ (who knew significantly less than Current Me).
-
-Side effects may include: broken links, missing images, and opinions I've since upgraded. My brain has received several critical software updates since writing this.
-
-For the latest version of my thoughts (now with 73% fewer bugs!), please check out my more recent posts.
-
----
++++
+title = "start microblog"
+slug = "start-microblog"
+date = 2019-12-10
+migrated = true
+description = "Starting the microblog"
++++
 
 ## Concern 1: I don't like posting updates to Twitter. Why? Because:
 - I'm a slow thinker

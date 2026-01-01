@@ -13,6 +13,7 @@
     --external-link-color: #999;
     --blockquote-bg: #252525;
     --blockquote-text: #ccc;
+    --draft-bg: #2a2a2a;
     --syntax-keyword: #ff79c6;
     --syntax-string: #4dd71f;
     --syntax-comment: #6272a4;
@@ -35,6 +36,7 @@
         --external-link-color: #666;
         --blockquote-bg: #f8f9fa;
         --blockquote-text: #444;
+        --draft-bg: #f5f5f5;
         --syntax-keyword: #d73585;
         --syntax-string: #00aa00;
         --syntax-comment: #999;
@@ -50,6 +52,28 @@
     box-sizing: border-box;
 }
 
+/* Skip to content link (hidden, shows on focus) */
+.skip-to-content {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: var(--accent);
+    color: var(--bg-primary);
+    padding: 8px;
+    z-index: 100;
+    text-decoration: none !important;
+    visibility: hidden;
+}
+
+.skip-to-content::after {
+    content: none !important;
+}
+
+.skip-to-content:focus {
+    top: 0;
+    visibility: visible;
+}
+
 body {
     font-family:
         ui-monospace, "Cascadia Mono", "Segoe UI Mono", "Liberation Mono",
@@ -63,7 +87,7 @@ body {
 @media screen and (min-width: 768px) {
     body {
         padding: 32px 48px;
-        max-width: 1000px; /* Comfortable width for 88-120 characters */
+        max-width: 900px; /* Comfortable width for 88-120 characters */
     }
 }
 
@@ -73,6 +97,8 @@ h2 {
     font-size: 1.4em;
     margin: 1.8em 0 1em;
     font-weight: 600;
+    letter-spacing: 0.02em;
+    text-align: left;
 }
 
 h1:first-child {
@@ -110,7 +136,7 @@ code {
     font-family: inherit;
     background: var(--code-bg);
     padding: 0.1em 0.3em;
-    border-radius: 3px;
+    border-radius: 0;
     font-size: 0.95em;
 }
 
@@ -119,8 +145,8 @@ pre {
     padding: 16px;
     overflow-x: auto;
     margin: 1.4em 0;
-    border-radius: 3px;
-    border: 1px solid var(--code-border);
+    border-radius: 0;
+    border: 1px dotted var(--code-border);
 }
 
 pre code {
@@ -133,60 +159,11 @@ pre code {
     background: var(--pre-bg);
 }
 
-/* Keywords */
-.highlight .k,
-.highlight .kd {
-    color: var(--syntax-keyword);
-    font-weight: bold;
-}
-
-/* Function names */
-.highlight .nf,
-.highlight .nx {
-    color: var(--accent);
-}
-
-/* Strings */
-.highlight .s,
-.highlight .s1,
-.highlight .s2 {
-    color: var(--syntax-string);
-}
-
-/* Comments */
-.highlight .c,
-.highlight .c1,
-.highlight .cm {
-    color: var(--syntax-comment);
-    font-style: italic;
-}
-
-/* Numbers */
-.highlight .mi,
-.highlight .mf {
-    color: var(--syntax-number);
-}
-
-/* Operators */
-.highlight .o {
-    color: var(--syntax-operator);
-}
-
-/* Built-in functions */
-.highlight .nb {
-    color: var(--accent);
-}
-
-/* Parentheses, brackets */
-.highlight .p {
-    color: #444444;
-}
-
 /* Header and Footer */
 header {
     margin-bottom: 32px;
     padding-bottom: 16px;
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: 1px dashed var(--border-color);
 }
 
 header h1 {
@@ -197,7 +174,7 @@ header h1 {
 footer {
     margin-top: 48px;
     padding-top: 16px;
-    border-top: 1px solid var(--border-color);
+    border-top: 1px dotted var(--border-color);
     font-size: 0.9em;
 }
 
@@ -213,7 +190,7 @@ footer nav a {
 .footnotes {
     margin-top: 32px;
     padding-top: 16px;
-    border-top: 1px solid var(--border-color);
+    border-top: 1px dashed var(--border-color);
     font-size: 0.9em;
 }
 
@@ -254,7 +231,7 @@ footer nav a {
 .archive-separator {
     margin: 2rem 0;
     border: none;
-    border-top: 2px solid var(--text-secondary);
+    border-top: 1px dashed var(--border-color);
 }
 
 /* Shard List */
@@ -273,6 +250,21 @@ footer nav a {
     color: var(--text-secondary);
     font-size: 0.9em;
     min-width: 6.5em;
+    flex-shrink: 0;
+}
+
+/* Responsive list on small screens */
+@media screen and (max-width: 600px) {
+    .shard-item {
+        flex-direction: column;
+        gap: 4px;
+        align-items: flex-start;
+    }
+    
+    .shard-date {
+        min-width: auto;
+        font-size: 0.85em;
+    }
 }
 
 /* Year divider */
@@ -285,6 +277,42 @@ footer nav a {
 
 .year-divider:first-of-type {
     margin-top: 0;
+}
+
+/* Main content container */
+main {
+    margin: 0;
+}
+
+/* Article container - optimized for reading */
+article {
+    margin: 0;
+}
+
+/* Status notices (draft/migrated) */
+.draft-notice,
+.migrated-notice {
+    position: sticky;
+    top: 0;
+    padding: 12px 16px;
+    margin-bottom: 24px;
+    font-size: 0.9em;
+    border: 1px dashed;
+    z-index: 99;
+}
+
+/* Draft notice */
+.draft-notice {
+    background: var(--draft-bg);
+    border-color: var(--accent);
+    color: var(--text-primary);
+}
+
+/* Migrated notice */
+.migrated-notice {
+    background: var(--blockquote-bg);
+    border-color: var(--text-secondary);
+    color: var(--text-secondary);
 }
 
 /* Article date */
@@ -303,6 +331,17 @@ article > * + h2 {
     margin-top: 1.8em;
 }
 
+/* Improved line height for article content */
+article p {
+    line-height: 1.7;
+    margin-bottom: 1.4em;
+}
+
+article li {
+    line-height: 1.7;
+    margin-bottom: 0.6em;
+}
+
 /* Lists in content */
 article ul,
 article ol {
@@ -318,7 +357,7 @@ article li + li {
 blockquote {
     margin: 1.2em 0;
     padding: 0.8em 1em;
-    border-left: 3px solid var(--accent);
+    border-left: 2px dashed var(--accent);
     background: var(--blockquote-bg);
     color: var(--blockquote-text);
     font-size: 0.95em;
@@ -326,6 +365,14 @@ blockquote {
 
 blockquote > :last-child {
     margin-bottom: 0;
+}
+
+/* Images */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 1.4em 0;
 }
 
 /* Tables */
@@ -338,6 +385,6 @@ table {
 th,
 td {
     padding: 8px;
-    border: 1px solid var(--border-color);
+    border: 1px dotted var(--border-color);
     text-align: left;
 }
