@@ -6,22 +6,12 @@ slug: "init-dotfiles"
 author: "hrmnjt"
 date: 2020-02-03T21:44:11+04:00
 
-draft: true
+migrated: true
 showpagemeta: true
 
 description: "Dotfiles: setting up"
 tags: ["sttp"]
 categories: ["micro"]
----
-
-⚠️ **Time Capsule Alert!** ⚠️
-
-This post is a digital fossil excavated from my ancient blog archives. Like finding your embarrassing high school photos, this content represents Past Me™ (who knew significantly less than Current Me).
-
-Side effects may include: broken links, missing images, and opinions I've since upgraded. My brain has received several critical software updates since writing this.
-
-For the latest version of my thoughts (now with 73% fewer bugs!), please check out my more recent posts.
-
 ---
 
 # Dotfiles: setting up

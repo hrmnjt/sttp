@@ -6,7 +6,6 @@ slug: "snigdha-harman-invitation"
 author: "hrmnjt"
 date: 2020-02-23T00:25:11+04:00
 
-draft: false
 showpagemeta: true
 
 description: "Snigdha and Harman: Invitation"
@@ -14,15 +13,6 @@ tags: ["sttp"]
 categories: ["micro"]
 ---
 
-⚠️ **Time Capsule Alert!** ⚠️
-
-This post is a digital fossil excavated from my ancient blog archives. Like finding your embarrassing high school photos, this content represents Past Me™ (who knew significantly less than Current Me).
-
-Side effects may include: broken links, missing images, and opinions I've since upgraded. My brain has received several critical software updates since writing this.
-
-For the latest version of my thoughts (now with 73% fewer bugs!), please check out my more recent posts.
-
----
 # Snigdha and Harman: Invitation
 
 {{< img-optimized src="snigdha-and-harman.jpeg" alt="Snigdha and Harman" >}}

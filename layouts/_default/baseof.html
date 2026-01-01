@@ -48,6 +48,12 @@
         </div>
     {{ end }}
 
+    {{ if and (not .IsHome) .Params.migrated }}
+        <div class="migrated-notice">
+            [migrated] — from older version of sttp; thinking has evolved
+        </div>
+    {{ end }}
+
     <main id="main">
         {{ block "main" . }}{{ end }}
     </main>

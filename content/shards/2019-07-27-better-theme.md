@@ -6,22 +6,13 @@ slug: "better-theme"
 author: "hrmnjt"
 date: 2019-07-27T18:23:18+05:30
 
-draft: false
 showpagemeta: true
+
+migrated: true
 
 description: "Solving my troubles by creating a theme focused on content, cleanliness, speed, responsiveness and privacy."
 tags: ["technical", "golang", "theme", "hugo", "code"]
 categories: ["technical", "golang"]
----
-
-⚠️ **Time Capsule Alert!** ⚠️
-
-This post is a digital fossil excavated from my ancient blog archives. Like finding your embarrassing high school photos, this content represents Past Me™ (who knew significantly less than Current Me).
-
-Side effects may include: broken links, missing images, and opinions I've since upgraded. My brain has received several critical software updates since writing this.
-
-For the latest version of my thoughts (now with 73% fewer bugs!), please check out my more recent posts.
-
 ---
 
 Solving my troubles by creating a theme focused on content, cleanliness, speed,
