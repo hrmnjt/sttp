@@ -1,5 +1,5 @@
 +++
-title = "Sphinx for documentation"
+title = "sphinx for documentation"
 slug = "sphinxfordocs"
 date = 2020-01-10
 migrated = true

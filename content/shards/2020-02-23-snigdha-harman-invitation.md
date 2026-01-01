@@ -1,5 +1,5 @@
 +++
-title = "Snigdha and Harman: Invitation"
+title = "snigdha and harman: an invitation"
 slug = "snigdha-harman-invitation"
 date = 2020-02-23
 description = "Snigdha and Harman: Invitation"

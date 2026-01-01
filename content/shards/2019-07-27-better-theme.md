@@ -1,5 +1,5 @@
 +++
-title = "Creating cleaner Hugo theme"
+title = "creating cleaner hugo theme"
 slug = "better-theme"
 date = 2019-07-27
 migrated = true

@@ -1,5 +1,5 @@
 +++
-title = "Dubai vs VOIP"
+title = "dubai vs voip"
 slug = "dubai-vs-voip"
 date = 2019-12-11
 migrated = true

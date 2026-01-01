@@ -1,5 +1,5 @@
 +++
-title = "LaTex based resume"
+title = "latex based resume"
 slug = "latexresume"
 date = 2020-01-01
 migrated = true

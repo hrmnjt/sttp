@@ -1,5 +1,5 @@
 +++
-title = "Dotfiles: setting up"
+title = "dotfiles: setting up"
 slug = "init-dotfiles"
 date = 2020-02-03
 migrated = true

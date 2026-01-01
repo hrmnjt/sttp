@@ -1,5 +1,5 @@
 +++
-title = "Using GoLang Present for coded presentations"
+title = "using GoLang Present for coded presentations"
 slug = "coded-presentation"
 date = 2019-05-30
 migrated = true
