@@ -60,6 +60,7 @@
     padding: 8px;
     z-index: 100;
     text-decoration: none !important;
+    visibility: hidden;
 }
 
 .skip-to-content::after {
@@ -68,6 +69,7 @@
 
 .skip-to-content:focus {
     top: 0;
+    visibility: visible;
 }
 
 body {
@@ -153,55 +155,6 @@ pre code {
 /* Syntax Highlighting */
 .highlight {
     background: var(--pre-bg);
-}
-
-/* Keywords */
-.highlight .k,
-.highlight .kd {
-    color: var(--syntax-keyword);
-    font-weight: bold;
-}
-
-/* Function names */
-.highlight .nf,
-.highlight .nx {
-    color: var(--accent);
-}
-
-/* Strings */
-.highlight .s,
-.highlight .s1,
-.highlight .s2 {
-    color: var(--syntax-string);
-}
-
-/* Comments */
-.highlight .c,
-.highlight .c1,
-.highlight .cm {
-    color: var(--syntax-comment);
-    font-style: italic;
-}
-
-/* Numbers */
-.highlight .mi,
-.highlight .mf {
-    color: var(--syntax-number);
-}
-
-/* Operators */
-.highlight .o {
-    color: var(--syntax-operator);
-}
-
-/* Built-in functions */
-.highlight .nb {
-    color: var(--accent);
-}
-
-/* Parentheses, brackets */
-.highlight .p {
-    color: #444444;
 }
 
 /* Header and Footer */

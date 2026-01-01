@@ -20,8 +20,9 @@ minify = true
     codeFences = true
     guessSyntax = false
     lineNos = false
-    noClasses = false
+    noClasses = true
     tabWidth = 2
+    style = "monokai-sublime"
 
 [params]
   author = 'hrmnjt'
