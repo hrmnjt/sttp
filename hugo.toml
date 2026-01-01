@@ -7,7 +7,8 @@ disableKinds = ['taxonomy', 'term']
 disableHugoGeneratorInject = true
 
 # Minification
-minify = true
+[minify]
+  minifyOutput = true
 
 buildDrafts = true
 
