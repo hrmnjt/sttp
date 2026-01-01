@@ -5,7 +5,7 @@ date = 2020-02-23
 description = "Snigdha and Harman: Invitation"
 +++
 
-# Snigdha and Harman: Invitation
+{{< img-optimized src="snigdha-and-harman.jpeg" alt="Snigdha and Harman" >}}
 
 We met 8 years back and back then none of us knew that we are going to spend
 lots of time staying together being significant to one another. What started as

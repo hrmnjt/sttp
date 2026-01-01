@@ -66,6 +66,8 @@ illegible fonts, or overcrowded texts - nothing is more annoying than these
 * **my_presentation_last_final_v10_20190530_without_animations.pptx** - no
 version control = sad life
 
+{{< figure src="https://imgs.xkcd.com/comics/slideshow.gif" text="Source: XKCD 1264" >}}
+
 I needed a lazier way of solving these problems and hence the hunt started.
 
 # Gophers way of presentations
