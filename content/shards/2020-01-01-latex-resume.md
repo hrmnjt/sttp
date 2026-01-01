@@ -6,8 +6,6 @@ migrated = true
 description = "LaTex based resume"
 +++
 
-# LaTex based resume
-
 [LaTex](https://www.latex-project.org/) is a pretty old technology and I was not aware of it till very recent.
 
 I was always amazed by the similarity in which the scientific journals and research papers were formatted. I was under the impression that there is a standard defined somewhere; brought to existence by a group or institutions; and is so sacred that everyone follows the same formatting. In the search, I found BibTex and then Tex and its friends - LaTex and ConText.

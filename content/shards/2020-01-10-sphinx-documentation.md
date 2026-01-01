@@ -6,8 +6,6 @@ migrated = true
 description = "Sphinx for documentation"
 +++
 
-# Sphinx for documentation
-
 Sphinx is awesome if you have to use it for open source documentation for python projects. Some of the things that I particularly like about that is:
 - code is automatically included as a part of your documentation
     - if you put awesome docstrings in your python code, you will be rewarded

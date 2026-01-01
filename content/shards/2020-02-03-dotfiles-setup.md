@@ -6,8 +6,6 @@ migrated = true
 description = "Dotfiles: setting up"
 +++
 
-# Dotfiles: setting up
-
 A simple set of enhancements can personalize shell and it becomes more productive and enjoyable to work with.
 
 I like command line interfaces. The biggest affinity that I have towards CLIs are **predictability** and **reproducibility**. If you do any actions which can be codified, it become very simple to repeat those actions and do it in the same way as many times as possible. These fundamental behavior of command line interfaces have also shaped how I design code in life with a speck of idempotence, abstraction and simplicity. Although I have a lot to learn on this subject, the love for shell never decreases.
