@@ -10,8 +10,6 @@ disableHugoGeneratorInject = true
 [minify]
   minifyOutput = true
 
-buildDrafts = true
-
 [permalinks]
   shards = '/:year/:month/:day/:slug/'
 
