@@ -9,6 +9,8 @@ disableHugoGeneratorInject = true
 # Minification
 minify = true
 
+buildDrafts = true
+
 [permalinks]
   shards = '/:year/:month/:day/:slug/'
 

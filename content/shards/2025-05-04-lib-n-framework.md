@@ -2,6 +2,8 @@
 title = "build libraries before frameworks"
 slug = "lib-n-framework"
 date = 2025-05-04
+draft = true
+# status = "draft"
 +++
 
 Start of this year, we had a re-org at work, which merged 2 data engineering
