@@ -22,8 +22,8 @@ disableHugoGeneratorInject = true
     guessSyntax = false
     lineNos = false
     noClasses = true
-    tabWidth = 2
-    style = "monokai-sublime"
+    tabWidth = 4
+    style = "catppuccin-mocha"
 
 [params]
   author = 'hrmnjt'
