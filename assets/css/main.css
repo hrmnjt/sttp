@@ -1,48 +1,25 @@
 /* CSS Custom Properties */
 :root {
-    /* Dark theme (default) */
-    --bg-primary: #1a1a1a;
-    --text-primary: #e8e8e8;
-    --text-secondary: #999;
-    --border-color: #333;
-    --code-bg: #2a2a2a;
-    --pre-bg: #0d0d0d;
-    --code-border: #444;
-    --accent: #4dd71f;
-    --accent-hover: #4dd71f;
-    --external-link-color: #999;
-    --blockquote-bg: #252525;
-    --blockquote-text: #ccc;
-    --draft-bg: #2a2a2a;
-    --syntax-keyword: #ff79c6;
-    --syntax-string: #4dd71f;
-    --syntax-comment: #6272a4;
-    --syntax-number: #bd93f9;
-    --syntax-operator: #ff79c6;
-}
-
-@media (prefers-color-scheme: light) {
-    :root {
-        /* Light theme */
-        --bg-primary: #fff;
-        --text-primary: #222;
-        --text-secondary: #666;
-        --border-color: #eee;
-        --code-bg: #f5f5f5;
-        --pre-bg: #f8f9fa;
-        --code-border: #eee;
-        --accent: #008900;
-        --accent-hover: #008900;
-        --external-link-color: #666;
-        --blockquote-bg: #f8f9fa;
-        --blockquote-text: #444;
-        --draft-bg: #f5f5f5;
-        --syntax-keyword: #d73585;
-        --syntax-string: #00aa00;
-        --syntax-comment: #999;
-        --syntax-number: #0000dd;
-        --syntax-operator: #d73585;
-    }
+    /* Gruvbox dark theme */
+    color-scheme: dark;
+    --bg-primary: #282828;
+    --text-primary: #ebdbb2;
+    --text-secondary: #a89984;
+    --border-color: #504945;
+    --code-bg: #3c3836;
+    --pre-bg: #1d2021;
+    --code-border: #665c54;
+    --accent: #b8bb26;
+    --accent-hover: #fabd2f;
+    --external-link-color: #928374;
+    --blockquote-bg: #32302f;
+    --blockquote-text: #d5c4a1;
+    --draft-bg: #3c3836;
+    --syntax-keyword: #fb4934;
+    --syntax-string: #b8bb26;
+    --syntax-comment: #928374;
+    --syntax-number: #d3869b;
+    --syntax-operator: #fe8019;
 }
 
 /* Reset and Base Styles */
