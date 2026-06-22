@@ -23,7 +23,7 @@ disableHugoGeneratorInject = true
     lineNos = false
     noClasses = true
     tabWidth = 4
-    style = "catppuccin-mocha"
+    style = "gruvbox"
 
 [params]
   author = 'hrmnjt'
