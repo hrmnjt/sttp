@@ -14,7 +14,6 @@
     --external-link-color: #928374;
     --blockquote-bg: #32302f;
     --blockquote-text: #d5c4a1;
-    --draft-bg: #3c3836;
     --syntax-keyword: #fb4934;
     --syntax-string: #b8bb26;
     --syntax-comment: #928374;
@@ -266,8 +265,7 @@ article {
     margin: 0;
 }
 
-/* Status notices (draft/migrated) */
-.draft-notice,
+/* Migrated notice */
 .migrated-notice {
     position: sticky;
     top: 0;
@@ -276,17 +274,6 @@ article {
     font-size: 0.9em;
     border: 1px dashed;
     z-index: 99;
-}
-
-/* Draft notice */
-.draft-notice {
-    background: var(--draft-bg);
-    border-color: var(--accent);
-    color: var(--text-primary);
-}
-
-/* Migrated notice */
-.migrated-notice {
     background: var(--blockquote-bg);
     border-color: var(--text-secondary);
     color: var(--text-secondary);

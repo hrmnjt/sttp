@@ -41,12 +41,6 @@
         <a href="/">{{ .Site.Title }}</a>
     </header>
 
-    {{ if and (not .IsHome) .Draft }}
-        <div class="draft-notice">
-            [draft] — bleeding edge; edits incoming
-        </div>
-    {{ end }}
-
     <main id="main">
         {{ block "main" . }}{{ end }}
     </main>
