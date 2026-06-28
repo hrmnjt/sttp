@@ -17,7 +17,8 @@ definitely recommend reading that thread (full of hidden treasures).
 
 This post is a follow up to previous post
 "[git organized](@/2023-12-06-git-organized.md)" where I'm trying to add
-comments for future me to refer when I forget why I did something I did. It would be pure joy if anyone else reads this and finds it interesting enough to
+comments for future me to refer when I forget why I did something I did. It
+would be pure joy if anyone else reads this and finds it interesting enough to
 try a few options.
 
 ## Branching
