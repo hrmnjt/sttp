@@ -7,14 +7,14 @@
 
     <title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} - {{ .Site.Title }}{{ end }}</title>
     <meta name="description" content="{{ if .IsHome }}{{ .Site.Params.description }}{{ else }}{{ .Summary | plainify | truncate 160 }}{{ end }}">
-    
+
     <!-- Open Graph Tags -->
     <meta property="og:title" content="{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }}{{ end }}">
     <meta property="og:description" content="{{ if .IsHome }}{{ .Site.Params.description }}{{ else }}{{ .Summary | plainify | truncate 160 }}{{ end }}">
     <meta property="og:url" content="{{ .Permalink }}">
     <meta property="og:type" content="{{ if .IsHome }}website{{ else }}article{{ end }}">
     <meta property="og:site_name" content="{{ .Site.Title }}">
-    
+
     <!-- Twitter Card Tags -->
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }}{{ end }}">
@@ -31,12 +31,12 @@
     <link rel="stylesheet" href="{{ $style.RelPermalink }}" integrity="{{ $style.Data.Integrity }}">
 
     <meta name="theme-color" content="#282828">
-    
+
     {{ partial "schema.html" . }}
 </head>
 <body>
     <a href="#main" class="skip-to-content">Skip to main content</a>
-    
+
     <header>
         <a href="/">{{ .Site.Title }}</a>
     </header>
@@ -44,12 +44,6 @@
     {{ if and (not .IsHome) .Draft }}
         <div class="draft-notice">
             [draft] — bleeding edge; edits incoming
-        </div>
-    {{ end }}
-
-    {{ if and (not .IsHome) .Params.migrated }}
-        <div class="migrated-notice">
-            [migrated] — from older version of sttp; thinking has evolved
         </div>
     {{ end }}
 
