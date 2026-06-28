@@ -26,9 +26,9 @@
     <link rel="apple-touch-icon" href="{{ "apple-touch-icon.png" | relURL }}">
     <link rel="manifest" href="{{ "site.webmanifest" | relURL }}">
 
-    {{ $style := resources.Get "css/main.css" | resources.Minify }}
-    <link rel="preload" as="style" href="{{ $style.RelPermalink }}">
-    <link rel="stylesheet" href="{{ $style.RelPermalink }}">
+    {{ $style := resources.Get "css/main.css" | resources.Minify | resources.Fingerprint "sha256" }}
+    <link rel="preload" as="style" href="{{ $style.RelPermalink }}" integrity="{{ $style.Data.Integrity }}">
+    <link rel="stylesheet" href="{{ $style.RelPermalink }}" integrity="{{ $style.Data.Integrity }}">
 
     <meta name="theme-color" content="#282828">
     
