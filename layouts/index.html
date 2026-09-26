@@ -10,20 +10,30 @@
             <h2 id="index-title">Index</h2>
             <img class="section-doodle" src="{{ $shard.RelPermalink }}" alt="" aria-hidden="true" width="80" height="67">
         </div>
-        <ul class="shard-list">
+        <ul class="directory-list">
             {{ with .Site.GetPage "/work" }}
-                <li class="shard-item index-project">
-                    <span class="shard-date">project</span>
-                    <span><a href="{{ .RelPermalink }}">Work</a><small>Projects and things I've made</small></span>
+                <li class="directory-item">
+                    <span class="directory-label">projects</span>
+                    <div>
+                        <h3><a href="{{ .RelPermalink }}">Work</a></h3>
+                        <p>Projects and the notes behind them.</p>
+                        {{ with .Site.GetPage "/work/dev" }}<p class="directory-preview">Start with <a href="{{ .RelPermalink }}">dev</a>, my Mac setup and dotfiles.</p>{{ end }}
+                    </div>
                 </li>
             {{ end }}
             {{ with .Site.GetPage "/shards" }}
-                {{ range .RegularPages.ByDate.Reverse }}
-                    <li class="shard-item">
-                        <time class="shard-date" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>
-                        <a href="{{ .RelPermalink }}">{{ .Title }}</a>
-                    </li>
-                {{ end }}
+                <li class="directory-item">
+                    <span class="directory-label">writing</span>
+                    <div>
+                        <h3><a href="{{ .RelPermalink }}">Shards</a></h3>
+                        <p>Dated notes, newest first.</p>
+                        <ul class="recent-list" aria-label="Recent shards">
+                            {{ range first 3 .RegularPages.ByDate.Reverse }}
+                                <li><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time> <a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+                            {{ end }}
+                        </ul>
+                    </div>
+                </li>
             {{ end }}
         </ul>
     </section>

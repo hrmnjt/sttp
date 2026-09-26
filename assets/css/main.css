@@ -155,6 +155,39 @@ body > footer p { margin-bottom: 0; }
     .section-doodle { width: 60px; }
 }
 
+.directory-list, .recent-list, .shard-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.directory-item {
+    display: grid;
+    grid-template-columns: 10ch minmax(0, 1fr);
+    gap: 24px;
+    padding: 8px 0 24px;
+}
+
+.directory-label, .recent-list time {
+    color: var(--text-secondary);
+    font: 0.85rem/1.6 var(--font-mono);
+}
+
+.directory-item h3 { margin: 0 0 4px; font-size: 1.25rem; }
+.directory-item p { margin-bottom: 4px; }
+.directory-preview { color: var(--text-secondary); font-size: 0.9rem; }
+
+.recent-list { margin-top: 12px; }
+.recent-list li { display: flex; align-items: baseline; gap: 16px; padding: 3px 0; }
+.recent-list time { flex: 0 0 10ch; }
+.recent-list a { color: var(--text-primary); text-decoration-color: var(--border-color); }
+.recent-list a:hover { color: var(--accent-hover); }
+
+@media (max-width: 600px) {
+    .directory-item { grid-template-columns: 1fr; gap: 2px; }
+    .recent-list li { display: block; padding: 6px 0; }
+    .recent-list time { display: block; }
+}
 
 .shard-list {
     list-style: none;
@@ -176,14 +209,6 @@ body > footer p { margin-bottom: 0; }
 
 .shard-item a:hover { color: var(--accent-hover); }
 
-.index-project { padding-bottom: 18px; }
-
-.index-project small {
-    display: block;
-    color: var(--text-secondary);
-    font-size: 0.85rem;
-}
-
 .shard-date {
     flex: 0 0 10ch;
     color: var(--text-secondary);
@@ -195,11 +220,11 @@ body > footer p { margin-bottom: 0; }
     .shard-date { display: block; margin-bottom: 2px; }
 }
 
-/* Project index and project pages */
-.work-index { max-width: 72ch; }
-.work-index .section-heading { margin-bottom: 12px; }
-.work-index h1 { margin: 0; font-size: clamp(2rem, 5vw, 2.75rem); }
-.work-index > p { max-width: 65ch; }
+/* Work and writing get their own full indexes. */
+.work-index, .shards-index { max-width: 72ch; }
+.work-index .section-heading, .shards-index .section-heading { margin-bottom: 12px; }
+.work-index h1, .shards-index h1 { margin: 0; font-size: clamp(2rem, 5vw, 2.75rem); }
+.work-index > p, .shards-index > p { max-width: 65ch; }
 
 .project-list { list-style: none; padding: 0; margin: 28px 0; }
 .project-list li { margin-bottom: 24px; }

@@ -1,0 +1,18 @@
+{{ define "main" }}
+    {{ $shard := resources.Get "images/doodles/shard.svg" | resources.Fingerprint "sha256" }}
+    <section class="shards-index" aria-labelledby="shards-title">
+        <div class="section-heading">
+            <h1 id="shards-title">Shards</h1>
+            <img class="section-doodle" src="{{ $shard.RelPermalink }}" alt="" aria-hidden="true" width="80" height="67">
+        </div>
+        {{ .Content }}
+        <ul class="shard-list">
+            {{ range .RegularPages.ByDate.Reverse }}
+                <li class="shard-item">
+                    <time class="shard-date" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>
+                    <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+                </li>
+            {{ end }}
+        </ul>
+    </section>
+{{ end }}
