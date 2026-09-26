@@ -1,6 +1,10 @@
 {{ define "main" }}
+{{ $clip := resources.Get "images/doodles/paperclip.svg" | resources.Fingerprint "sha256" }}
 <article>
-    <h1>{{ .Title }}</h1>
+    <div class="post-heading">
+        <h1>{{ .Title }}</h1>
+        <img class="post-doodle" src="{{ $clip.RelPermalink }}" alt="" aria-hidden="true" width="56" height="70">
+    </div>
     <div class="article-date">
         <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>
         <span aria-hidden="true">·</span> {{ .ReadingTime }} min read

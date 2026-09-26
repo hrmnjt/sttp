@@ -1,8 +1,12 @@
 {{ define "main" }}
     {{ $shard := resources.Get "images/doodles/shard.svg" | resources.Fingerprint "sha256" }}
+    {{ $desk := resources.Get "images/doodles/desk.svg" | resources.Fingerprint "sha256" }}
     <section class="home-intro" aria-labelledby="intro-title">
-        <h1 id="intro-title">Hi, I'm Harman.</h1>
-        <p>I write shards: dated notes on software, tools, and things I'm figuring out. Some are rough; they're snapshots of what I thought at the time.</p>
+        <div>
+            <h1 id="intro-title">Hi, I'm Harman.</h1>
+            <p>I write shards: dated notes on software, tools, and things I'm figuring out. Some are rough; they're snapshots of what I thought at the time.</p>
+        </div>
+        <img class="hero-doodle" src="{{ $desk.RelPermalink }}" alt="" aria-hidden="true" width="190" height="152">
     </section>
 
     <section class="home-index" id="index" aria-labelledby="index-title">
