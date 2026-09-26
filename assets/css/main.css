@@ -172,7 +172,7 @@ body > footer p { margin-bottom: 0; }
     .section-doodle { width: 60px; }
 }
 
-.directory-list, .recent-list, .shard-list {
+.directory-list, .build-preview, .build-relations, .recent-list, .shard-list {
     list-style: none;
     padding: 0;
     margin: 0;
@@ -195,14 +195,24 @@ body > footer p { margin-bottom: 0; }
 
 .directory-heading img { width: 64px; height: auto; flex: none; margin: 0; }
 .directory-heading h3 { margin: 0; font-size: 1.3rem; }
+.directory-count { color: var(--text-secondary); font: 0.82rem/1.6 var(--font-mono); white-space: nowrap; }
 .directory-item p { margin-bottom: 8px; line-height: 1.6; }
-.directory-preview { color: var(--text-secondary); font-size: 0.9rem; }
 
-.recent-list { margin-top: 12px; }
+.build-preview, .recent-list { margin-top: 12px; }
+.build-preview > li { margin-bottom: 12px; }
+.build-name { color: var(--text-primary); font: 700 1rem/1.6 var(--font-mono); text-decoration-color: var(--border-color); }
+.build-name:hover { color: var(--accent-hover); }
+.build-relations { padding-left: 12px; color: var(--text-secondary); font-size: 0.85rem; line-height: 1.6; }
+.build-relations li { padding: 2px 0; }
+.build-relations span { margin-right: 0.2em; }
+
 .recent-list li { display: flex; align-items: baseline; gap: 16px; padding: 3px 0; }
-.recent-list time { flex: 0 0 10ch; }
+.recent-list time { flex: 0 0 10ch; color: var(--text-secondary); font: 0.85rem/1.6 var(--font-mono); }
 .recent-list a { color: var(--text-primary); text-decoration-color: var(--border-color); }
 .recent-list a:hover { color: var(--accent-hover); }
+.more-link { font: 0.85rem/1.8 var(--font-mono); }
+.recent-list .more-link { padding-left: calc(10ch + 16px); }
+.more-link a { color: var(--accent); }
 
 @media (max-width: 740px) {
     .directory-list { grid-template-columns: 1fr; gap: 24px; }
@@ -212,6 +222,7 @@ body > footer p { margin-bottom: 0; }
 @media (max-width: 600px) {
     .recent-list li { display: block; padding: 6px 0; }
     .recent-list time { display: block; }
+    .recent-list .more-link { padding-left: 0; }
 }
 
 .shard-list {
