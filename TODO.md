@@ -2,15 +2,7 @@
 
 Backlog from a review of this repository, [hrmnjt.dev](https://hrmnjt.dev/), and the [public GitHub repository](https://github.com/hrmnjt/sttp). These are suggestions, not commitments; keep the site small and personal. The build-in-public ideas can be scoped separately later.
 
-## Fix what is broken
-
-- [x] **Fix production URLs.** Cloudflare Pages was building with `hugo -b $CF_PAGES_URL`; switching the build command to `hugo` uses the public domain from `hugo.toml`. Verified live canonical, Open Graph, JSON-LD, RSS and sitemap URLs use `https://hrmnjt.dev/`.
-- [x] **Repair three broken cross-post links.** Replaced `@/filename.md` links with Hugo page refs in the two Git posts and the Harlequin post; verified all three links on the live site.
-- [x] **Remove the stray Harlequin footnotes label and correct the shell-startup typo.** The stray `footnotes` line is gone and `content/shards/2025-01-02-pyenv2uv.md` now says `~60ms`; both verified live.
-- [x] **Give `/shards/` an archive title and introduction.** `content/shards/_index.md` has a front-matter title and `layouts/_default/list.html` displays the archive introduction; verified live.
-- [x] **Verify deployed security headers.** Consolidated the global `/*` rule in `static/_headers`, removed obsolete `X-XSS-Protection`, aligned `X-Frame-Options: DENY` with CSP's `frame-ancestors 'none'`, and scoped one-year HSTS to the current host (no subdomains or preload). Verified CSP, frame, permissions, HSTS, referrer and MIME-sniffing headers on the live site and `sttp.pages.dev`.
-- [x] **Fingerprint image fallbacks.** `layouts/shortcodes/img-optimized.html` fingerprints both original-format images and processed WebP files; verified that the live image URLs work with an immutable cache policy.
-- [x] **Remove duplicate cache headers.** Specific asset and RSS rules now unset the global `Cache-Control` before setting their own; verified fresh HTML, RSS, image and CSS responses have the intended cache policies.
+Keep only outstanding items here: remove an item when it is done, and delete `TODO.md` when nothing remains.
 
 ## Make the site and repository easier to understand
 
