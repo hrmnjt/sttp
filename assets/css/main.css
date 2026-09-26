@@ -176,7 +176,7 @@ body > footer p { margin-bottom: 0; }
 .directory-list {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: clamp(20px, 4vw, 40px);
+    gap: 28px clamp(20px, 4vw, 40px);
 }
 
 .directory-item { min-width: 0; }
@@ -220,27 +220,17 @@ body > footer p { margin-bottom: 0; }
     .recent-list .more-link { padding-left: 0; }
 }
 
-/* Planned lanes stay readable, but are not links or empty routes. */
-.planned-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px 28px;
-    list-style: none;
-    margin: 28px 0 0;
-    padding: 0;
+/* Unpublished lanes occupy the second row, but contain no links. */
+.directory-item--planned { color: var(--text-secondary); }
+.directory-item--planned h2 { color: var(--text-secondary); }
+.directory-item--planned img { filter: grayscale(1); }
+.planned-status {
+    padding: 2px 6px;
     color: var(--text-secondary);
+    border: 1px dashed var(--border-color);
+    font: 0.75rem/1.5 var(--font-mono);
+    white-space: nowrap;
 }
-
-.planned-list li {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: 4px 8px;
-    font: 0.82rem/1.6 var(--font-mono);
-}
-
-.planned-name { font-weight: 700; }
-.planned-status { font-size: 0.75rem; }
 
 .shard-list {
     list-style: none;
