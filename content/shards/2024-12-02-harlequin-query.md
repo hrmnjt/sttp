@@ -24,9 +24,7 @@ EOF
 
 ---
 
-footnotes
-
-[^1]: [Here](@/2024-10-05-duckdb-query.md) is a shard for that
+[^1]: [Here]({{< ref "shards/2024-10-05-duckdb-query.md" >}}) is a shard for that
 
 [^2]: Harlequin is "An easy, fast, and beautiful database client for the
 terminal.". [Github](https://github.com/tconbeer/harlequin) repository.
