@@ -6,11 +6,13 @@
 
     <section class="home-section" id="work" aria-labelledby="work-title">
         <h2 id="work-title">Work</h2>
+        {{ with .Site.GetPage "/shards/2026-02-01-dev" }}
         <div class="work-entry">
             <h3>dev</h3>
             <p>My Mac setup, dotfiles, and bootstrap workflow.</p>
-            <p><a href="{{ with .Site.GetPage "/shards/2026-02-01-dev" }}{{ .RelPermalink }}{{ end }}">Read the write-up</a> <span aria-hidden="true">·</span> <a href="https://github.com/hrmnjt/dev">Browse the code</a></p>
+            <p class="entry-meta">Write-up <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time> <span aria-hidden="true">·</span> <a href="{{ .RelPermalink }}">Read the write-up</a> <span aria-hidden="true">·</span> <a href="{{ .Params.source }}">Source on GitHub</a></p>
         </div>
+        {{ end }}
     </section>
 
     <section class="home-section" id="shards" aria-labelledby="shards-title">

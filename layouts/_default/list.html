@@ -3,7 +3,7 @@
     <ul class="shard-list">
         {{ range .Pages }}
             <li class="shard-item">
-                <span class="shard-date">{{ .Date.Format "2006-01-02" }}</span>
+                <time class="shard-date" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>
                 <a href="{{ .RelPermalink }}">{{ .Title }}</a>
             </li>
         {{ end }}
