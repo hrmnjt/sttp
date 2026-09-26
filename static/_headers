@@ -9,6 +9,7 @@
   Permissions-Policy: geolocation=(), microphone=(), camera=(), payment=()
   Strict-Transport-Security: max-age=31536000
   Content-Security-Policy: default-src 'self'; script-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; frame-ancestors 'none'
+  Cache-Control: public, max-age=3600, must-revalidate
 
 # Processed images - cache for 1 year (fingerprinted URLs)
 # Hugo fingerprints these, so they won't change unless content changes
@@ -33,7 +34,3 @@
 # RSS feed - cache for 1 hour (content changes)
 /index.xml
   Cache-Control: public, max-age=3600
-
-# HTML pages - cache for 1 hour (or don't cache)
-/*
-  Cache-Control: public, max-age=3600, must-revalidate
