@@ -1,10 +1,4 @@
 {{ define "main" }}
-    {{ $wal := .Site.GetPage "/wal" }}
-    {{ $readme := .Site.GetPage "/readme" }}
-    {{ $walEnabled := .Site.Params.features.wal }}
-    {{ $readmeEnabled := .Site.Params.features.readme }}
-    {{ if and (not $walEnabled) $wal }}{{ errorf "wal content exists while params.features.wal is disabled" }}{{ end }}
-    {{ if and (not $readmeEnabled) $readme }}{{ errorf "readme content exists while params.features.readme is disabled" }}{{ end }}
     {{ $desk := resources.Get "images/doodles/desk.svg" | resources.Fingerprint "sha256" }}
     {{ $builds := resources.Get "images/doodles/builds.svg" | resources.Fingerprint "sha256" }}
     {{ $shard := resources.Get "images/doodles/shard.svg" | resources.Fingerprint "sha256" }}
@@ -62,38 +56,38 @@
                     </ul>
                 </li>
             {{ end }}
-            {{ if and $walEnabled $wal }}
+            {{ with .Site.GetPage "/wal" }}
+                {{ $count := len .RegularPages }}
                 <li class="directory-item">
                     <div class="directory-heading">
                         <img src="{{ $walDoodle.RelPermalink }}" alt="" aria-hidden="true" width="64" height="54">
-                        <h2><a href="{{ $wal.RelPermalink }}">wal</a></h2>
+                        <h2><a href="{{ .RelPermalink }}">wal</a> <span class="directory-count">({{ $count }})</span></h2>
                     </div>
                     <p>Short, dated updates on what I'm doing now.</p>
-                </li>
-            {{ else }}
-                <li class="directory-item directory-item--planned">
-                    <div class="directory-heading">
-                        <img src="{{ $walDoodle.RelPermalink }}" alt="" aria-hidden="true" width="64" height="54">
-                        <h2>wal</h2><span class="planned-status">coming soon</span>
-                    </div>
-                    <p>Short, dated updates on what I'm doing now.</p>
+                    {{ if $count }}
+                        <ul class="recent-list" aria-label="Recent WAL entries">
+                            {{ range first 3 .RegularPages.ByDate.Reverse }}
+                                <li><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time> <a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+                            {{ end }}
+                            {{ if gt $count 3 }}<li class="more-link"><a href="{{ .RelPermalink }}">+{{ sub $count 3 }} more updates</a></li>{{ end }}
+                        </ul>
+                    {{ else }}<p class="empty-note">No updates yet.</p>{{ end }}
                 </li>
             {{ end }}
-            {{ if and $readmeEnabled $readme }}
+            {{ with .Site.GetPage "/readme" }}
+                {{ $count := len .RegularPages }}
                 <li class="directory-item">
                     <div class="directory-heading">
                         <img src="{{ $readmeDoodle.RelPermalink }}" alt="" aria-hidden="true" width="64" height="54">
-                        <h2><a href="{{ $readme.RelPermalink }}">readme</a></h2>
+                        <h2><a href="{{ .RelPermalink }}">readme</a> <span class="directory-count">({{ $count }})</span></h2>
                     </div>
                     <p>About this site and how I work.</p>
-                </li>
-            {{ else }}
-                <li class="directory-item directory-item--planned">
-                    <div class="directory-heading">
-                        <img src="{{ $readmeDoodle.RelPermalink }}" alt="" aria-hidden="true" width="64" height="54">
-                        <h2>readme</h2><span class="planned-status">coming soon</span>
-                    </div>
-                    <p>About this site and how I work.</p>
+                    {{ if $count }}
+                        <ul class="page-preview" aria-label="Readme pages">
+                            {{ range first 3 .RegularPages.ByTitle }}<li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>{{ end }}
+                            {{ if gt $count 3 }}<li class="more-link"><a href="{{ .RelPermalink }}">+{{ sub $count 3 }} more pages</a></li>{{ end }}
+                        </ul>
+                    {{ else }}<p class="empty-note">No pages yet.</p>{{ end }}
                 </li>
             {{ end }}
         </ul>

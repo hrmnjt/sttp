@@ -1,0 +1,8 @@
+{{ define "main" }}
+    <article>
+        <p class="back-link"><a href="{{ with .Site.GetPage "/wal" }}{{ .RelPermalink }}{{ end }}">← wal</a></p>
+        <h1>{{ .Title }}</h1>
+        <div class="article-date"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time></div>
+        {{ .Content }}
+    </article>
+{{ end }}

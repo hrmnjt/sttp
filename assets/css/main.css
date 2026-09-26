@@ -167,7 +167,7 @@ body > footer p { margin-bottom: 0; }
     .section-doodle { width: 60px; }
 }
 
-.directory-list, .build-preview, .build-relations, .recent-list, .shard-list {
+.directory-list, .build-preview, .build-relations, .recent-list, .page-preview, .shard-list {
     list-style: none;
     padding: 0;
     margin: 0;
@@ -193,7 +193,7 @@ body > footer p { margin-bottom: 0; }
 .directory-count { color: var(--text-secondary); font: 0.82rem/1.6 var(--font-mono); white-space: nowrap; }
 .directory-item p { margin-bottom: 8px; line-height: 1.6; }
 
-.build-preview, .recent-list { margin-top: 12px; }
+.build-preview, .recent-list, .page-preview { margin-top: 12px; }
 .build-preview > li { margin-bottom: 12px; }
 .build-name { color: var(--text-primary); font: 700 1rem/1.6 var(--font-mono); text-decoration-color: var(--border-color); }
 .build-name:hover { color: var(--accent-hover); }
@@ -208,6 +208,11 @@ body > footer p { margin-bottom: 0; }
 .more-link { font: 0.85rem/1.8 var(--font-mono); }
 .recent-list .more-link { padding-left: calc(10ch + 16px); }
 .more-link a { color: var(--accent); }
+.page-preview li { padding: 3px 0; }
+.page-preview a { color: var(--text-primary); text-decoration-color: var(--border-color); }
+.page-preview a:hover { color: var(--accent-hover); }
+.page-preview .more-link a { color: var(--accent); }
+.empty-note { color: var(--text-secondary); font: 0.85rem/1.7 var(--font-mono); }
 
 @media (max-width: 740px) {
     .directory-list { grid-template-columns: 1fr; gap: 24px; }
@@ -218,18 +223,6 @@ body > footer p { margin-bottom: 0; }
     .recent-list li { display: block; padding: 6px 0; }
     .recent-list time { display: block; }
     .recent-list .more-link { padding-left: 0; }
-}
-
-/* Unpublished lanes occupy the second row, but contain no links. */
-.directory-item--planned { color: var(--text-secondary); }
-.directory-item--planned h2 { color: var(--text-secondary); }
-.directory-item--planned img { filter: grayscale(1); }
-.planned-status {
-    padding: 2px 6px;
-    color: var(--text-secondary);
-    border: 1px dashed var(--border-color);
-    font: 0.75rem/1.5 var(--font-mono);
-    white-space: nowrap;
 }
 
 .shard-list {
@@ -263,11 +256,24 @@ body > footer p { margin-bottom: 0; }
     .shard-date { display: block; margin-bottom: 2px; }
 }
 
-/* Builds and Shards get their own full indexes. */
-.builds-index, .shards-index { max-width: 72ch; }
-.builds-index .section-heading, .shards-index .section-heading { margin-bottom: 12px; }
-.builds-index h1, .shards-index h1 { margin: 0; font-size: clamp(2rem, 5vw, 2.75rem); }
-.builds-index > p, .shards-index > p { max-width: 65ch; }
+/* Full section indexes and the aggregate catalog. */
+.builds-index, .shards-index, .wal-index, .readme-index, .catalog-page { max-width: 72ch; }
+.builds-index .section-heading, .shards-index .section-heading,
+.wal-index .section-heading, .readme-index .section-heading { margin-bottom: 12px; }
+.builds-index h1, .shards-index h1, .wal-index h1, .readme-index h1,
+.catalog-page > h1 { font-size: clamp(2rem, 5vw, 2.75rem); }
+.builds-index h1, .shards-index h1, .wal-index h1, .readme-index h1 { margin: 0; }
+.catalog-page > h1 { margin: 0 0 12px; }
+.builds-index > p, .shards-index > p, .wal-index > p,
+.readme-index > p, .catalog-page > p { max-width: 65ch; }
+
+.catalog-group { margin-top: 32px; }
+.catalog-group .directory-heading { margin-bottom: 8px; }
+.catalog-list { list-style: none; padding: 0; margin: 0; }
+.catalog-list li { padding: 5px 0; }
+.catalog-list a { color: var(--text-primary); text-decoration-color: var(--border-color); }
+.catalog-list a:hover { color: var(--accent-hover); }
+.catalog-list small { display: block; color: var(--text-secondary); font-size: 0.85rem; }
 
 .project-list { list-style: none; padding: 0; margin: 28px 0; }
 .project-list li { margin-bottom: 24px; }
