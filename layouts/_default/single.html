@@ -2,8 +2,10 @@
 <article>
     <h1>{{ .Title }}</h1>
     <div class="article-date">
-        {{ .Date.Format "2006-01-02" }} | {{ .WordCount }} words | {{
-        .ReadingTime }} min read
+        <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>
+        <span aria-hidden="true">·</span> {{ .ReadingTime }} min read
+        {{ with .Params.source }}<span aria-hidden="true">·</span> <a href="{{ . }}">Code on GitHub</a>{{ end }}
+        {{ with .Params.related }}{{ with $.Site.GetPage . }}<span aria-hidden="true">·</span> Related: <a href="{{ .RelPermalink }}">{{ .Title }}</a>{{ end }}{{ end }}
     </div>
     {{ if .Params.migrated }}
     <div class="migrated-notice">
