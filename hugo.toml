@@ -34,7 +34,7 @@ disableHugoGeneratorInject = true
 # The homepage fails the build if a disabled section has content.
 [params.features]
   wal = false
-  meta = false
+  readme = false
 
 # Output formats
 [outputs]

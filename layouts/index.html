@@ -1,13 +1,15 @@
 {{ define "main" }}
     {{ $wal := .Site.GetPage "/wal" }}
-    {{ $meta := .Site.GetPage "/meta" }}
+    {{ $readme := .Site.GetPage "/readme" }}
     {{ $walEnabled := .Site.Params.features.wal }}
-    {{ $metaEnabled := .Site.Params.features.meta }}
+    {{ $readmeEnabled := .Site.Params.features.readme }}
     {{ if and (not $walEnabled) $wal }}{{ errorf "wal content exists while params.features.wal is disabled" }}{{ end }}
-    {{ if and (not $metaEnabled) $meta }}{{ errorf "meta content exists while params.features.meta is disabled" }}{{ end }}
+    {{ if and (not $readmeEnabled) $readme }}{{ errorf "readme content exists while params.features.readme is disabled" }}{{ end }}
     {{ $desk := resources.Get "images/doodles/desk.svg" | resources.Fingerprint "sha256" }}
     {{ $builds := resources.Get "images/doodles/builds.svg" | resources.Fingerprint "sha256" }}
     {{ $shard := resources.Get "images/doodles/shard.svg" | resources.Fingerprint "sha256" }}
+    {{ $walDoodle := resources.Get "images/doodles/wal.svg" | resources.Fingerprint "sha256" }}
+    {{ $readmeDoodle := resources.Get "images/doodles/readme.svg" | resources.Fingerprint "sha256" }}
     <section class="home-intro" aria-labelledby="intro-title">
         <div>
             <h1 id="intro-title">Hi, I'm Harman.</h1>
@@ -16,7 +18,7 @@
         <img class="hero-doodle" src="{{ $desk.RelPermalink }}" alt="" aria-hidden="true" width="190" height="152">
     </section>
 
-    <section class="home-index" id="index" aria-label="Browse builds and shards">
+    <section class="home-index" id="index" aria-label="Site sections">
         <ul class="directory-list">
             {{ with .Site.GetPage "/builds" }}
                 {{ $count := len .RegularPages }}
@@ -62,22 +64,38 @@
             {{ end }}
             {{ if and $walEnabled $wal }}
                 <li class="directory-item">
-                    <div class="directory-heading"><h2><a href="{{ $wal.RelPermalink }}">wal</a></h2></div>
+                    <div class="directory-heading">
+                        <img src="{{ $walDoodle.RelPermalink }}" alt="" aria-hidden="true" width="64" height="54">
+                        <h2><a href="{{ $wal.RelPermalink }}">wal</a></h2>
+                    </div>
+                    <p>Short, dated updates on what I'm doing now.</p>
+                </li>
+            {{ else }}
+                <li class="directory-item directory-item--planned">
+                    <div class="directory-heading">
+                        <img src="{{ $walDoodle.RelPermalink }}" alt="" aria-hidden="true" width="64" height="54">
+                        <h2>wal</h2><span class="planned-status">coming soon</span>
+                    </div>
                     <p>Short, dated updates on what I'm doing now.</p>
                 </li>
             {{ end }}
-            {{ if and $metaEnabled $meta }}
+            {{ if and $readmeEnabled $readme }}
                 <li class="directory-item">
-                    <div class="directory-heading"><h2><a href="{{ $meta.RelPermalink }}">meta</a></h2></div>
+                    <div class="directory-heading">
+                        <img src="{{ $readmeDoodle.RelPermalink }}" alt="" aria-hidden="true" width="64" height="54">
+                        <h2><a href="{{ $readme.RelPermalink }}">readme</a></h2>
+                    </div>
+                    <p>About this site and how I work.</p>
+                </li>
+            {{ else }}
+                <li class="directory-item directory-item--planned">
+                    <div class="directory-heading">
+                        <img src="{{ $readmeDoodle.RelPermalink }}" alt="" aria-hidden="true" width="64" height="54">
+                        <h2>readme</h2><span class="planned-status">coming soon</span>
+                    </div>
                     <p>About this site and how I work.</p>
                 </li>
             {{ end }}
         </ul>
-        {{ if or (not $walEnabled) (not $wal) (not $metaEnabled) (not $meta) }}
-            <ul class="planned-list" aria-label="Planned sections">
-                {{ if or (not $walEnabled) (not $wal) }}<li><span class="planned-name">wal</span> <span class="planned-detail">dated updates</span> <span class="planned-status">coming soon</span></li>{{ end }}
-                {{ if or (not $metaEnabled) (not $meta) }}<li><span class="planned-name">meta</span> <span class="planned-detail">about &amp; site notes</span> <span class="planned-status">coming soon</span></li>{{ end }}
-            </ul>
-        {{ end }}
     </section>
 {{ end }}

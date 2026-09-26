@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 80" fill="none">
+  <!-- A little dated ledger, with the next line left open. -->
+  <g stroke="#bdae93" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M20 11 Q43 9 73 13 L76 68 Q47 70 22 67 Z"/>
+    <path d="M26 17 L26 61 M31 24 L38 24 M45 24 L64 23 M31 36 L38 36 M45 36 L65 35 M31 48 L38 48 M45 48 L61 47" stroke-width="1.3"/>
+    <path d="M31 59 L38 59 M45 59 L56 58" stroke-width="1.2"/>
+    <path d="M14 22 l-4 -1 m4 10 -5 1 M81 19 l5 -2 m-4 12 5 2" stroke-width="1.2"/>
+  </g>
+  <g stroke="#b8bb26" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M64 55 q6 -5 11 1 q3 6 -3 10 q-6 3 -10 -3 q-2 -4 2 -8 z"/>
+    <path d="M68 57 l0 5 4 1"/>
+    <path d="M41 72 q8 2 16 0" stroke-width="1.2"/>
+  </g>
+</svg>
