@@ -1,0 +1,18 @@
+{{ define "main" }}
+    {{ $laptop := resources.Get "images/doodles/laptop.svg" | resources.Fingerprint "sha256" }}
+    <section class="work-index" aria-labelledby="work-title">
+        <div class="section-heading">
+            <h1 id="work-title">Work</h1>
+            <img class="section-doodle" src="{{ $laptop.RelPermalink }}" alt="" aria-hidden="true" width="80" height="67">
+        </div>
+        {{ .Content }}
+        <ul class="project-list">
+            {{ range .Pages.ByTitle }}
+                <li>
+                    <h2><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+                    <p>{{ .Description }}</p>
+                </li>
+            {{ end }}
+        </ul>
+    </section>
+{{ end }}

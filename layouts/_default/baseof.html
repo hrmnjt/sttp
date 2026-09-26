@@ -5,20 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
+    {{ $description := .Summary | plainify | truncate 160 }}
+    {{ with .Params.description }}{{ $description = . }}{{ end }}
+    {{ if .IsHome }}{{ $description = .Site.Params.description }}{{ end }}
     <title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} - {{ .Site.Title }}{{ end }}</title>
-    <meta name="description" content="{{ if .IsHome }}{{ .Site.Params.description }}{{ else }}{{ .Summary | plainify | truncate 160 }}{{ end }}">
+    <meta name="description" content="{{ $description }}">
 
     <!-- Open Graph Tags -->
     <meta property="og:title" content="{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }}{{ end }}">
-    <meta property="og:description" content="{{ if .IsHome }}{{ .Site.Params.description }}{{ else }}{{ .Summary | plainify | truncate 160 }}{{ end }}">
+    <meta property="og:description" content="{{ $description }}">
     <meta property="og:url" content="{{ .Permalink }}">
-    <meta property="og:type" content="{{ if .IsHome }}website{{ else }}article{{ end }}">
+    <meta property="og:type" content="{{ if and .IsPage (eq .Section "shards") }}article{{ else }}website{{ end }}">
     <meta property="og:site_name" content="{{ .Site.Title }}">
 
     <!-- Twitter Card Tags -->
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }}{{ end }}">
-    <meta name="twitter:description" content="{{ if .IsHome }}{{ .Site.Params.description }}{{ else }}{{ .Summary | plainify | truncate 160 }}{{ end }}">
+    <meta name="twitter:description" content="{{ $description }}">
 
     <link rel="canonical" href="{{ .Permalink }}">
     <link rel="alternate" type="application/rss+xml" title="{{ .Site.Title }}" href="/index.xml">
@@ -38,7 +41,7 @@
 
     <header>
         <a class="site-brand" href="/">hrmnjt.dev</a>
-        <nav aria-label="Primary"><a href="/#work">Work</a><a href="/#shards">Writing</a><a href="/index.xml">RSS</a></nav>
+        <nav aria-label="Primary"><a href="/work/">Work</a><a href="/#index">Index</a><a href="/index.xml">RSS</a></nav>
     </header>
 
     <main id="main">
@@ -46,14 +49,6 @@
     </main>
 
     <footer>
-        <nav>
-            <a href="/">Index</a>
-            <a href="/index.xml">RSS</a>
-
-            <!-- TODO: come back to this someday -->
-            <!-- <a href="/about/">About</a> -->
-            <!-- <a href="/colophon/">Colophon</a> -->
-        </nav>
         <p>© {{ now.Format "2006" }} {{ site.Params.author }}. All rights reserved.</p>
     </footer>
 </body>

@@ -1,4 +1,4 @@
-{{- if .IsPage -}}
+{{- if and .IsPage (eq .Section "shards") -}}
   {{- /* Article structured data */ -}}
   <script type="application/ld+json">
   {
