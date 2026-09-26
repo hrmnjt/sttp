@@ -3,7 +3,7 @@ title = "Shards"
 sort_by = "date"
 +++
 
-> shard · /SHärd/ · noun — a piece of broken ceramic, metal, glass, or rock,
-> typically having sharp edges.
-
-These are my rough, uncut thoughts that haven't been polished enough.
+In databases, sharding splits a dataset into smaller partitions, often spread
+across machines. I borrowed the name for these dated pieces of my thinking:
+useful on their own, but not the whole picture. Some are rough; some have been
+revised since they were written.
