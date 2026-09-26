@@ -15,7 +15,7 @@
     {{ $path := printf "content/%s" .Path }}
     <nav class="source-trail" aria-label="Shard source">
         <a href="{{ printf "%s/blob/main/%s?plain=1" site.Params.source_repo $path }}">View Markdown</a>
-        <a href="{{ printf "%s/commits/main/%s" site.Params.source_repo $path }}">Edit history</a>
+        <a href="{{ printf "%s/commits/main/%s" site.Params.source_repo $path }}">View history</a>
     </nav>
     {{ end }}
     {{ if .Params.migrated }}
