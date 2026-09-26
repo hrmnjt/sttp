@@ -80,9 +80,7 @@ body > header {
     justify-content: space-between;
     flex-wrap: wrap;
     gap: 8px 24px;
-    padding-bottom: 16px;
     margin-bottom: clamp(28px, 4vw, 44px);
-    border-bottom: 1px solid var(--border-color);
     font-family: var(--font-mono);
     font-size: 0.9rem;
 }
@@ -107,7 +105,6 @@ body > header nav a, body > footer nav a {
 body > footer {
     margin-top: 48px;
     padding-top: 20px;
-    border-top: 1px solid var(--border-color);
     color: var(--text-secondary);
     font: 0.85rem/1.6 var(--font-mono);
 }
@@ -140,22 +137,32 @@ body > footer p { margin-bottom: 0; }
 }
 
 .home-section {
-    margin-bottom: 40px;
-    padding-top: 16px;
-    border-top: 1px solid var(--border-color);
+    margin-bottom: 32px;
     scroll-margin-top: 16px;
 }
 
+.section-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 72ch;
+    margin-bottom: 8px;
+}
+
 .home-section h2 {
-    margin-bottom: 16px;
+    margin: 0;
     font-size: 1.35rem;
 }
 
-/* A quiet margin rule: the project is an entry, not a card. */
-.work-entry {
-    margin-left: 2px;
-    padding-left: 18px;
-    border-left: 2px solid var(--accent);
+.section-doodle {
+    width: 72px;
+    height: auto;
+    flex: none;
+    margin: 0 8px 0 0;
+}
+
+@media (max-width: 600px) {
+    .section-doodle { width: 60px; }
 }
 
 .work-entry h3 {
@@ -188,11 +195,8 @@ body > footer p { margin-bottom: 0; }
     display: flex;
     align-items: baseline;
     gap: 24px;
-    padding: 9px 0;
-    border-bottom: 1px solid var(--border-color);
+    padding: 8px 0;
 }
-
-.shard-item:first-child { border-top: 1px solid var(--border-color); }
 
 .shard-item a {
     color: var(--text-primary);

@@ -1,11 +1,16 @@
 {{ define "main" }}
+    {{ $laptop := resources.Get "images/doodles/laptop.svg" | resources.Fingerprint "sha256" }}
+    {{ $shard := resources.Get "images/doodles/shard.svg" | resources.Fingerprint "sha256" }}
     <section class="home-intro" aria-labelledby="intro-title">
         <h1 id="intro-title">Hi, I'm Harman.</h1>
         <p>I write shards: dated notes on software, tools, and things I'm figuring out. Some are rough; they're snapshots of what I thought at the time.</p>
     </section>
 
     <section class="home-section" id="work" aria-labelledby="work-title">
-        <h2 id="work-title">Work</h2>
+        <div class="section-heading">
+            <h2 id="work-title">Work</h2>
+            <img class="section-doodle" src="{{ $laptop.RelPermalink }}" alt="" aria-hidden="true" width="80" height="67">
+        </div>
         {{ with .Site.GetPage "/shards/2026-02-01-dev" }}
         <div class="work-entry">
             <h3>dev</h3>
@@ -16,7 +21,10 @@
     </section>
 
     <section class="home-section" id="shards" aria-labelledby="shards-title">
-        <h2 id="shards-title">Writing</h2>
+        <div class="section-heading">
+            <h2 id="shards-title">Writing</h2>
+            <img class="section-doodle" src="{{ $shard.RelPermalink }}" alt="" aria-hidden="true" width="80" height="67">
+        </div>
         <p class="section-intro">All shards, newest first.</p>
         <ul class="shard-list">
             {{ range .Site.RegularPages.ByDate.Reverse }}
