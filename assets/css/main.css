@@ -156,11 +156,6 @@ body > footer p { margin-bottom: 0; }
     margin-bottom: 8px;
 }
 
-.home-index h2 {
-    margin: 0;
-    font-size: 1.35rem;
-}
-
 .section-doodle {
     width: 72px;
     height: auto;
@@ -194,7 +189,7 @@ body > footer p { margin-bottom: 0; }
 }
 
 .directory-heading img { width: 64px; height: auto; flex: none; margin: 0; }
-.directory-heading h3 { margin: 0; font-size: 1.3rem; }
+.directory-heading h2 { margin: 0; font-size: 1.3rem; }
 .directory-count { color: var(--text-secondary); font: 0.82rem/1.6 var(--font-mono); white-space: nowrap; }
 .directory-item p { margin-bottom: 8px; line-height: 1.6; }
 
