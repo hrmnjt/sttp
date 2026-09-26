@@ -1,5 +1,5 @@
 baseURL = 'https://hrmnjt.dev'
-languageCode = 'en-us'
+locale = 'en-us'
 title = 'hrmnjt.dev::sttp://secure_thought_transfer_protocol'
 
 # Disable taxonomy pages
