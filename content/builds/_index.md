@@ -1,5 +1,5 @@
 +++
-title = "Builds"
+title = "builds"
 description = "Things I've built, tried, and kept notes on."
 aliases = ["/work/"]
 +++

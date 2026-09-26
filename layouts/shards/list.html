@@ -2,7 +2,7 @@
     {{ $shard := resources.Get "images/doodles/shard.svg" | resources.Fingerprint "sha256" }}
     <section class="shards-index" aria-labelledby="shards-title">
         <div class="section-heading">
-            <h1 id="shards-title">Shards</h1>
+            <h1 id="shards-title">shards</h1>
             <img class="section-doodle" src="{{ $shard.RelPermalink }}" alt="" aria-hidden="true" width="80" height="67">
         </div>
         {{ .Content }}

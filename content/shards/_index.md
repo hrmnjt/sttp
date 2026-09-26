@@ -1,5 +1,5 @@
 +++
-title = "Shards"
+title = "shards"
 sort_by = "date"
 +++
 
