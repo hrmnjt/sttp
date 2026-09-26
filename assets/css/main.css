@@ -4,14 +4,14 @@
     color-scheme: dark;
     --bg-primary: #282828;
     --text-primary: #ebdbb2;
-    --text-secondary: #a89984;
-    --border-color: #504945;
+    --text-secondary: #bdae93;
+    --border-color: #7c6f64;
     --code-bg: #3c3836;
     --pre-bg: #1d2021;
     --code-border: #665c54;
-    --accent: #b8bb26;
-    --accent-hover: #fabd2f;
-    --external-link-color: #928374;
+    --accent: #fabd2f;
+    --accent-hover: #b8bb26;
+    --external-link-color: #bdae93;
     --blockquote-bg: #32302f;
     --blockquote-text: #d5c4a1;
     --syntax-keyword: #fb4934;
@@ -58,12 +58,13 @@ body {
     color: var(--text-primary);
     background: var(--bg-primary);
     padding: 16px;
+    max-width: 1120px;
+    margin-inline: auto;
 }
 
 @media screen and (min-width: 768px) {
     body {
         padding: 32px 48px;
-        max-width: 900px; /* Comfortable width for 88-120 characters */
     }
 }
 
@@ -98,6 +99,11 @@ a {
 
 a:hover {
     color: var(--accent-hover);
+}
+
+a:focus-visible {
+    outline: 3px solid var(--accent);
+    outline-offset: 4px;
 }
 
 a[href^="http"]::after {
@@ -137,20 +143,40 @@ pre code {
 
 /* Header and Footer */
 header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px 24px;
     margin-bottom: 32px;
-    padding-bottom: 16px;
+    padding-block: 16px;
+    border-top: 2px solid var(--border-color);
     border-bottom: 1px dashed var(--border-color);
 }
 
-header h1 {
-    margin: 0;
-    font-size: 1.4em;
+.site-brand {
+    color: var(--text-primary);
+    font-size: 1.15rem;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+header nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 16px;
+}
+
+header nav a,
+footer nav a {
+    display: inline-block;
+    padding: 7px 2px;
 }
 
 footer {
-    margin-top: 48px;
+    margin-top: 72px;
     padding-top: 16px;
-    border-top: 1px dotted var(--border-color);
+    border-top: 2px solid var(--border-color);
     font-size: 0.9em;
 }
 
@@ -263,6 +289,12 @@ main {
 /* Article container - optimized for reading */
 article {
     margin: 0;
+    max-width: 73ch;
+}
+
+article h1 {
+    font-size: clamp(1.65rem, 3vw, 2.5rem);
+    line-height: 1.25;
 }
 
 /* Migrated notice */
@@ -297,7 +329,7 @@ article > * + h2 {
 
 /* Improved line height for article content */
 article p {
-    line-height: 1.7;
+    line-height: 1.8;
     margin-bottom: 1.4em;
 }
 
@@ -351,4 +383,80 @@ td {
     padding: 8px;
     border: 1px dotted var(--border-color);
     text-align: left;
+}
+
+/* Field notebook: homepage */
+.notebook-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(200px, 250px);
+    gap: clamp(24px, 5vw, 80px);
+    padding-block: clamp(24px, 5vw, 56px) 32px;
+}
+
+.notebook-hero > div { min-width: 0; }
+
+.notebook-label {
+    color: var(--accent);
+    font-size: .875rem;
+    letter-spacing: .02em;
+}
+
+.notebook-hero h1 {
+    max-width: 25ch;
+    margin: 16px 0 24px;
+    font-size: clamp(1.65rem, 3vw, 2.5rem);
+    line-height: 1.25;
+}
+
+.notebook-hero > div > p:last-child,
+.notebook-project > p:last-child {
+    max-width: 68ch;
+    line-height: 1.8;
+}
+
+.notebook-hero aside {
+    align-self: center;
+    padding-left: 16px;
+    border-left: 2px solid var(--accent);
+    color: var(--text-secondary);
+    font-size: .9rem;
+}
+
+.notebook-hero aside h2 {
+    color: var(--text-primary);
+    font-size: 1.05rem;
+    margin: 0 0 12px;
+}
+
+.notebook-hero aside p { margin: 0; }
+
+.notebook-list {
+    max-width: 790px;
+    padding: 24px 24px 8px;
+    background: var(--blockquote-bg);
+    border: 1px solid var(--border-color);
+    box-shadow: 5px 6px 0 var(--pre-bg);
+}
+
+.notebook-list h2 { margin: 0 0 16px; }
+
+.notebook-list .shard-item {
+    padding-block: 14px;
+    margin: 0;
+    border-top: 1px dashed var(--border-color);
+}
+
+.notebook-project {
+    max-width: 790px;
+    margin-top: 64px;
+    padding-top: 20px;
+    border-top: 1px dashed var(--border-color);
+}
+
+.notebook-project h2 { margin: 0 0 20px; }
+
+@media screen and (max-width: 740px) {
+    .notebook-hero { grid-template-columns: 1fr; gap: 12px; }
+    .notebook-hero aside { max-width: 40ch; align-self: start; margin-bottom: 12px; }
+    .notebook-list { padding-inline: 18px; }
 }

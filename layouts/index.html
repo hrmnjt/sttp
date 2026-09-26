@@ -1,4 +1,18 @@
 {{ define "main" }}
+    <section class="notebook-hero" aria-labelledby="notebook-title">
+        <div>
+            <p class="notebook-label">NOTEBOOK NO. 001 / WRITTEN & REVISED IN PUBLIC</p>
+            <h1 id="notebook-title">A place to work out what I think.</h1>
+            <p>These are my rough, uncut thoughts that haven't been polished enough.</p>
+        </div>
+        <aside aria-label="What is a shard?">
+            <h2>What is a shard?</h2>
+            <p>A piece of broken ceramic, metal, glass, or rock, typically having sharp edges.</p>
+        </aside>
+    </section>
+    <section class="notebook-list" aria-labelledby="shards-title">
+        <p class="notebook-label">/ LATEST PAGES</p>
+        <h2 id="shards-title">The shards</h2>
     <ul class="shard-list">
         {{ range .Site.RegularPages }}
             <li class="shard-item">
@@ -7,4 +21,10 @@
             </li>
         {{ end }}
     </ul>
+    </section>
+    <section class="notebook-project" aria-labelledby="project-title">
+        <p class="notebook-label">PROJECT NOTE / DEV</p>
+        <h2 id="project-title">dotfiles (sandwich) recipe</h2>
+        <p>Read the <a href="/2026/02/01/dev/">shard</a> or browse the <a href="https://github.com/hrmnjt/dev">repository</a>.</p>
+    </section>
 {{ end }}
