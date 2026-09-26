@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 160" fill="none">
+  <!-- A pencil turning a loose scrap into a note. Original margin sketch. -->
+  <g stroke="#bdae93" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21 46 Q22 41 28 40 L113 35 Q117 34 118 40 L126 123 L104 126 L94 134 L81 130 L70 139 L56 133 L39 138 L32 129 L25 131 Z"/>
+    <path d="M29 50 Q58 44 104 44 M34 59 Q34 93 38 120" stroke-width="1.2"/>
+    <path d="M47 68 Q68 64 87 67 M48 78 Q74 75 98 78 M49 88 Q63 87 72 88" stroke-width="1.6"/>
+    <path d="M41 133 Q68 145 94 138 M119 129 q10 2 17 -3" stroke-width="1.1"/>
+    <path d="M103 96 L151 27 Q153 24 157 28 L168 36 Q171 39 168 43 L120 111 Z"/>
+    <path d="M108 91 L126 103 M151 28 L166 40 M158 32 L115 96" stroke-width="1.2"/>
+    <path d="M103 96 L100 115 L120 111 M100 115 l5 -8"/>
+    <path d="M135 109 q13 4 22 -1 m-15 9 q17 5 27 -3" stroke-width="1.3"/>
+  </g>
+  <g stroke="#b8bb26" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M50 102 q11 -6 20 1 q8 7 19 0"/>
+    <path d="M175 20 l5 -7 m1 16 8 -2 M27 25 l-5 -5 m-3 14 -7 -1" stroke-width="1.5"/>
+    <path d="M139 135 q5 -4 10 -2 q5 4 12 -2" stroke-width="1.3"/>
+  </g>
+</svg>

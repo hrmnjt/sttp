@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 80" fill="none">
+  <!-- A bent paperclip, not an icon button. -->
+  <g stroke="#bdae93" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M42 16 Q54 21 50 34 L34 67 Q29 75 19 70 Q11 66 16 55 L36 18 Q41 9 48 14 Q55 19 51 27"/>
+    <path d="M42 19 L23 57 Q20 63 25 65 Q30 67 34 60 L46 36" stroke-width="1.4"/>
+  </g>
+  <g stroke="#b8bb26" stroke-width="1.5" stroke-linecap="round">
+    <path d="M10 45 l-4 -2 m7 -4 -2 -5 M52 54 l4 3 m-7 3 2 5"/>
+  </g>
+</svg>
