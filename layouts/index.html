@@ -13,7 +13,7 @@
 
     <section class="home-index" id="index" aria-labelledby="index-title">
         <div class="section-heading">
-            <h2 id="index-title">Index</h2>
+            <h2 id="index-title">index</h2>
             <img class="section-doodle" src="{{ $cards.RelPermalink }}" alt="" aria-hidden="true" width="80" height="67">
         </div>
         <ul class="directory-list">
@@ -21,7 +21,7 @@
                 <li class="directory-item">
                     <div class="directory-heading">
                         <img src="{{ $builds.RelPermalink }}" alt="" aria-hidden="true" width="64" height="54">
-                        <h3><a href="{{ .RelPermalink }}">Builds</a></h3>
+                        <h3><a href="{{ .RelPermalink }}">builds</a></h3>
                     </div>
                     <p>Things I've built or tried, and the notes behind them.</p>
                     {{ with .Site.GetPage "/builds/dev" }}<p class="directory-preview">Start with <a href="{{ .RelPermalink }}">dev</a>, my Mac setup and dotfiles.</p>{{ end }}
@@ -31,7 +31,7 @@
                 <li class="directory-item">
                     <div class="directory-heading">
                         <img src="{{ $shard.RelPermalink }}" alt="" aria-hidden="true" width="64" height="54">
-                        <h3><a href="{{ .RelPermalink }}">Shards</a></h3>
+                        <h3><a href="{{ .RelPermalink }}">shards</a></h3>
                     </div>
                     <p>Dated pieces of my thinking, newest first.</p>
                     <ul class="recent-list" aria-label="Recent shards">
