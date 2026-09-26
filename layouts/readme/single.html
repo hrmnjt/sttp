@@ -1,0 +1,7 @@
+{{ define "main" }}
+    <article>
+        <p class="back-link"><a href="{{ with .Site.GetPage "/readme" }}{{ .RelPermalink }}{{ end }}">← readme</a></p>
+        <h1>{{ .Title }}</h1>
+        {{ .Content }}
+    </article>
+{{ end }}

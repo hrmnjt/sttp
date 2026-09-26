@@ -42,10 +42,7 @@
     <header>
         <a class="site-brand" href="/">hrmnjt.dev</a>
         <nav aria-label="Primary">
-            <a href="/builds/">builds</a>
-            <a href="/shards/">shards</a>
-            {{ with .Site.GetPage "/wal" }}{{ if site.Params.features.wal }}<a href="{{ .RelPermalink }}">wal</a>{{ end }}{{ end }}
-            {{ with .Site.GetPage "/readme" }}{{ if site.Params.features.readme }}<a href="{{ .RelPermalink }}">readme</a>{{ end }}{{ end }}
+            <a href="/catalog/">catalog</a>
             <a href="/index.xml">rss</a>
         </nav>
     </header>

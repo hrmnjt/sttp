@@ -1,0 +1,20 @@
+{{ define "main" }}
+    {{ $doodle := resources.Get "images/doodles/readme.svg" | resources.Fingerprint "sha256" }}
+    <section class="readme-index" aria-labelledby="readme-title">
+        <div class="section-heading">
+            <h1 id="readme-title">readme</h1>
+            <img class="section-doodle" src="{{ $doodle.RelPermalink }}" alt="" aria-hidden="true" width="80" height="67">
+        </div>
+        {{ .Content }}
+        {{ if .RegularPages }}
+            <ul class="project-list">
+                {{ range .RegularPages.ByTitle }}
+                    <li>
+                        <h2><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+                        <p>{{ .Description }}</p>
+                    </li>
+                {{ end }}
+            </ul>
+        {{ else }}<p class="empty-note">No pages yet.</p>{{ end }}
+    </section>
+{{ end }}

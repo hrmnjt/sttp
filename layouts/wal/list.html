@@ -1,0 +1,20 @@
+{{ define "main" }}
+    {{ $doodle := resources.Get "images/doodles/wal.svg" | resources.Fingerprint "sha256" }}
+    <section class="wal-index" aria-labelledby="wal-title">
+        <div class="section-heading">
+            <h1 id="wal-title">wal</h1>
+            <img class="section-doodle" src="{{ $doodle.RelPermalink }}" alt="" aria-hidden="true" width="80" height="67">
+        </div>
+        {{ .Content }}
+        {{ if .RegularPages }}
+            <ul class="shard-list">
+                {{ range .RegularPages.ByDate.Reverse }}
+                    <li class="shard-item">
+                        <time class="shard-date" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>
+                        <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+                    </li>
+                {{ end }}
+            </ul>
+        {{ else }}<p class="empty-note">No updates yet.</p>{{ end }}
+    </section>
+{{ end }}

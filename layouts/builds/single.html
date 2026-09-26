@@ -12,7 +12,7 @@
         <div class="project-links">
             {{ with .Params.writeup }}{{ with $.Site.GetPage . }}
                 <a href="{{ .RelPermalink }}">Read the write-up</a>
-                <span>Published <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time></span>
+                <span>Write-up published <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time></span>
                 {{ with .Params.source }}<a href="{{ . }}">Source on GitHub</a>{{ end }}
             {{ end }}{{ end }}
         </div>
