@@ -220,6 +220,28 @@ body > footer p { margin-bottom: 0; }
     .recent-list .more-link { padding-left: 0; }
 }
 
+/* Planned lanes stay readable, but are not links or empty routes. */
+.planned-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 28px;
+    list-style: none;
+    margin: 28px 0 0;
+    padding: 0;
+    color: var(--text-secondary);
+}
+
+.planned-list li {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 4px 8px;
+    font: 0.82rem/1.6 var(--font-mono);
+}
+
+.planned-name { font-weight: 700; }
+.planned-status { font-size: 0.75rem; }
+
 .shard-list {
     list-style: none;
     padding: 0;

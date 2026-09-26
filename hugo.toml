@@ -30,6 +30,12 @@ disableHugoGeneratorInject = true
   description = 'Rough, unpolished thoughts and ideas'
   source_repo = 'https://github.com/hrmnjt/sttp'
 
+# Future sections: keep these off until there is content to publish.
+# The homepage fails the build if a disabled section has content.
+[params.features]
+  wal = false
+  meta = false
+
 # Output formats
 [outputs]
   home = ['HTML', 'RSS']
