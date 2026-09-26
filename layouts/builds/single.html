@@ -1,7 +1,13 @@
 {{ define "main" }}
     <article class="project-page">
-        <p class="back-link"><a href="{{ with .Site.GetPage "/work" }}{{ .RelPermalink }}{{ end }}">← Work</a></p>
-        <h1>{{ .Title }}</h1>
+        <p class="back-link"><a href="{{ with .Site.GetPage "/builds" }}{{ .RelPermalink }}{{ end }}">← Builds</a></p>
+        <div class="post-heading">
+            <h1>{{ .Title }}</h1>
+            {{ with .Params.doodle }}
+                {{ $doodle := resources.Get (printf "images/doodles/%s.svg" .) | resources.Fingerprint "sha256" }}
+                <img class="post-doodle" src="{{ $doodle.RelPermalink }}" alt="" aria-hidden="true" width="56" height="47">
+            {{ end }}
+        </div>
         <p class="project-dek">{{ .Description }}</p>
         <div class="project-links">
             {{ with .Params.writeup }}{{ with $.Site.GetPage . }}

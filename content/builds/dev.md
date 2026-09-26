@@ -1,6 +1,8 @@
 +++
 title = "dev"
 description = "My Mac setup, dotfiles, and bootstrap workflow."
+doodle = "laptop"
+aliases = ["/work/dev/"]
 writeup = "/shards/2026-02-01-dev"
 related = "/shards/2026-03-06-ivanti-osascript"
 +++

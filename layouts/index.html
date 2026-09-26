@@ -1,6 +1,8 @@
 {{ define "main" }}
     {{ $cards := resources.Get "images/doodles/index-cards.svg" | resources.Fingerprint "sha256" }}
     {{ $desk := resources.Get "images/doodles/desk.svg" | resources.Fingerprint "sha256" }}
+    {{ $builds := resources.Get "images/doodles/builds.svg" | resources.Fingerprint "sha256" }}
+    {{ $shard := resources.Get "images/doodles/shard.svg" | resources.Fingerprint "sha256" }}
     <section class="home-intro" aria-labelledby="intro-title">
         <div>
             <h1 id="intro-title">Hi, I'm Harman.</h1>
@@ -15,28 +17,28 @@
             <img class="section-doodle" src="{{ $cards.RelPermalink }}" alt="" aria-hidden="true" width="80" height="67">
         </div>
         <ul class="directory-list">
-            {{ with .Site.GetPage "/work" }}
+            {{ with .Site.GetPage "/builds" }}
                 <li class="directory-item">
-                    <span class="directory-label">projects</span>
-                    <div>
-                        <h3><a href="{{ .RelPermalink }}">Work</a></h3>
-                        <p>Projects and the notes behind them.</p>
-                        {{ with .Site.GetPage "/work/dev" }}<p class="directory-preview">Start with <a href="{{ .RelPermalink }}">dev</a>, my Mac setup and dotfiles.</p>{{ end }}
+                    <div class="directory-heading">
+                        <img src="{{ $builds.RelPermalink }}" alt="" aria-hidden="true" width="64" height="54">
+                        <h3><a href="{{ .RelPermalink }}">Builds</a></h3>
                     </div>
+                    <p>Things I've built or tried, and the notes behind them.</p>
+                    {{ with .Site.GetPage "/builds/dev" }}<p class="directory-preview">Start with <a href="{{ .RelPermalink }}">dev</a>, my Mac setup and dotfiles.</p>{{ end }}
                 </li>
             {{ end }}
             {{ with .Site.GetPage "/shards" }}
                 <li class="directory-item">
-                    <span class="directory-label">writing</span>
-                    <div>
+                    <div class="directory-heading">
+                        <img src="{{ $shard.RelPermalink }}" alt="" aria-hidden="true" width="64" height="54">
                         <h3><a href="{{ .RelPermalink }}">Shards</a></h3>
-                        <p>Dated notes, newest first.</p>
-                        <ul class="recent-list" aria-label="Recent shards">
-                            {{ range first 3 .RegularPages.ByDate.Reverse }}
-                                <li><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time> <a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
-                            {{ end }}
-                        </ul>
                     </div>
+                    <p>Dated pieces of my thinking, newest first.</p>
+                    <ul class="recent-list" aria-label="Recent shards">
+                        {{ range first 3 .RegularPages.ByDate.Reverse }}
+                            <li><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time> <a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+                        {{ end }}
+                    </ul>
                 </li>
             {{ end }}
         </ul>
