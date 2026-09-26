@@ -314,10 +314,26 @@ article li { margin-bottom: 0.45em; }
 .article-date {
     color: var(--text-secondary);
     font: 0.85rem/1.6 var(--font-mono);
-    margin-bottom: 26px;
+    margin-bottom: 2px;
 }
 
 .article-date span { margin-inline: 0.3em; }
+
+.source-trail {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 18px;
+    margin-bottom: 26px;
+    font: 0.8rem/1.8 var(--font-mono);
+}
+
+.source-trail a {
+    display: inline-block;
+    padding: 3px 0;
+    color: var(--text-secondary);
+}
+
+.source-trail a:hover { color: var(--accent-hover); }
 
 .migrated-notice {
     padding: 16px 20px;

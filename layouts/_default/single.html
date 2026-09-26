@@ -11,6 +11,13 @@
         {{ with .Params.source }}<span aria-hidden="true">·</span> <a href="{{ . }}">Code on GitHub</a>{{ end }}
         {{ with .Params.related }}{{ with $.Site.GetPage . }}<span aria-hidden="true">·</span> Related: <a href="{{ .RelPermalink }}">{{ .Title }}</a>{{ end }}{{ end }}
     </div>
+    {{ with .File }}
+    {{ $path := printf "content/%s" .Path }}
+    <nav class="source-trail" aria-label="Shard source">
+        <a href="{{ printf "%s/blob/main/%s?plain=1" site.Params.source_repo $path }}">View Markdown</a>
+        <a href="{{ printf "%s/commits/main/%s" site.Params.source_repo $path }}">Edit history</a>
+    </nav>
+    {{ end }}
     {{ if .Params.migrated }}
     <div class="migrated-notice">
         [migrated] this post has been migrated over from an older version of this site;
