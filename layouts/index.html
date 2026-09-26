@@ -18,26 +18,44 @@
         </div>
         <ul class="directory-list">
             {{ with .Site.GetPage "/builds" }}
+                {{ $count := len .RegularPages }}
                 <li class="directory-item">
                     <div class="directory-heading">
                         <img src="{{ $builds.RelPermalink }}" alt="" aria-hidden="true" width="64" height="54">
-                        <h3><a href="{{ .RelPermalink }}">builds</a></h3>
+                        <h3><a href="{{ .RelPermalink }}">builds</a> <span class="directory-count">({{ $count }})</span></h3>
                     </div>
                     <p>Things I've built or tried, and the notes behind them.</p>
-                    {{ with .Site.GetPage "/builds/dev" }}<p class="directory-preview">Start with <a href="{{ .RelPermalink }}">dev</a>, my Mac setup and dotfiles.</p>{{ end }}
+                    <ul class="build-preview" aria-label="Builds preview">
+                        {{ range first 3 .RegularPages.ByTitle }}
+                            <li>
+                                <a class="build-name" href="{{ .RelPermalink }}">{{ .Title }}</a>
+                                <ul class="build-relations">
+                                    {{ with .Params.writeup }}{{ with $.Site.GetPage . }}
+                                        <li><span aria-hidden="true">↳</span> write-up: <a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+                                    {{ end }}{{ end }}
+                                    {{ with .Params.related }}{{ with $.Site.GetPage . }}
+                                        <li><span aria-hidden="true">↳</span> related shard: <a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+                                    {{ end }}{{ end }}
+                                </ul>
+                            </li>
+                        {{ end }}
+                        {{ if gt $count 3 }}<li class="more-link"><a href="{{ .RelPermalink }}">+{{ sub $count 3 }} more builds</a></li>{{ end }}
+                    </ul>
                 </li>
             {{ end }}
             {{ with .Site.GetPage "/shards" }}
+                {{ $count := len .RegularPages }}
                 <li class="directory-item">
                     <div class="directory-heading">
                         <img src="{{ $shard.RelPermalink }}" alt="" aria-hidden="true" width="64" height="54">
-                        <h3><a href="{{ .RelPermalink }}">shards</a></h3>
+                        <h3><a href="{{ .RelPermalink }}">shards</a> <span class="directory-count">({{ $count }})</span></h3>
                     </div>
                     <p>Dated pieces of my thinking, newest first.</p>
                     <ul class="recent-list" aria-label="Recent shards">
                         {{ range first 3 .RegularPages.ByDate.Reverse }}
                             <li><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time> <a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
                         {{ end }}
+                        {{ if gt $count 3 }}<li class="more-link"><a href="{{ .RelPermalink }}">+{{ sub $count 3 }} more shards</a></li>{{ end }}
                     </ul>
                 </li>
             {{ end }}
