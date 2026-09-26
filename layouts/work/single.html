@@ -1,0 +1,18 @@
+{{ define "main" }}
+    <article class="project-page">
+        <p class="back-link"><a href="{{ with .Site.GetPage "/work" }}{{ .RelPermalink }}{{ end }}">← Work</a></p>
+        <h1>{{ .Title }}</h1>
+        <p class="project-dek">{{ .Description }}</p>
+        <div class="project-links">
+            {{ with .Params.writeup }}{{ with $.Site.GetPage . }}
+                <a href="{{ .RelPermalink }}">Read the write-up</a>
+                <span>Published <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time></span>
+                {{ with .Params.source }}<a href="{{ . }}">Source on GitHub</a>{{ end }}
+            {{ end }}{{ end }}
+        </div>
+        {{ .Content }}
+        {{ with .Params.related }}{{ with $.Site.GetPage . }}
+            <p class="related-note">Related shard: <a href="{{ .RelPermalink }}">{{ .Title }}</a></p>
+        {{ end }}{{ end }}
+    </article>
+{{ end }}
