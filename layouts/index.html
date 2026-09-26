@@ -1,30 +1,28 @@
 {{ define "main" }}
-    <section class="notebook-hero" aria-labelledby="notebook-title">
-        <div>
-            <p class="notebook-label">NOTEBOOK NO. 001 / WRITTEN & REVISED IN PUBLIC</p>
-            <h1 id="notebook-title">A place to work out what I think.</h1>
-            <p>These are my rough, uncut thoughts that haven't been polished enough.</p>
+    <section class="home-intro" aria-labelledby="intro-title">
+        <h1 id="intro-title">Hi, I'm Harman.</h1>
+        <p>I write shards: dated notes on software, tools, and things I'm figuring out. Some are rough; they're snapshots of what I thought at the time.</p>
+    </section>
+
+    <section class="home-section" id="work" aria-labelledby="work-title">
+        <h2 id="work-title">Work</h2>
+        <div class="work-entry">
+            <h3>dev</h3>
+            <p>My Mac setup, dotfiles, and bootstrap workflow.</p>
+            <p><a href="{{ with .Site.GetPage "/shards/2026-02-01-dev" }}{{ .RelPermalink }}{{ end }}">Read the write-up</a> <span aria-hidden="true">·</span> <a href="https://github.com/hrmnjt/dev">Browse the code</a></p>
         </div>
-        <aside aria-label="What is a shard?">
-            <h2>What is a shard?</h2>
-            <p>A piece of broken ceramic, metal, glass, or rock, typically having sharp edges.</p>
-        </aside>
     </section>
-    <section class="notebook-list" aria-labelledby="shards-title">
-        <p class="notebook-label">/ LATEST PAGES</p>
-        <h2 id="shards-title">The shards</h2>
-    <ul class="shard-list">
-        {{ range .Site.RegularPages }}
-            <li class="shard-item">
-                <span class="shard-date">{{ .Date.Format "2006-01-02" }}</span>
-                <a href="{{ .RelPermalink }}">{{ .Title }}</a>
-            </li>
-        {{ end }}
-    </ul>
-    </section>
-    <section class="notebook-project" aria-labelledby="project-title">
-        <p class="notebook-label">PROJECT NOTE / DEV</p>
-        <h2 id="project-title">dotfiles (sandwich) recipe</h2>
-        <p>Read the <a href="/2026/02/01/dev/">shard</a> or browse the <a href="https://github.com/hrmnjt/dev">repository</a>.</p>
+
+    <section class="home-section" id="shards" aria-labelledby="shards-title">
+        <h2 id="shards-title">Writing</h2>
+        <p class="section-intro">All shards, newest first.</p>
+        <ul class="shard-list">
+            {{ range .Site.RegularPages.ByDate.Reverse }}
+                <li class="shard-item">
+                    <time class="shard-date" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>
+                    <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+                </li>
+            {{ end }}
+        </ul>
     </section>
 {{ end }}
