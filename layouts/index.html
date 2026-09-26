@@ -1,5 +1,5 @@
 {{ define "main" }}
-    {{ $shard := resources.Get "images/doodles/shard.svg" | resources.Fingerprint "sha256" }}
+    {{ $cards := resources.Get "images/doodles/index-cards.svg" | resources.Fingerprint "sha256" }}
     {{ $desk := resources.Get "images/doodles/desk.svg" | resources.Fingerprint "sha256" }}
     <section class="home-intro" aria-labelledby="intro-title">
         <div>
@@ -12,7 +12,7 @@
     <section class="home-index" id="index" aria-labelledby="index-title">
         <div class="section-heading">
             <h2 id="index-title">Index</h2>
-            <img class="section-doodle" src="{{ $shard.RelPermalink }}" alt="" aria-hidden="true" width="80" height="67">
+            <img class="section-doodle" src="{{ $cards.RelPermalink }}" alt="" aria-hidden="true" width="80" height="67">
         </div>
         <ul class="directory-list">
             {{ with .Site.GetPage "/work" }}
