@@ -7,11 +7,13 @@
         </div>
         {{ .Content }}
         {{ if .RegularPages }}
-            <ul class="project-list">
-                {{ range .RegularPages.ByTitle }}
+            <ul class="project-list readme-list">
+                {{ range .RegularPages.ByWeight }}
                     <li>
+                        <span class="readme-list-label">{{ .Params.label }}</span>
                         <h2><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
                         <p>{{ .Description }}</p>
+                        <p class="readme-updated">last updated {{ partial "readme-updated.html" . }}</p>
                     </li>
                 {{ end }}
             </ul>

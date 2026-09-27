@@ -1,6 +1,9 @@
 +++
 title = "ai"
 description = "A design-only placeholder for an AI-use note."
+label = "practices"
+weight = 30
+lastmod = 2026-09-27
 draft = true
 +++
 

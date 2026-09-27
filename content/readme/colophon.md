@@ -1,6 +1,9 @@
 +++
 title = "colophon"
 description = "A design-only placeholder for notes on how this site is made."
+label = "making-of"
+weight = 20
+lastmod = 2026-09-27
 draft = true
 +++
 

@@ -4,17 +4,18 @@
 
 Write your own introduction in `content/_index.md`; `layouts/index.html` controls
 its placement, previews, and labels. The current copy is a starting point, not
-a verified biography. The portrait in `assets/images/profile-dither.png` was
-made from the public GitHub avatar at
-`https://avatars.githubusercontent.com/u/10371494?v=4` using
-`design/dither-avatar.py`. Only the derivative is stored here. Confirm that
-you have permission to republish the original photo before merging, or supply
-a different portrait. Do not rely on GitHub profile visibility as a photo
-license.
+a verified biography. The introduction is intentionally text-only.
 
-The homepage lists WAL dates and titles only; `/wal/` shows a short excerpt
-from the beginning of each entry. Replace the draft examples with real dated
-updates; no WAL status is repeated in the intro.
+The homepage lists three WAL dates and titles, followed by a dotted
+`+N older updates` link when more exist; `/wal/` shows a short excerpt from
+each entry. The fourth draft WAL sample exists only to preview that link.
+Replace all draft examples with real dated updates; no WAL status is repeated
+in the intro.
+
+Readme pages use a curated `label` and `weight` for their manual-like order.
+Set an explicit `lastmod` date whenever a readme page changes; the date appears
+on the homepage preview, `/readme/`, and the page itself. The draft dates mark
+edits to placeholder pages, not approval of their contents.
 
 
 `/wal/` and `/readme/` are published sections with honest empty states. The

@@ -1,6 +1,9 @@
 +++
 title = "about"
 description = "A design-only placeholder for a personal introduction."
+label = "start here"
+weight = 10
+lastmod = 2026-09-27
 draft = true
 +++
 

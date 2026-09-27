@@ -7,6 +7,7 @@
         </li>
     {{ end }}
     {{ if gt (len .Pages) .Limit }}
-        <li class="wal-timeline-more"><a href="{{ .MoreURL }}">+{{ sub (len .Pages) .Limit }} more updates</a></li>
+        {{ $older := sub (len .Pages) .Limit }}
+        <li class="wal-timeline-more"><a href="{{ .MoreURL }}">+{{ $older }} older update{{ if ne $older 1 }}s{{ end }}</a></li>
     {{ end }}
 </ol>

@@ -1,5 +1,4 @@
 {{ define "main" }}
-    {{ $portrait := resources.Get "images/profile-dither.png" | resources.Fingerprint "sha256" }}
     {{ $builds := resources.Get "images/doodles/builds.svg" | resources.Fingerprint "sha256" }}
     {{ $shard := resources.Get "images/doodles/shard.svg" | resources.Fingerprint "sha256" }}
     {{ $walDoodle := resources.Get "images/doodles/wal.svg" | resources.Fingerprint "sha256" }}
@@ -9,7 +8,6 @@
             <h1 id="intro-title">Hi, I'm Harman.</h1>
             {{ .Content }}
         </div>
-        <img class="hero-portrait" src="{{ $portrait.RelPermalink }}" alt="Dithered portrait of Harman" width="176" height="176">
     </section>
 
     <section class="home-index" id="index" aria-label="Site sections">
@@ -71,16 +69,23 @@
             {{ end }}
             {{ with .Site.GetPage "/readme" }}
                 {{ $count := len .RegularPages }}
-                <li class="directory-item">
+                <li class="directory-item directory-item--readme">
                     <div class="directory-heading">
                         <img src="{{ $readmeDoodle.RelPermalink }}" alt="" aria-hidden="true" width="64" height="54">
                         <h2><a href="{{ .RelPermalink }}">readme</a> <span class="directory-count">({{ $count }})</span></h2>
                     </div>
-                    <p>About this site and how I work.</p>
+                    <p>A small manual for who I am, how this site is made, and its publishing practices.</p>
                     {{ if $count }}
-                        <ul class="page-preview" aria-label="Readme pages">
-                            {{ range first 3 .RegularPages.ByTitle }}<li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>{{ end }}
-                            {{ if gt $count 3 }}<li class="more-link"><a href="{{ .RelPermalink }}">+{{ sub $count 3 }} more pages</a></li>{{ end }}
+                        <ul class="readme-preview" aria-label="Readme pages">
+                            {{ range first 3 .RegularPages.ByWeight }}
+                                <li>
+                                    <span class="readme-preview-label">{{ .Params.label }}</span>
+                                    <div><a href="{{ .RelPermalink }}">{{ .Title }}</a>
+                                        <small>updated {{ partial "readme-updated.html" . }}</small>
+                                    </div>
+                                </li>
+                            {{ end }}
+                            {{ if gt $count 3 }}<li class="readme-preview-more"><a href="{{ .RelPermalink }}">+{{ sub $count 3 }} more pages</a></li>{{ end }}
                         </ul>
                     {{ else }}<p class="empty-note">No pages yet.</p>{{ end }}
                 </li>

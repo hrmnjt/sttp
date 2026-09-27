@@ -137,29 +137,12 @@ body > footer a { display: inline-block; padding: 4px 2px; }
 body > footer nav { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 14px; }
 body > footer nav span { padding: 4px 2px; }
 
-/* One index for work and writing. */
+/* One index for work and writing. Let the introduction be just words. */
 .home-intro {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) 176px;
-    align-items: center;
-    gap: 24px;
     margin-bottom: clamp(32px, 5vw, 48px);
 }
 
 .home-intro > div { max-width: 65ch; }
-
-.hero-portrait {
-    width: 176px;
-    height: auto;
-    margin: 0;
-    image-rendering: pixelated;
-    border: 1px solid var(--border-color);
-}
-
-@media (max-width: 640px) {
-    .home-intro { grid-template-columns: 1fr; gap: 16px; }
-    .hero-portrait { width: 128px; }
-}
 
 .home-intro h1 {
     margin-bottom: 12px;
@@ -194,7 +177,7 @@ body > footer nav span { padding: 4px 2px; }
     .section-doodle { width: 60px; }
 }
 
-.directory-list, .build-preview, .build-relations, .recent-list, .page-preview, .shard-list {
+.directory-list, .build-preview, .build-relations, .recent-list, .readme-preview, .shard-list {
     list-style: none;
     padding: 0;
     margin: 0;
@@ -247,7 +230,7 @@ body > footer nav span { padding: 4px 2px; }
 .directory-count { color: var(--text-secondary); font: 0.82rem/1.6 var(--font-mono); white-space: nowrap; }
 .directory-item p { margin-bottom: 8px; line-height: 1.6; }
 
-.build-preview, .recent-list, .page-preview { margin-top: 12px; }
+.build-preview, .recent-list, .readme-preview { margin-top: 12px; }
 .build-preview > li { margin-bottom: 12px; }
 .build-name { color: var(--text-primary); font: 700 1rem/1.6 var(--font-mono); text-decoration-color: var(--border-color); }
 .build-name:hover { color: var(--accent-hover); }
@@ -262,10 +245,13 @@ body > footer nav span { padding: 4px 2px; }
 .more-link { font: 0.85rem/1.8 var(--font-mono); }
 .recent-list .more-link { padding-left: calc(10ch + 16px); }
 .more-link a { color: var(--accent); }
-.page-preview li { padding: 3px 0; }
-.page-preview a { color: var(--text-primary); text-decoration-color: var(--border-color); }
-.page-preview a:hover { color: var(--accent-hover); }
-.page-preview .more-link a { color: var(--accent); }
+.readme-preview li { display: grid; grid-template-columns: 10ch minmax(0, 1fr); gap: 12px; padding: 5px 0; }
+.readme-preview-label { color: var(--text-secondary); font: 0.8rem/1.6 var(--font-mono); }
+.readme-preview li > div { min-width: 0; font-size: 0.95rem; line-height: 1.5; }
+.readme-preview li > div a { color: var(--text-primary); text-decoration-color: var(--border-color); }
+.readme-preview li > div a:hover { color: var(--accent-hover); }
+.readme-preview small { display: block; margin-top: 2px; color: var(--text-secondary); font: 0.75rem/1.5 var(--font-mono); }
+.readme-preview-more a { grid-column: 2; font: 0.85rem/1.6 var(--font-mono); }
 .empty-note { color: var(--text-secondary); font: 0.85rem/1.7 var(--font-mono); }
 
 /* A reading timeline, not a second list of bare links. */
@@ -273,10 +259,12 @@ body > footer nav span { padding: 4px 2px; }
 .wal-timeline::before {
     content: "";
     position: absolute;
-    left: 5px;
+    /* 2px rail centered at x=5px, matching the 10px markers below. */
+    left: 4px;
     top: 8px;
     bottom: 8px;
-    border-left: 2px dotted var(--border-color);
+    width: 2px;
+    background: repeating-linear-gradient(to bottom, var(--border-color) 0 2px, transparent 2px 6px);
 }
 .wal-timeline > li { position: relative; margin: 0 0 22px; }
 .wal-timeline > li::before {
@@ -294,9 +282,28 @@ body > footer nav span { padding: 4px 2px; }
 .wal-timeline h2, .wal-timeline h3 { margin: 2px 0 4px; font: 700 1rem/1.5 var(--font-mono); }
 .wal-timeline p { margin: 0; color: var(--text-secondary); font-size: 0.94rem; line-height: 1.55; }
 .wal-timeline > .wal-timeline-more { margin-bottom: 0; font: 0.85rem/1.5 var(--font-mono); }
-.wal-timeline-more::before { border-color: var(--text-secondary); }
+.wal-timeline > .wal-timeline-more::before {
+    left: -24px;
+    top: 9px;
+    width: 6px;
+    height: 6px;
+    border: 0;
+    background: var(--text-secondary);
+}
 .wal-timeline-more a { display: inline-block; padding: 2px 0; }
 /* On the homepage, match the shard date + title rows while keeping the dotted thread. */
+.wal-timeline--compact::before { display: none; }
+.wal-timeline--compact > li::before { z-index: 1; }
+.wal-timeline--compact > li:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    /* Each segment joins marker centers, even if a title wraps on mobile. */
+    left: -22px;
+    top: 12px;
+    bottom: -12px;
+    width: 2px;
+    background: repeating-linear-gradient(to bottom, var(--border-color) 0 2px, transparent 2px 6px);
+}
 .wal-timeline--compact > li:not(.wal-timeline-more) {
     display: flex;
     align-items: baseline;
@@ -377,6 +384,9 @@ body > footer nav span { padding: 4px 2px; }
 .project-list li { margin-bottom: 24px; }
 .project-list h2 { margin: 0 0 4px; font: 700 1.1rem/1.5 var(--font-mono); }
 .project-list p { margin-bottom: 0; }
+.readme-list-label { display: block; margin-bottom: 3px; color: var(--text-secondary); font: 0.8rem/1.5 var(--font-mono); }
+.readme-updated { color: var(--text-secondary); font: 0.8rem/1.6 var(--font-mono); }
+.readme-list .readme-updated { margin-top: 5px; }
 
 .back-link { font: 0.85rem/1.6 var(--font-mono); margin-bottom: 20px; }
 .project-dek { font-size: 1.1rem; color: var(--text-secondary); }
