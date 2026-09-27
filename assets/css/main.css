@@ -106,12 +106,13 @@ body > footer {
     margin-top: 48px;
     padding-top: 20px;
     color: var(--text-secondary);
-    font: 0.85rem/1.6 var(--font-mono);
+    font: 0.9rem/1.5 var(--font-mono);
 }
 
-body > footer p { margin: 0 0 8px; }
-body > footer p:last-child { margin-bottom: 0; }
-body > footer a { display: inline-block; padding: 3px 0; }
+body > footer p { margin: 0; }
+body > footer a { display: inline-block; padding: 4px 2px; }
+body > footer nav { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 14px; }
+body > footer nav span { padding: 4px 2px; }
 
 /* One index for work and writing. */
 .home-intro {
