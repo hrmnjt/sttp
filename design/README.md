@@ -12,8 +12,9 @@ you have permission to republish the original photo before merging, or supply
 a different portrait. Do not rely on GitHub profile visibility as a photo
 license.
 
-WAL previews use the beginning of each entry as their text. Replace the draft
-examples with real dated updates; no WAL status is repeated in the intro.
+The homepage lists WAL dates and titles only; `/wal/` shows a short excerpt
+from the beginning of each entry. Replace the draft examples with real dated
+updates; no WAL status is repeated in the intro.
 
 
 `/wal/` and `/readme/` are published sections with honest empty states. The

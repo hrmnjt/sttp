@@ -296,6 +296,9 @@ body > footer nav span { padding: 4px 2px; }
 .wal-timeline > .wal-timeline-more { margin-bottom: 0; font: 0.85rem/1.5 var(--font-mono); }
 .wal-timeline-more::before { border-color: var(--text-secondary); }
 .wal-timeline-more a { display: inline-block; padding: 2px 0; }
+.directory-item--wal .wal-timeline > li { margin-bottom: 14px; }
+.directory-item--wal .wal-timeline > li:last-child { margin-bottom: 0; }
+.directory-item--wal .wal-timeline h3 { font-size: 0.95rem; }
 
 @media (max-width: 740px) {
     .directory-list { grid-template-columns: 1fr; gap: 24px; }

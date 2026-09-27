@@ -7,7 +7,7 @@
         </div>
         {{ .Content }}
         {{ if .RegularPages }}
-            {{ partial "wal-timeline.html" (dict "Pages" .RegularPages.ByDate.Reverse "Limit" (len .RegularPages) "HeadingLevel" 2 "Label" "WAL entries") }}
+            {{ partial "wal-timeline.html" (dict "Pages" .RegularPages.ByDate.Reverse "Limit" (len .RegularPages) "HeadingLevel" 2 "Label" "WAL entries" "ShowSummary" true) }}
         {{ else }}<p class="empty-note">No updates yet.</p>{{ end }}
     </section>
 {{ end }}
