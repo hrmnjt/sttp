@@ -11,6 +11,8 @@ A personal setup built around `brew bundle` for packages, `just` for tasks, and
 `stow` for dotfiles. The write-up explains those choices; the
 [repository](https://github.com/hrmnjt/dev) holds the configuration.
 
+{{< dev-flow >}}
+
 ## one decision, traced
 
 I chose `brew bundle` over maintaining my own macOS install scripts. Here's a

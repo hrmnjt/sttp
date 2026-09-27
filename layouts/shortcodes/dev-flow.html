@@ -1,0 +1,36 @@
+{{ $arrow := resources.Get "images/doodles/flow-arrow.svg" | resources.Fingerprint "sha256" }}
+<figure class="dev-flow" aria-labelledby="dev-flow-title">
+    <figcaption id="dev-flow-title">dev / the setup path</figcaption>
+    <ol>
+        <li>
+            <span class="dev-flow-label">01 / packages</span>
+            <div class="dev-flow-route">
+                <a href="https://github.com/hrmnjt/dev/blob/main/Brewfile"><code>Brewfile</code></a>
+                <img src="{{ $arrow.RelPermalink }}" alt="then" width="42" height="24">
+                <code>brew bundle install</code>
+                <img src="{{ $arrow.RelPermalink }}" alt="then" width="42" height="24">
+                <span>tools &amp; apps</span>
+            </div>
+        </li>
+        <li>
+            <span class="dev-flow-label">02 / dotfiles</span>
+            <div class="dev-flow-route">
+                <a href="https://github.com/hrmnjt/dev/blob/main/Justfile"><code>Justfile</code></a>
+                <img src="{{ $arrow.RelPermalink }}" alt="then" width="42" height="24">
+                <code>just stowall</code>
+                <img src="{{ $arrow.RelPermalink }}" alt="then" width="42" height="24">
+                <span>Stow links into <code>~/</code></span>
+            </div>
+        </li>
+        <li>
+            <span class="dev-flow-label">03 / checks</span>
+            <div class="dev-flow-route">
+                <a href="https://github.com/hrmnjt/dev/blob/main/Justfile"><code>Justfile</code></a>
+                <img src="{{ $arrow.RelPermalink }}" alt="then" width="42" height="24">
+                <code>just doctor --only-check</code>
+                <img src="{{ $arrow.RelPermalink }}" alt="then" width="42" height="24">
+                <span>repo config checks</span>
+            </div>
+        </li>
+    </ol>
+</figure>
