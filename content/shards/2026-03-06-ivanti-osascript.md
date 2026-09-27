@@ -4,6 +4,7 @@ slug = "ivanti-osascript"
 date = 2026-03-06
 source = "https://github.com/hrmnjt/dev/blob/main/ivanti/.local/bin/vpn"
 related = "/shards/2026-02-01-dev"
+related_build = "/builds/dev"
 +++
 
 This is a short and sharp one.

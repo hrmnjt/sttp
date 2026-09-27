@@ -11,6 +11,16 @@ A personal setup built around `brew bundle` for packages, `just` for tasks, and
 `stow` for dotfiles. The write-up explains those choices; the
 [repository](https://github.com/hrmnjt/dev) holds the configuration.
 
+## one decision, traced
+
+I chose `brew bundle` over maintaining my own macOS install scripts. Here's a
+small trail through the code and the writing, not an automatically generated
+history:
+
+- **Change:** [the commit that introduced `Brewfile`](https://github.com/hrmnjt/dev/commit/7e6fbeaf28e85bf314187dac8661302658ac03b6) on 2025-12-01.
+- **Reasoning, written later:** [why I chose Homebrew]({{< relref "shards/2026-02-01-dev.md" >}}#choosing-homebrew-and-brew-bundle) in the shard published 2026-02-01.
+- **What happened next:** the setup reached [1.0.0](https://github.com/hrmnjt/dev/tree/1.0.0) on 2026-02-02. The [current `Brewfile`](https://github.com/hrmnjt/dev/blob/main/Brewfile) and [bootstrap instructions](https://github.com/hrmnjt/dev/#for-future-harman) still use `brew bundle`.
+
 ## selected changes
 
 This is a short, manually selected timeline, not a live mirror of the repo.

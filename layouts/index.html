@@ -8,6 +8,9 @@
         <div>
             <h1 id="intro-title">Hi, I'm Harman.</h1>
             <p>I write shards: dated notes on software, tools, and things I'm figuring out. Some are rough; they're snapshots of what I thought at the time.</p>
+            {{ with .Site.GetPage "/wal" }}{{ range first 1 .RegularPages.ByDate.Reverse }}
+                <p class="home-status">latest wal · <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time> · <a href="{{ .RelPermalink }}">{{ .Title }}</a></p>
+            {{ end }}{{ end }}
         </div>
         <img class="hero-doodle" src="{{ $desk.RelPermalink }}" alt="" aria-hidden="true" width="190" height="152">
     </section>
