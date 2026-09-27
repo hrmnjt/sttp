@@ -52,7 +52,15 @@
     </main>
 
     <footer>
-        <p>© {{ now.Format "2006" }} {{ site.Params.author }}. All rights reserved.</p>
+        {{ $licensing := false }}
+        {{ $privacy := false }}
+        {{ range .Site.RegularPages }}
+            {{ if and .File (eq .File.Path "readme/licensing.md") }}{{ $licensing = . }}{{ end }}
+            {{ if and .File (eq .File.Path "readme/privacy.md") }}{{ $privacy = . }}{{ end }}
+        {{ end }}
+        <p>© {{ now.Format "2006" }} {{ site.Params.author }}.</p>
+        <p>Site code: <a href="https://github.com/hrmnjt/sttp/blob/main/LICENSE">MIT</a>. Writing and media: licensing terms under review.</p>
+        <p>More info: <a href="/readme/">readme</a>, {{ with $licensing }}<a href="{{ .RelPermalink }}">licensing</a>{{ else }}licensing (draft){{ end }}, and {{ with $privacy }}<a href="{{ .RelPermalink }}">privacy</a>{{ else }}privacy (draft){{ end }}.</p>
     </footer>
 </body>
 </html>

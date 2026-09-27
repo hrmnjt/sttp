@@ -109,7 +109,9 @@ body > footer {
     font: 0.85rem/1.6 var(--font-mono);
 }
 
-body > footer p { margin-bottom: 0; }
+body > footer p { margin: 0 0 8px; }
+body > footer p:last-child { margin-bottom: 0; }
+body > footer a { display: inline-block; padding: 3px 0; }
 
 /* One index for work and writing. */
 .home-intro {
@@ -189,6 +191,27 @@ body > footer p { margin-bottom: 0; }
 }
 
 .directory-heading img { width: 64px; height: auto; flex: none; margin: 0; }
+
+/* A small pencil-like movement, only when requested by interaction. */
+@media (prefers-reduced-motion: no-preference) {
+    .directory-heading img, .section-doodle {
+        transform-origin: 50% 75%;
+        transition: transform 240ms ease-out;
+    }
+    .directory-item:hover .directory-heading img,
+    .directory-item:focus-within .directory-heading img,
+    .catalog-group:hover .directory-heading img,
+    .catalog-group:focus-within .directory-heading img,
+    .section-heading:hover .section-doodle,
+    .section-heading:focus-within .section-doodle {
+        transform: translateY(-2px) rotate(-5deg);
+    }
+    .hero-doodle { animation: sketch-settle 550ms ease-out both; }
+    @keyframes sketch-settle {
+        from { opacity: 0.65; transform: translateY(7px) rotate(6deg); }
+        to { opacity: 1; transform: rotate(3deg); }
+    }
+}
 .directory-heading h2 { margin: 0; font-size: 1.3rem; }
 .directory-count { color: var(--text-secondary); font: 0.82rem/1.6 var(--font-mono); white-space: nowrap; }
 .directory-item p { margin-bottom: 8px; line-height: 1.6; }
