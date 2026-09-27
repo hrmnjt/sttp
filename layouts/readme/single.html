@@ -2,6 +2,7 @@
     <article>
         <p class="back-link"><a href="{{ with .Site.GetPage "/readme" }}{{ .RelPermalink }}{{ end }}">← readme</a></p>
         <h1>{{ .Title }}</h1>
+        <p class="readme-updated">last updated {{ partial "readme-updated.html" . }}</p>
         {{ .Content }}
     </article>
 {{ end }}

@@ -1,6 +1,9 @@
 +++
 title = "privacy"
 description = "Draft checklist for a possible site privacy notice."
+label = "practices"
+weight = 50
+lastmod = 2026-09-27
 draft = true
 +++
 

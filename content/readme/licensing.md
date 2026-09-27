@@ -1,6 +1,9 @@
 +++
 title = "licensing"
 description = "Draft terms for reuse of the site's code, writing, and media."
+label = "practices"
+weight = 40
+lastmod = 2026-09-27
 draft = true
 +++
 
