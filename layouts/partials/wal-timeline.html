@@ -1,4 +1,4 @@
-<ol class="wal-timeline" aria-label="{{ .Label }}">
+<ol class="wal-timeline{{ if .Compact }} wal-timeline--compact{{ end }}" aria-label="{{ .Label }}">
     {{ range first .Limit .Pages }}
         <li>
             <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>

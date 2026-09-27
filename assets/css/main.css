@@ -296,9 +296,19 @@ body > footer nav span { padding: 4px 2px; }
 .wal-timeline > .wal-timeline-more { margin-bottom: 0; font: 0.85rem/1.5 var(--font-mono); }
 .wal-timeline-more::before { border-color: var(--text-secondary); }
 .wal-timeline-more a { display: inline-block; padding: 2px 0; }
-.directory-item--wal .wal-timeline > li { margin-bottom: 14px; }
-.directory-item--wal .wal-timeline > li:last-child { margin-bottom: 0; }
-.directory-item--wal .wal-timeline h3 { font-size: 0.95rem; }
+/* On the homepage, match the shard date + title rows while keeping the dotted thread. */
+.wal-timeline--compact > li:not(.wal-timeline-more) {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin: 0;
+    padding: 3px 0;
+}
+.wal-timeline--compact time { flex: 0 0 10ch; font: 0.85rem/1.6 var(--font-mono); }
+.wal-timeline--compact h3 { min-width: 0; margin: 0; font: inherit; }
+.wal-timeline--compact h3 a { color: var(--text-primary); text-decoration-color: var(--border-color); }
+.wal-timeline--compact h3 a:hover { color: var(--accent-hover); }
+.wal-timeline--compact > .wal-timeline-more { padding-left: calc(10ch + 16px); }
 
 @media (max-width: 740px) {
     .directory-list { grid-template-columns: 1fr; gap: 24px; }
@@ -309,6 +319,8 @@ body > footer nav span { padding: 4px 2px; }
     .recent-list li { display: block; padding: 6px 0; }
     .recent-list time { display: block; }
     .recent-list .more-link { padding-left: 0; }
+    .wal-timeline--compact > li:not(.wal-timeline-more) { display: block; padding: 6px 0; }
+    .wal-timeline--compact > .wal-timeline-more { padding-left: 0; }
 }
 
 .shard-list {

@@ -65,7 +65,7 @@
                     </div>
                     <p>A write-ahead log of what changed, what is in progress, and what might come next.</p>
                     {{ if $count }}
-                        {{ partial "wal-timeline.html" (dict "Pages" .RegularPages.ByDate.Reverse "Limit" 3 "HeadingLevel" 3 "Label" "Recent WAL entries" "MoreURL" .RelPermalink) }}
+                        {{ partial "wal-timeline.html" (dict "Pages" .RegularPages.ByDate.Reverse "Limit" 3 "HeadingLevel" 3 "Label" "Recent WAL entries" "MoreURL" .RelPermalink "Compact" true) }}
                     {{ else }}<p class="empty-note">No updates yet.</p>{{ end }}
                 </li>
             {{ end }}
