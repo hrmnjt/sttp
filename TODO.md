@@ -4,6 +4,12 @@ Backlog from a review of this repository, [hrmnjt.dev](https://hrmnjt.dev/), and
 
 Keep only outstanding items here: remove an item when it is done, and delete `TODO.md` when nothing remains.
 
+## Before merging the redesign
+
+- [ ] **Decide and publish licensing terms.** Review the existing MIT `LICENSE` scope against code, site writing, original doodles/photos, and third-party media. Replace `content/readme/licensing.md` with reviewed terms, document the same scope in the repository, and make the footer consistent. The draft checklist is not a license.
+- [ ] **Verify privacy practices.** Check actual hosting/CDN logs, analytics, cookies/storage, embedded resources, and contact paths; decide whether a privacy notice is needed. Replace `content/readme/privacy.md` with an accurate statement or remove it. The draft checklist is not a privacy policy.
+- [ ] **Keep design samples out of the release.** Review draft WAL/readme examples and never deploy with `--buildDrafts`; publish only real entries or leave the sections empty.
+
 ## Make the site and repository easier to understand
 
 - [ ] **Add a short introduction and a clear path to your work.** The homepage (`layouts/index.html`) is only a dated list and the header is a long protocol string; a visitor cannot easily tell who writes the site, what “shards” are, or where to find `dev` and other projects. Decide on a brief intro and optional About/Projects navigation without losing the minimal aesthetic.

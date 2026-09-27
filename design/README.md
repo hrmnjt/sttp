@@ -2,7 +2,8 @@
 
 `/wal/` and `/readme/` are published sections with honest empty states. The
 sample entries under `content/wal/` and `content/readme/` are design-only and
-all have `draft = true`, so a normal `hugo` build does not publish them.
+all have `draft = true`, so a normal `hugo` build does not publish them. The
+licensing and privacy drafts are review checklists, not published policies.
 
 To see the section pages populated locally, run from the repository root:
 
