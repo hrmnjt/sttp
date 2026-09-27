@@ -3,7 +3,7 @@
         <li>
             <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>
             <h{{ $.HeadingLevel }}><a href="{{ .RelPermalink }}">{{ .Title }}</a></h{{ $.HeadingLevel }}>
-            <p>{{ .Summary | plainify | truncate 160 }}</p>
+            {{ if $.ShowSummary }}<p>{{ .Summary | plainify | truncate 160 }}</p>{{ end }}
         </li>
     {{ end }}
     {{ if gt (len .Pages) .Limit }}
