@@ -27,7 +27,7 @@ disableHugoGeneratorInject = true
 
 [params]
   author = 'hrmnjt'
-  description = 'Rough, unpolished thoughts and ideas'
+  description = "Harman's projects, notes, and working log."
   source_repo = 'https://github.com/hrmnjt/sttp'
 
 # Output formats

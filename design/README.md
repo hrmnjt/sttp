@@ -1,5 +1,21 @@
 # Preview the sample pages
 
+## Homepage edits
+
+Write your own introduction in `content/_index.md`; `layouts/index.html` controls
+its placement, previews, and labels. The current copy is a starting point, not
+a verified biography. The portrait in `assets/images/profile-dither.png` was
+made from the public GitHub avatar at
+`https://avatars.githubusercontent.com/u/10371494?v=4` using
+`design/dither-avatar.py`. Only the derivative is stored here. Confirm that
+you have permission to republish the original photo before merging, or supply
+a different portrait. Do not rely on GitHub profile visibility as a photo
+license.
+
+WAL previews use the beginning of each entry as their text. Replace the draft
+examples with real dated updates; no WAL status is repeated in the intro.
+
+
 `/wal/` and `/readme/` are published sections with honest empty states. The
 sample entries under `content/wal/` and `content/readme/` are design-only and
 all have `draft = true`, so a normal `hugo` build does not publish them. The

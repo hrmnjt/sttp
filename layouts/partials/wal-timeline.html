@@ -1,0 +1,12 @@
+<ol class="wal-timeline" aria-label="{{ .Label }}">
+    {{ range first .Limit .Pages }}
+        <li>
+            <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>
+            <h{{ $.HeadingLevel }}><a href="{{ .RelPermalink }}">{{ .Title }}</a></h{{ $.HeadingLevel }}>
+            <p>{{ .Summary | plainify | truncate 160 }}</p>
+        </li>
+    {{ end }}
+    {{ if gt (len .Pages) .Limit }}
+        <li class="wal-timeline-more"><a href="{{ .MoreURL }}">+{{ sub (len .Pages) .Limit }} more updates</a></li>
+    {{ end }}
+</ol>

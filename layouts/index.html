@@ -1,5 +1,5 @@
 {{ define "main" }}
-    {{ $desk := resources.Get "images/doodles/desk.svg" | resources.Fingerprint "sha256" }}
+    {{ $portrait := resources.Get "images/profile-dither.png" | resources.Fingerprint "sha256" }}
     {{ $builds := resources.Get "images/doodles/builds.svg" | resources.Fingerprint "sha256" }}
     {{ $shard := resources.Get "images/doodles/shard.svg" | resources.Fingerprint "sha256" }}
     {{ $walDoodle := resources.Get "images/doodles/wal.svg" | resources.Fingerprint "sha256" }}
@@ -7,12 +7,9 @@
     <section class="home-intro" aria-labelledby="intro-title">
         <div>
             <h1 id="intro-title">Hi, I'm Harman.</h1>
-            <p>I write shards: dated notes on software, tools, and things I'm figuring out. Some are rough; they're snapshots of what I thought at the time.</p>
-            {{ with .Site.GetPage "/wal" }}{{ range first 1 .RegularPages.ByDate.Reverse }}
-                <p class="home-status">latest wal · <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time> · <a href="{{ .RelPermalink }}">{{ .Title }}</a></p>
-            {{ end }}{{ end }}
+            {{ .Content }}
         </div>
-        <img class="hero-doodle" src="{{ $desk.RelPermalink }}" alt="" aria-hidden="true" width="190" height="152">
+        <img class="hero-portrait" src="{{ $portrait.RelPermalink }}" alt="Dithered portrait of Harman" width="176" height="176">
     </section>
 
     <section class="home-index" id="index" aria-label="Site sections">
@@ -50,7 +47,7 @@
                         <img src="{{ $shard.RelPermalink }}" alt="" aria-hidden="true" width="64" height="54">
                         <h2><a href="{{ .RelPermalink }}">shards</a> <span class="directory-count">({{ $count }})</span></h2>
                     </div>
-                    <p>Dated pieces of my thinking, newest first.</p>
+                    <p>Shards are self-contained pieces of a larger thought: experiments, arguments, and things I am still figuring out.</p>
                     <ul class="recent-list" aria-label="Recent shards">
                         {{ range first 3 .RegularPages.ByDate.Reverse }}
                             <li><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time> <a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
@@ -61,19 +58,14 @@
             {{ end }}
             {{ with .Site.GetPage "/wal" }}
                 {{ $count := len .RegularPages }}
-                <li class="directory-item">
+                <li class="directory-item directory-item--wal">
                     <div class="directory-heading">
                         <img src="{{ $walDoodle.RelPermalink }}" alt="" aria-hidden="true" width="64" height="54">
                         <h2><a href="{{ .RelPermalink }}">wal</a> <span class="directory-count">({{ $count }})</span></h2>
                     </div>
-                    <p>Short, dated updates on what I'm doing now.</p>
+                    <p>A write-ahead log of what changed, what is in progress, and what might come next.</p>
                     {{ if $count }}
-                        <ul class="recent-list" aria-label="Recent WAL entries">
-                            {{ range first 3 .RegularPages.ByDate.Reverse }}
-                                <li><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time> <a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
-                            {{ end }}
-                            {{ if gt $count 3 }}<li class="more-link"><a href="{{ .RelPermalink }}">+{{ sub $count 3 }} more updates</a></li>{{ end }}
-                        </ul>
+                        {{ partial "wal-timeline.html" (dict "Pages" .RegularPages.ByDate.Reverse "Limit" 3 "HeadingLevel" 3 "Label" "Recent WAL entries" "MoreURL" .RelPermalink) }}
                     {{ else }}<p class="empty-note">No updates yet.</p>{{ end }}
                 </li>
             {{ end }}

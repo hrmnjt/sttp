@@ -40,9 +40,10 @@
     <a href="#main" class="skip-to-content">Skip to main content</a>
 
     <header>
-        <a class="site-brand" href="/">hrmnjt.dev</a>
+        <a class="site-brand" href="/"{{ if .IsHome }} aria-current="page"{{ end }}>hrmnjt.dev</a>
         <nav aria-label="Primary">
-            <a href="/catalog/">catalog</a>
+            <a href="/catalog/"{{ if eq .Section "catalog" }} aria-current="page"{{ end }}>catalog</a>
+            <a href="/readme/"{{ if eq .Section "readme" }} aria-current="page"{{ end }}>readme</a>
             <a href="/index.xml">rss</a>
         </nav>
     </header>
