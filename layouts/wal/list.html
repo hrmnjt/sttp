@@ -7,14 +7,7 @@
         </div>
         {{ .Content }}
         {{ if .RegularPages }}
-            <ul class="shard-list">
-                {{ range .RegularPages.ByDate.Reverse }}
-                    <li class="shard-item">
-                        <time class="shard-date" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>
-                        <a href="{{ .RelPermalink }}">{{ .Title }}</a>
-                    </li>
-                {{ end }}
-            </ul>
+            {{ partial "wal-timeline.html" (dict "Pages" .RegularPages.ByDate.Reverse "Limit" (len .RegularPages) "HeadingLevel" 2 "Label" "WAL entries") }}
         {{ else }}<p class="empty-note">No updates yet.</p>{{ end }}
     </section>
 {{ end }}
