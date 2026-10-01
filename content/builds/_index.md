@@ -1,9 +1,7 @@
 +++
 title = "builds"
-description = "Things I've built, tried, and kept notes on."
-aliases = ["/work/"]
+description = "Things that escaped the scratch buffer."
 +++
 
-Things I've built or tried, with links to the code and the notes behind them.
-Not everything here is finished or maintained; the dated write-ups record what
-I was thinking when I made it.
+Things that escaped the scratch buffer. Code, experiments, and the shards
+behind them—not necessarily finished or maintained.

@@ -27,11 +27,6 @@
   ! Cache-Control
   Cache-Control: public, max-age=2592000
 
-# Web manifest - cache for 7 days
-/site.webmanifest
-  ! Cache-Control
-  Cache-Control: public, max-age=604800
-
 # CSS files - cache for 6 months (Hugo fingerprints changes automatically)
 /css/*
   ! Cache-Control

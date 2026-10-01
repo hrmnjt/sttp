@@ -1,0 +1,2 @@
+{{- $kinds := dict "shards" "shard" "builds" "build" "wal" "wal" "readme" "readme" -}}
+{{- return (index $kinds .Section | default (.Section | default "page")) -}}

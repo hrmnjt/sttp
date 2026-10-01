@@ -1,13 +1,19 @@
 {{ define "main" }}
-    {{ $doodle := resources.Get "images/doodles/wal.svg" | resources.Fingerprint "sha256" }}
-    <section class="wal-index" aria-labelledby="wal-title">
-        <div class="section-heading">
-            <h1 id="wal-title">wal</h1>
-            <img class="section-doodle" src="{{ $doodle.RelPermalink }}" alt="" aria-hidden="true" width="80" height="67">
-        </div>
-        {{ .Content }}
-        {{ if .RegularPages }}
-            {{ partial "wal-timeline.html" (dict "Pages" .RegularPages.ByDate.Reverse "Limit" (len .RegularPages) "HeadingLevel" 2 "Label" "WAL entries" "ShowSummary" true) }}
-        {{ else }}<p class="empty-note">No updates yet.</p>{{ end }}
-    </section>
+<section aria-labelledby="wal-title">
+    {{ partial "section-heading.html" (dict "Page" . "Level" 1 "ID" "wal-title") }}
+    {{ .Content }}
+    {{ if .RegularPages }}
+    <ol class="wal-log" aria-label="Write-ahead log, newest first">
+        {{ range .RegularPages.ByDate.Reverse }}
+        <li>
+            <article aria-labelledby="wal-title-{{ .File.UniqueID }}">
+                <time class="article-date" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>
+                <h2 id="wal-title-{{ .File.UniqueID }}"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+                {{ partial "prose.html" (dict "Page" . "Prefix" (printf "wal-%s-" .File.UniqueID)) }}
+            </article>
+        </li>
+        {{ end }}
+    </ol>
+    {{ else }}<p class="section-note">Nothing written to the log yet.</p>{{ end }}
+</section>
 {{ end }}

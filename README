@@ -1,1 +1,91 @@
-[Harman's blog](https://hrmnjt.dev)
+# sttp
+
+[Harman's site](https://hrmnjt.dev) — secure thought transfer protocol.
+A small personal site built with Hugo: shards, builds, a write-ahead log,
+and one readme. The catalog interleaves content in date order.
+
+## Run locally
+
+Use Hugo Extended 0.166.0 (the version pinned in CI). Python 3.11+ is needed
+only for the repository tests. The site itself needs no Node dependencies or
+downloaded fonts. Optional screenshot tooling needs Node 20+ and Chromium.
+
+    hugo server
+
+To see design-only draft WAL entries:
+
+    hugo server --buildDrafts
+
+Never publish a draft-enabled build.
+
+## Build and check
+
+    hugo --panicOnWarning --printPathWarnings
+    python3 -m unittest discover -s tests
+
+Hugo generates `public/`; generated output and resource caches are ignored.
+Tests build isolated temporary copies, including draft previews and fixtures.
+CI also checks generated local links with Lychee.
+
+## Screenshot feedback loop
+
+On your Mac (or supported Ubuntu host), install the development-only tooling:
+
+    npm ci
+    npx playwright install chromium
+
+Then capture a normal preview, or opt into design drafts:
+
+    npm run screenshots
+    npm run screenshots -- --drafts
+
+The runner starts its own Hugo server on loopback port 1314, captures 24 PNGs
+at desktop (1440×1000) and phone (390×844) sizes, and shuts everything down.
+It never reuses your existing `hugo server`. If the port is busy:
+
+    npm run screenshots -- --port 1320
+
+Files are written to `.artifacts/screenshots/normal/` or `drafts/`, including
+`report.md`, `report.json`, and `server.log`. These and `node_modules/` are
+ignored by Git. Read the report, then share selected PNGs with the coding
+session for visual review. Re-run after edits; no pixel-diff baseline is required.
+The runner fails on page overflow, broken requests/images, browser errors,
+or missing capture regions, while retaining screenshots for inspection.
+
+    npm run test:screenshots
+
+Runner tests require no browser installation; they include a real Hugo server
+smoke check when Hugo is available. See `design/screenshots.md` for routes,
+reproducibility details, and supported-host setup. Playwright's bundled
+browsers do not support Alpine Linux; run captures on your Mac or a supported
+Linux host. Browser packages are never part of the deployed site.
+
+## Where things live
+
+- `content/shards/`: dated Markdown writing; URLs retain year/month/day/slug.
+- `content/builds/`: build pages, with their own date and repository link.
+- `content/wal/`: short dated entries, readable in full on the log page.
+- `content/readme/_index.md`: the site's single context document.
+- `assets/`: fingerprinted CSS, images, and section sketches.
+- `layouts/`: Hugo templates, Markdown hooks, and shortcodes.
+- `static/`: favicons and Cloudflare Pages header configuration.
+- `design/`: preview instructions and unpublished review notes.
+- `scripts/screenshots.mjs`: optional browser capture runner.
+
+Use explicit titles and content dates, not automatic Git timestamps. A build
+page's date is not the linked shard's date. Keep substantive revisions in
+`lastmod`; catalog chronology uses the original `date`. Review draft samples
+and personal copy before publishing. See `design/README.md` for details.
+
+## Deployment
+
+Cloudflare Pages builds with plain `hugo` and publishes `public/`. The base
+URL comes from `hugo.toml` (`https://hrmnjt.dev`), not `$CF_PAGES_URL`.
+The GitHub Actions workflow checks builds; it does not deploy the site.
+Verify headers and canonical/feed URLs on the deployed release.
+
+## Licensing
+
+The repository contains an MIT `LICENSE`. Its scope across site code, writing,
+and media is under review; this README does not change existing permissions.
+The review checklist is in `design/publishing-review.md`.

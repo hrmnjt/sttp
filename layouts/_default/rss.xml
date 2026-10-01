@@ -1,0 +1,25 @@
+{{- $pages := .RegularPages.ByDate.Reverse -}}
+{{- if or .IsHome (eq .Section "catalog") -}}
+    {{- $pages = partial "timeline-pages.html" . -}}
+{{- end -}}
+{{- printf "<?xml version=\"1.0\" encoding=\"utf-8\"?>" | safeHTML }}
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>{{ if .IsHome }}{{ .Site.Title | htmlEscape | safeHTML }}{{ else }}{{ .Title | htmlEscape | safeHTML }} — {{ .Site.Title | htmlEscape | safeHTML }}{{ end }}</title>
+        <link>{{ .Permalink }}</link>
+        <description>{{ partial "description.html" . | htmlEscape | safeHTML }}</description>
+        <language>{{ .Site.Language.Lang }}</language>
+        <atom:link href="{{ .Permalink }}index.xml" rel="self" type="application/rss+xml"/>
+        {{ range $pages }}
+        <item>
+            <title>{{ .Title | htmlEscape | safeHTML }}</title>
+            <link>{{ .Permalink }}</link>
+            <guid>{{ .Permalink }}</guid>
+            <pubDate>{{ .Date.Format "Mon, 02 Jan 2006 15:04:05 -0700" }}</pubDate>
+            {{ $body := replaceRE `(href|src)="/([^"]*)"` (printf `${1}="%s/${2}"` (strings.TrimSuffix "/" .Site.BaseURL)) .Content }}
+            {{ $body = replaceRE `href="#([^"]*)"` (printf `href="%s#${1}"` .Permalink) $body }}
+            <description>{{ $body | htmlEscape | safeHTML }}</description>
+        </item>
+        {{ end }}
+    </channel>
+</rss>
