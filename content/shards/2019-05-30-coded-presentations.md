@@ -10,7 +10,7 @@ Are you lazy programmer who wants to make a rich presentation with cheap efforts
 
 In a hurry? TL;DR:
 
-* [skip to project details](#project-usage)
+* [skip to project details](#project---usage)
 * [check out code](https://github.com/hrmnjt/way-to-go-present)
 * [check out an example presentation](https://talks.godoc.org/github.com/hrmnjt/way-to-go-present/example.slide)
 

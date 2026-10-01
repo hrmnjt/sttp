@@ -1,24 +1,15 @@
 {{ define "main" }}
-    <article class="project-page">
-        <p class="back-link"><a href="{{ with .Site.GetPage "/builds" }}{{ .RelPermalink }}{{ end }}">← builds</a></p>
-        <div class="post-heading">
-            <h1>{{ .Title }}</h1>
-            {{ with .Params.doodle }}
-                {{ $doodle := resources.Get (printf "images/doodles/%s.svg" .) | resources.Fingerprint "sha256" }}
-                <img class="post-doodle" src="{{ $doodle.RelPermalink }}" alt="" aria-hidden="true" width="56" height="47">
-            {{ end }}
-        </div>
-        <p class="project-dek">{{ .Description }}</p>
-        <div class="project-links">
-            {{ with .Params.writeup }}{{ with $.Site.GetPage . }}
-                <a href="{{ .RelPermalink }}">Read the write-up</a>
-                <span>Write-up published <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time></span>
-                {{ with .Params.source }}<a href="{{ . }}">Source on GitHub</a>{{ end }}
-            {{ end }}{{ end }}
-        </div>
-        {{ .Content }}
-        {{ with .Params.related }}{{ with $.Site.GetPage . }}
-            <p class="related-note">Related shard: <a href="{{ .RelPermalink }}">{{ .Title }}</a></p>
-        {{ end }}{{ end }}
-    </article>
+<article>
+    <p class="back-link"><a href="/builds/">← builds</a></p>
+    <h1>{{ .Title }}</h1>
+    <p class="section-note">{{ .Description }}</p>
+    <nav class="utility-links" aria-label="Build links">
+        {{ with .Params.source }}<a href="{{ . }}">code ↗</a>{{ end }}
+        {{ with .Params.writeup }}{{ with $.Site.GetPage . }}<a href="{{ .RelPermalink }}">main shard →</a>{{ end }}{{ end }}
+    </nav>
+    {{ partial "prose.html" (dict "Page" .) }}
+    {{ with .Params.related }}{{ with $.Site.GetPage . }}
+    <p class="related-note">Also: <a href="{{ .RelPermalink }}">{{ .Title }}</a></p>
+    {{ end }}{{ end }}
+</article>
 {{ end }}

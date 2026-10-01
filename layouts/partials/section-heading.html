@@ -1,0 +1,8 @@
+<div class="section-heading">
+    <h{{ .Level }} id="{{ .ID }}">{{ if .Linked }}<a href="{{ .Page.RelPermalink }}">{{ .Page.Title }}</a>{{ else }}{{ .Page.Title }}{{ end }}</h{{ .Level }}>
+    {{ if in (slice "builds" "shards" "wal") .Page.Section }}
+        {{ $name := cond (eq .Page.Section "shards") "shard" .Page.Section }}
+        {{ $mark := resources.Get (printf "images/doodles/%s.svg" $name) | resources.Fingerprint "sha256" }}
+        <img src="{{ $mark.RelPermalink }}" alt="" width="48" height="40" aria-hidden="true">
+    {{ end }}
+</div>

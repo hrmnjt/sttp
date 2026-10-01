@@ -1,0 +1,18 @@
+{{- $html := .Page.Content -}}
+{{- /* Real link text, with a reference-specific accessible label. */ -}}
+{{- $html = replaceRE `(<a [^>]*class="footnote-backref"[^>]*>)[^<]*(</a>)` "${1}[return]${2}" $html -}}
+{{- $html = replaceRE `(<a href="#fnref:([^"]+)" class="footnote-backref"[^>]*)(>)` `${1} aria-label="Return to reference ${2}"${3}` $html -}}
+{{- with .Prefix -}}
+    {{- /* Inline WAL entries must not share heading/footnote IDs. */ -}}
+    {{- $prefix := . -}}
+    {{- range findRE `(aria-labelledby|aria-describedby)="[^"]+"` $html -}}
+        {{- $name := index (split . "=") 0 -}}
+        {{- $value := replaceRE `^[^=]+="([^"]+)"$` "${1}" . -}}
+        {{- $targets := slice -}}
+        {{- range split (replaceRE `\s+` " " $value) " " -}}{{- if . -}}{{- $targets = $targets | append (printf "%s%s" $prefix .) -}}{{- end -}}{{- end -}}
+        {{- $html = replace $html . (printf `%s="%s"` $name (delimit $targets " ")) -}}
+    {{- end -}}
+    {{- $html = replaceRE `id="([^"]+)"` (printf `id="%s${1}"` .) $html -}}
+    {{- $html = replaceRE `href="#([^"]+)"` (printf `href="#%s${1}"` .) $html -}}
+{{- end -}}
+{{- $html | safeHTML -}}

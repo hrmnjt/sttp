@@ -1,72 +1,15 @@
 {{ define "main" }}
-    {{ $buildsMark := resources.Get "images/doodles/builds.svg" | resources.Fingerprint "sha256" }}
-    {{ $shardsMark := resources.Get "images/doodles/shard.svg" | resources.Fingerprint "sha256" }}
-    {{ $walMark := resources.Get "images/doodles/wal.svg" | resources.Fingerprint "sha256" }}
-    {{ $readmeMark := resources.Get "images/doodles/readme.svg" | resources.Fingerprint "sha256" }}
-    <section class="catalog-page" aria-labelledby="catalog-title">
-        <h1 id="catalog-title">catalog</h1>
-        {{ .Content }}
-        {{ with .Site.GetPage "/builds" }}
-            <section class="catalog-group" aria-labelledby="catalog-builds">
-                <div class="directory-heading">
-                    <img src="{{ $buildsMark.RelPermalink }}" alt="" aria-hidden="true" width="64" height="54">
-                    <h2 id="catalog-builds"><a href="{{ .RelPermalink }}">builds</a> <span class="directory-count">({{ len .RegularPages }})</span></h2>
-                </div>
-                <ul class="catalog-list">
-                    {{ range .RegularPages.ByTitle }}
-                        <li><a href="{{ .RelPermalink }}">{{ .Title }}</a>{{ with .Description }}<small>{{ . }}</small>{{ end }}</li>
-                    {{ end }}
-                </ul>
-            </section>
+<section aria-labelledby="catalog-title">
+    <h1 id="catalog-title">catalog</h1>
+    {{ .Content }}
+    <ol class="catalog-timeline" aria-label="All content, newest first">
+        {{ range partial "timeline-pages.html" . }}
+        <li>
+            <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>
+            <span class="content-kind">[{{ partial "content-kind.html" . }}]</span>
+            <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+        </li>
         {{ end }}
-        {{ with .Site.GetPage "/shards" }}
-            <section class="catalog-group" aria-labelledby="catalog-shards">
-                <div class="directory-heading">
-                    <img src="{{ $shardsMark.RelPermalink }}" alt="" aria-hidden="true" width="64" height="54">
-                    <h2 id="catalog-shards"><a href="{{ .RelPermalink }}">shards</a> <span class="directory-count">({{ len .RegularPages }})</span></h2>
-                </div>
-                <ul class="shard-list">
-                    {{ range .RegularPages.ByDate.Reverse }}
-                        <li class="shard-item">
-                            <time class="shard-date" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>
-                            <a href="{{ .RelPermalink }}">{{ .Title }}</a>
-                        </li>
-                    {{ end }}
-                </ul>
-            </section>
-        {{ end }}
-        {{ with .Site.GetPage "/wal" }}
-            <section class="catalog-group" aria-labelledby="catalog-wal">
-                <div class="directory-heading">
-                    <img src="{{ $walMark.RelPermalink }}" alt="" aria-hidden="true" width="64" height="54">
-                    <h2 id="catalog-wal"><a href="{{ .RelPermalink }}">wal</a> <span class="directory-count">({{ len .RegularPages }})</span></h2>
-                </div>
-                {{ if .RegularPages }}
-                    <ul class="shard-list">
-                        {{ range .RegularPages.ByDate.Reverse }}
-                            <li class="shard-item">
-                                <time class="shard-date" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>
-                                <a href="{{ .RelPermalink }}">{{ .Title }}</a>
-                            </li>
-                        {{ end }}
-                    </ul>
-                {{ else }}<p class="empty-note">No updates yet.</p>{{ end }}
-            </section>
-        {{ end }}
-        {{ with .Site.GetPage "/readme" }}
-            <section class="catalog-group" aria-labelledby="catalog-readme">
-                <div class="directory-heading">
-                    <img src="{{ $readmeMark.RelPermalink }}" alt="" aria-hidden="true" width="64" height="54">
-                    <h2 id="catalog-readme"><a href="{{ .RelPermalink }}">readme</a> <span class="directory-count">({{ len .RegularPages }})</span></h2>
-                </div>
-                {{ if .RegularPages }}
-                    <ul class="catalog-list">
-                        {{ range .RegularPages.ByTitle }}
-                            <li><a href="{{ .RelPermalink }}">{{ .Title }}</a>{{ with .Description }}<small>{{ . }}</small>{{ end }}</li>
-                        {{ end }}
-                    </ul>
-                {{ else }}<p class="empty-note">No pages yet.</p>{{ end }}
-            </section>
-        {{ end }}
-    </section>
+    </ol>
+</section>
 {{ end }}

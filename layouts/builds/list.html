@@ -1,18 +1,7 @@
 {{ define "main" }}
-    {{ $builds := resources.Get "images/doodles/builds.svg" | resources.Fingerprint "sha256" }}
-    <section class="builds-index" aria-labelledby="builds-title">
-        <div class="section-heading">
-            <h1 id="builds-title">builds</h1>
-            <img class="section-doodle" src="{{ $builds.RelPermalink }}" alt="" aria-hidden="true" width="80" height="67">
-        </div>
-        {{ .Content }}
-        <ul class="project-list">
-            {{ range .Pages.ByTitle }}
-                <li>
-                    <h2><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
-                    <p>{{ .Description }}</p>
-                </li>
-            {{ end }}
-        </ul>
-    </section>
+<section aria-labelledby="builds-title">
+    {{ partial "section-heading.html" (dict "Page" . "Level" 1 "ID" "builds-title") }}
+    {{ .Content }}
+    {{ partial "build-list.html" .RegularPages.ByTitle }}
+</section>
 {{ end }}

@@ -1,7 +1,8 @@
 +++
 title = "catalog"
-description = "All published pages, grouped by kind."
+description = "One timeline of shards, builds, WAL entries, and site notes."
 +++
 
-Everything published here, grouped by kind. Dated writing runs newest first;
-undated builds and site pages have their own lists.
+One log, different record types. Everything written here, newest first.
+A build's date belongs to its page, not to the project or its write-up.
+Revisions don't move entries up the list.

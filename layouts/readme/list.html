@@ -1,22 +1,7 @@
 {{ define "main" }}
-    {{ $doodle := resources.Get "images/doodles/readme.svg" | resources.Fingerprint "sha256" }}
-    <section class="readme-index" aria-labelledby="readme-title">
-        <div class="section-heading">
-            <h1 id="readme-title">readme</h1>
-            <img class="section-doodle" src="{{ $doodle.RelPermalink }}" alt="" aria-hidden="true" width="80" height="67">
-        </div>
-        {{ .Content }}
-        {{ if .RegularPages }}
-            <ul class="project-list readme-list">
-                {{ range .RegularPages.ByWeight }}
-                    <li>
-                        <span class="readme-list-label">{{ .Params.label }}</span>
-                        <h2><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
-                        <p>{{ .Description }}</p>
-                        <p class="readme-updated">last updated {{ partial "readme-updated.html" . }}</p>
-                    </li>
-                {{ end }}
-            </ul>
-        {{ else }}<p class="empty-note">No pages yet.</p>{{ end }}
-    </section>
+<article>
+    <h1>readme</h1>
+    <p class="article-date">revised <time datetime="{{ .Lastmod.Format "2006-01-02" }}">{{ .Lastmod.Format "2006-01-02" }}</time></p>
+    {{ partial "prose.html" (dict "Page" .) }}
+</article>
 {{ end }}
