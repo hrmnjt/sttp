@@ -142,4 +142,4 @@ Example content - https://talks.golang.org/2017
 This is a minimalistic blog which at this moment does not support comments. In
 case you have any feedback or comments, reach out to me on
 [Twitter](https://twitter.com/hrmnjts)
-or [Mail](mailto:hrmnjt@hrmn.in)
+or Mail (REDACTED)
