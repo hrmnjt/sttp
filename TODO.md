@@ -10,7 +10,7 @@ Keep only outstanding items here: remove an item when it is done, and delete `TO
 - [ ] **Document how to contribute to or run sttp.** `README` is currently a single link. Add the required Hugo version/command, local preview and build steps, where posts/assets/layouts live, and how the site is deployed; link to the live site and explain what this repository is for. This makes publishing in the open reproducible.
 - [ ] **Require title and date on pages.** CI builds with Hugo and checks local links, but Hugo still publishes a page that omits `title` or `date`. After the next Pages deploy, confirm https://hrmnjt.dev.
 - [ ] **Clarify content licensing.** `LICENSE` is MIT, while the footer in `layouts/_default/baseof.html` says “All rights reserved.” Decide whether that license covers code, writing, and images equally; state the policy in the README/site and make footer wording consistent.
-- [ ] **Review old public details before promoting the site more broadly.** `content/shards/2020-02-23-snigdha-harman-invitation.md` includes a phone number and an old email address, and older posts reference `hrmn.in`. Decide what is intentionally still public, update/remove stale contact paths as appropriate, and leave historical context where it matters.
+- [ ] **Review old public details before promoting the site more broadly.** The phone number and old email address are redacted. Older posts still reference `hrmn.in`. Decide what is intentionally still public, update/remove stale contact paths as appropriate, and leave historical context where it matters.
 
 ## Polish after the essentials
 

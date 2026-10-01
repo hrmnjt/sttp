@@ -53,7 +53,7 @@ have you as a part of them. See you!
 
 Best,
 Snigdha Gupta &
-Harmanjeet Singh (+971 50 393 7005, hrmnjt@hrmn.in)
+Harmanjeet Singh (REDACTED, REDACTED)
 
 ## Update (March 21st, 2020)
 
