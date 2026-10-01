@@ -2,8 +2,9 @@
 
 ## Direction
 
-One column, monospace-led interface, proportional long-form prose, Gruvbox,
-and a few purposeful sketches. No font downloads, JavaScript controls, or
+One column, system monospace throughout, Gruvbox, and a few purposeful
+sketches. Header, footer, and section sketches share an outer rail; articles
+keep a 70-character reading measure and tighter spacing on phones. No font downloads, JavaScript controls, or
 animated decoration. Keep the software/database vocabulary without building
 a fake terminal.
 
@@ -61,7 +62,9 @@ python3 -m unittest discover -s tests
 ```
 
 Tests exercise catalog ordering/type labels, feed parity, dates, draft
-exclusion, WAL anchor namespacing, metadata, and local links. Browser checks
+exclusion, WAL anchor namespacing, metadata, presentation markup, and local links.
+Code fences have language/scroll captions, keyboard focus, and class-based Gruvbox
+highlighting so their background follows the site CSS. Browser checks
 at phone/desktop widths, keyboard/zoom checks, and actual deployment headers
 still need to be checked against the release preview.
 

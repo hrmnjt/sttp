@@ -3,16 +3,15 @@ title = "readme"
 description = "Documentation for this corner of the web."
 # Date the original readme page was written, not the redesign's release date.
 date = 2026-09-26
-lastmod = 2026-09-29
+lastmod = 2026-10-01
 outputs = ["HTML"]
 +++
 
-Documentation for this corner of the web. The human remains a work in progress.
+How this site fits together.
 
 ## sttp
 
-**Secure thought transfer protocol.** A name for a personal site, not an actual
-network protocol. Opinions may be eventually consistent.
+**Secure thought transfer protocol.** Opinions may be eventually consistent.
 
 - [shards](/shards/) are dated pieces of thinking, useful without the whole dataset.
 - [builds](/builds/) are things made or tried, with links to code and the thinking behind it.
@@ -25,13 +24,11 @@ are dated separately; editing a page doesn't republish it in the catalog.
 
 ## how this is made
 
-Hugo turns Markdown into static HTML. Gruvbox supplies the colors; system
-monospace supplies the headings, navigation, and lists. Long-form prose uses a
-proportional system font. No font downloads or client-side framework.
+Hugo turns Markdown into static HTML. Gruvbox colors and system monospace,
+with a shorter line length for articles. No font downloads or client-side framework.
 
-Small SVG sketches mark the sections; arrows explain the `dev` setup rather
-than dress it up. Dashed rules, heading links, and `[return]` footnote links
-keep a little of the original site's furniture. The pages remain readable
+Small SVG sketches mark the sections. Dashed rules, heading links, and
+`[return]` footnotes carry over from the original site. Pages remain readable
 without JavaScript, with visible keyboard focus and scrollable code and tables.
 
 [Site source](https://github.com/hrmnjt/sttp) · [RSS](/index.xml)

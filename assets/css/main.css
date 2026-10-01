@@ -1,4 +1,4 @@
-/* sttp: monospace furniture, readable prose, a few pencil marks. */
+/* sttp: system monospace, comfortable reading, a few pencil marks. */
 :root {
     color-scheme: dark;
     --bg-primary: #282828;
@@ -10,7 +10,6 @@
     --accent: #b8bb26;
     --accent-hover: #fabd2f;
     --font-mono: ui-monospace, "Cascadia Mono", "Segoe UI Mono", "Liberation Mono", Menlo, Monaco, Consolas, monospace;
-    --font-reading: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -20,9 +19,11 @@ body {
     padding: 24px;
     background: var(--bg-primary);
     color: var(--text-primary);
-    font: 1rem/1.75 var(--font-reading);
+    font: 1rem/1.75 var(--font-mono);
 }
-main { max-width: 70ch; }
+/* Shared outer rail; long-form text keeps its own reading measure. */
+main { min-width: 0; }
+article { max-width: 70ch; }
 h1, h2, h3, p, ul, ol { margin-top: 0; }
 h1, h2, h3 {
     font-family: var(--font-mono);
@@ -122,11 +123,12 @@ body > footer p { margin: 0; }
     gap: 16px;
     margin-bottom: 8px;
 }
+.section-copy { min-width: 0; }
 .section-heading h1, .section-heading h2 { margin: 0; }
 .section-heading img { flex: none; width: 40px; height: auto; margin: 0; }
 .home-section .section-heading img { width: 104px; }
 .section-note { color: var(--text-secondary); }
-.home-section > .section-note { font: 0.85rem/1.7 var(--font-mono); margin-bottom: 12px; }
+.section-copy > .section-note { margin: 4px 0 0; font: 0.85rem/1.7 var(--font-mono); }
 .archive-link, .back-link { font: 0.85rem/1.7 var(--font-mono); }
 .archive-link { margin: 10px 0 0; }
 .archive-link a, .back-link a { display: inline-block; padding: 6px 0; }
@@ -191,7 +193,12 @@ article li { margin-bottom: 0.4em; }
 code, pre, .highlight { font-family: var(--font-mono); }
 code { padding: 0.1em 0.25em; background: var(--code-bg); font-size: 0.9em; }
 pre { padding: 16px; margin: 1.5em 0; overflow-x: auto; background: var(--pre-bg); border: 1px dashed var(--border-color); font-size: 0.85rem; line-height: 1.6; }
+pre.chroma { background: var(--pre-bg); }
 pre code { padding: 0; background: none; font-size: inherit; }
+.code-block { min-width: 0; margin: 1.5em 0; }
+.code-block figcaption { margin-bottom: 8px; color: var(--text-secondary); font: 0.8rem/1.6 var(--font-mono); }
+.code-block pre { margin: 0; }
+article hr { margin: 1.8em 0; border: 0; border-top: 1px dashed var(--border-color); }
 blockquote { margin: 1.5em 0; padding: 0.2em 0 0.2em 1.25em; border-left: 2px dashed var(--border-color); color: var(--text-secondary); }
 blockquote > :last-child { margin-bottom: 0; }
 img { display: block; max-width: 100%; height: auto; margin: 1.5em 0; }
@@ -215,6 +222,8 @@ th, td { padding: 8px 12px; border: 1px solid var(--border-color); text-align: l
 
 @media (min-width: 768px) { body { padding: 40px 56px; } }
 @media (max-width: 560px) {
+    body { line-height: 1.65; }
+    article p { margin-bottom: 1em; }
     .home-section .section-heading img { width: 72px; }
     .dated-list li { grid-template-columns: minmax(0, 1fr); gap: 0; padding: 10px 0; }
     .catalog-timeline li { grid-template-columns: 10ch minmax(0, 1fr); gap: 2px 12px; }
@@ -223,5 +232,5 @@ th, td { padding: 8px 12px; border: 1px solid var(--border-color); text-align: l
     .connections li span { display: block; }
     .dev-flow { padding: 12px 14px; }
     .dev-flow-route { grid-template-columns: minmax(0, 1fr); gap: 2px; }
-    .dev-flow-route img { width: 24px; height: 24px; margin-left: 8px; transform: rotate(90deg); }
+    .dev-flow-route img { display: none; }
 }

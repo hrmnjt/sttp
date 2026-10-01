@@ -17,6 +17,7 @@ ROOT = Path(__file__).resolve().parents[1]
 class Page(HTMLParser):
     def __init__(self, path):
         super().__init__(convert_charrefs=True)
+        self.elements = []
         self.ids = []
         self.links = []
         self.aria_refs = []
@@ -34,6 +35,7 @@ class Page(HTMLParser):
 
     def handle_starttag(self, tag, attrs):
         attrs = dict(attrs)
+        self.elements.append((tag, attrs))
         if "id" in attrs:
             self.ids.append(attrs["id"])
         for attribute in ("aria-labelledby", "aria-describedby"):
@@ -99,7 +101,8 @@ class SiteTests(unittest.TestCase):
         # Interleave all stream types, with repeated headings and footnotes in WAL.
         cls.fixtures = {
             "wal/test-first.md": ('"log fixture first"', "2026-03-05", None),
-            "builds/test-build.md": ('"build fixture"', "2026-03-04", None),
+            "builds/test-build.md": ('"build fixture"', "2026-03-04",
+                                     'writeup = "/shards/2026-02-01-dev"\n'),
             "shards/test-shard.md": ('"shard fixture"', "2026-03-03", 'slug = "timeline-fixture"\n'),
             "wal/test-second.md": ('"log fixture second"', "2026-03-02", None),
         }
@@ -111,6 +114,7 @@ class SiteTests(unittest.TestCase):
                 "[Jump](#repeated-heading).\n\n[^1]: Footnote text.\n\n"
                 '<figure aria-labelledby="caption" aria-describedby="details">'
                 '<figcaption id="caption">A caption</figcaption><p id="details">Details</p></figure>\n'
+                '\n```python\nprint("fixture")\n```\n\n```\nliteral <tag> & text\n```\n'
 
             )
         cls.release = Path(cls.tmp.name) / "release"
@@ -214,6 +218,48 @@ class SiteTests(unittest.TestCase):
             self.assertGreater(shard.index("Markdown source"), shard.index("connections"))
             build = self.page(output, "builds/dev/index.html")
             self.assertIn("https://github.com/hrmnjt/dev", [attrs.get("href") for _, attrs in build.links])
+
+    def test_code_fences_have_captions_focus_and_class_based_highlighting(self):
+        page = self.page(self.drafts, "wal/test-first/index.html")
+        figures = [attrs for tag, attrs in page.elements
+                   if tag == "figure" and attrs.get("class") == "code-block"]
+        blocks = [attrs for tag, attrs in page.elements if tag == "pre"]
+        self.assertEqual(len(figures), 2)
+        self.assertEqual(len(blocks), 2)
+        for attrs in blocks:
+            self.assertEqual(attrs.get("tabindex"), "0")
+            self.assertNotIn("background", attrs.get("style", ""))
+        self.assertIn("chroma", blocks[0].get("class", ""))
+        text = " ".join(page.main_text)
+        self.assertIn("python / scroll long lines horizontally", text)
+        self.assertIn("text / scroll long lines horizontally", text)
+        self.assertIn("literal <tag> & text", text)
+        self.assertFalse(any(tag == "tag" for tag, _ in page.elements))
+
+    def test_rfd_appendix_has_a_subordinate_heading_and_stable_anchors(self):
+        for output in (self.release, self.drafts):
+            page = self.page(output, "2026/02/08/rfd/index.html")
+            self.assertEqual(sum(tag == "h1" for tag, _ in page.elements), 1)
+            headings = {attrs.get("id"): tag for tag, attrs in page.elements
+                        if tag in ("h1", "h2", "h3")}
+            self.assertEqual(headings["appendix"], "h2")
+            self.assertEqual(headings["rfd-template"], "h3")
+
+    def test_source_labels_and_build_writeup_deduplication(self):
+        for output in (self.release, self.drafts):
+            shard = self.page(output, "2026/02/01/dev/index.html")
+            text = " ".join(shard.main_text)
+            for label in ("[code]", "[markdown]", "[history]"):
+                self.assertIn(label, text)
+            self.assertNotIn("↗", text)
+            build = self.page(output, "builds/dev/index.html")
+            writeups = [attrs for tag, attrs in build.links
+                        if tag == "a" and attrs.get("href") == "/2026/02/01/dev/"]
+            self.assertEqual(len(writeups), 1)  # authored body link retained
+        # If a build does not link its write-up in the body, keep the navigation link.
+        fixture = self.page(self.drafts, "builds/test-build/index.html")
+        self.assertIn("main shard", " ".join(fixture.main_text))
+        self.assertIn("/2026/02/01/dev/", [attrs.get("href") for _, attrs in fixture.links])
 
     def test_generated_local_links_and_anchors(self):
         for output in (self.release, self.drafts):

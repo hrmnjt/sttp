@@ -1,0 +1,5 @@
+{{- $highlight := transform.HighlightCodeBlock . -}}
+<figure class="code-block">
+    <figcaption>{{ with .Type }}{{ . }}{{ else }}text{{ end }} / scroll long lines horizontally</figcaption>
+    {{ $highlight.Wrapped }}
+</figure>

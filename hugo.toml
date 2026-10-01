@@ -21,7 +21,7 @@ disableHugoGeneratorInject = true
     codeFences = true
     guessSyntax = false
     lineNos = false
-    noClasses = true
+    noClasses = false
     tabWidth = 4
     style = "gruvbox"
 
