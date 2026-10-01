@@ -80,7 +80,7 @@ Each run produces 24 images when successful:
 | `/builds/dev/` | Full page |
 | `/wal/` | Full page |
 | `/readme/` | Full page |
-| `/2026/02/08/rfd/` | Top, first code block, end/source links |
+| `/2026/02/08/rfd/` | Top, first highlighted code block and caption, end/source links |
 | `/2024/12/02/readdatawithharlequin/` | Top, first image |
 
 Article regions are **viewport captures at the selected region**, keeping

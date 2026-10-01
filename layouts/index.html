@@ -5,24 +5,21 @@
 </section>
 {{ with .Site.GetPage "/shards" }}
 <section class="home-section" aria-labelledby="home-shards">
-    {{ partial "section-heading.html" (dict "Page" . "Level" 2 "ID" "home-shards" "Linked" true) }}
-    <p class="section-note">Partitioned thoughts. No global ordering promised.</p>
+    {{ partial "section-heading.html" (dict "Page" . "Level" 2 "ID" "home-shards" "Linked" true "Note" "Partitioned thoughts. No global ordering promised.") }}
     {{ partial "dated-list.html" (first 5 .RegularPages.ByDate.Reverse) }}
     <p class="archive-link"><a href="{{ .RelPermalink }}">all shards →</a></p>
 </section>
 {{ end }}
 {{ with .Site.GetPage "/builds" }}{{ if .RegularPages }}
 <section class="home-section" aria-labelledby="home-builds">
-    {{ partial "section-heading.html" (dict "Page" . "Level" 2 "ID" "home-builds" "Linked" true) }}
-    <p class="section-note">Things that escaped the scratch buffer.</p>
+    {{ partial "section-heading.html" (dict "Page" . "Level" 2 "ID" "home-builds" "Linked" true "Note" "Things that escaped the scratch buffer.") }}
     {{ partial "build-list.html" (first 3 .RegularPages.ByTitle) }}
     {{ if gt (len .RegularPages) 3 }}<p class="archive-link"><a href="{{ .RelPermalink }}">all builds →</a></p>{{ end }}
 </section>
 {{ end }}{{ end }}
 {{ with .Site.GetPage "/wal" }}{{ if .RegularPages }}
 <section class="home-section" aria-labelledby="home-wal">
-    {{ partial "section-heading.html" (dict "Page" . "Level" 2 "ID" "home-wal" "Linked" true) }}
-    <p class="section-note">Written before the thought is fully committed.</p>
+    {{ partial "section-heading.html" (dict "Page" . "Level" 2 "ID" "home-wal" "Linked" true "Note" "Written before the thought is fully committed.") }}
     {{ partial "dated-list.html" (first 3 .RegularPages.ByDate.Reverse) }}
     <p class="archive-link"><a href="{{ .RelPermalink }}">full log →</a></p>
 </section>

@@ -1,4 +1,4 @@
-{{- $description := .Summary | plainify | htmlUnescape | truncate 160 -}}
+{{- $description := .Summary | plainify | htmlUnescape | truncate 160 | htmlUnescape -}}
 {{- with .Description -}}{{- $description = . | plainify | htmlUnescape -}}{{- end -}}
 {{- if .IsHome -}}{{- $description = .Site.Params.description -}}{{- end -}}
 {{- return $description -}}

@@ -2,7 +2,8 @@
 
 [Harman's site](https://hrmnjt.dev) — secure thought transfer protocol.
 A small personal site built with Hugo: shards, builds, a write-ahead log,
-and one readme. The catalog interleaves content in date order.
+and one readme. System monospace, Gruvbox, and a few useful sketches.
+The catalog interleaves content in date order.
 
 ## Run locally
 

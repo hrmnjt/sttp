@@ -11,6 +11,8 @@ Keep only outstanding ideas here; remove completed work. The redesign can take a
 - [ ] **Confirm new content publication dates.** Catalog and RSS use each page's explicit original date. The build/readme dates currently record when their pages were first written on this unpublished branch; confirm their actual first-publication dates before release, without borrowing project/write-up dates or moving historical shards.
 - [ ] **Review homepage identity copy.** Rewrite `content/_index.md` in your own voice before merging; its current text is a starting point, not a verified biography.
 
+- [ ] **Review the dev build’s content and context.** Rewrite `content/builds/dev.md` in your own voice; its current setup-focused account needs a deeper editorial pass.
+
 ## Make the site and repository easier to understand
 
 - [ ] **Review old public details before promoting the site more broadly.** The phone number and old email address are redacted. Older posts still reference `hrmn.in`. Decide what is intentionally still public, update/remove stale contact paths as appropriate, and leave historical context where it matters.
@@ -18,12 +20,11 @@ Keep only outstanding ideas here; remove completed work. The redesign can take a
 ## Polish after the essentials
 
 - [ ] **Finish post sharing metadata.** HTML, Open Graph, and Twitter metadata already prefer explicit descriptions. JSON-LD now uses the same description. Add useful descriptions to newer posts that lack them and verify representative previews.
-- [ ] **Review media and layout on narrow screens.** Responsive layouts and scrolling code/tables are implemented; test the homepage, section indexes, and representative posts at phone widths, including long titles, links, code, and media.
+- [ ] **Check real-device media and layout.** Normal/draft Chromium captures and 320–1440px layout checks pass. Verify system-font rendering, long titles, links, code, and media in Safari and on a real phone.
 
 ### Visual direction: readable, accessible, still nerdy
 
-- [ ] **Revisit typography without losing character.** The branch now uses monospace for headings, navigation, lists, and introduction, with proportional system text for long-form prose. Compare reading comfort and character on real pages before deciding whether prose should also be monospace; a reading-font switch is only an option, not a requirement. Keep system fonts, comfortable reading widths/line height, and scrolling code/tables. If a switch is chosen later, make it labeled, keyboard accessible, persistent, and usable without JavaScript.
-- [ ] **Verify keyboard and touch affordances.** Focus outlines, a skip link, and larger header/footer/source-link targets are implemented. Check keyboard navigation, zoom, touch targets, and link states in a browser.
+- [ ] **Complete accessibility QA on Mac/phone.** Chromium skip-link focus and keyboard code scrolling pass, along with narrow-width and 200%-equivalent reflow checks. Still verify full keyboard order, actual browser zoom, touch targets, link states, and screen-reader announcements on Safari/real hardware.
 - [ ] **Try Gruvbox dark hard as a small visual experiment, not a wholesale redesign.** Compare `#1d2021` against the current `#282828` background on real posts in daylight and at night; if adopted, change the code-block/blockquote surfaces so they remain distinguishable and sync `theme-color`. Check contrast and reading comfort at normal text sizes.
 - [ ] **Prototype sidenotes / marginalia for longer posts.** Use [Tufte CSS](https://edwardtufte.github.io/tufte-css/) as a design reference, not a wholesale dependency: put short annotations or footnotes in the outer margin on wide screens (left or right); keep them inline or as linked endnotes on narrow screens and in a logical reading order for screen readers. Use comfortably sized system text (e.g. ~0.875rem, not tiny), keyboard-friendly reference/back links, and avoid collisions with images and code.
 - [ ] **Offer a site-hosted Markdown view for each post.** Shards already link to their Markdown source and history on GitHub; a standalone export remains optional. Inspired by [Armin's post](https://lucumr.pocoo.org/2026/9/12/pdoom/): serve usable Markdown at a stable URL and link `View Markdown` in HTML; optionally add `Copy as Markdown` with a small progressive-enhancement script. Check how Hugo shortcodes and internal links appear in the exported text, and reconcile any script with the site's CSP (`script-src 'none'` is currently declared in `static/_headers`).
