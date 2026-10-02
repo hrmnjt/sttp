@@ -182,6 +182,7 @@ article li { margin-bottom: 0.4em; }
 .wal-log .article-date { margin: 0; }
 .utility-links { margin-bottom: 20px; }
 .source-trail { margin: 28px 0 0; padding-top: 8px; border-top: 1px dashed var(--border-color); }
+.source-link { display: inline-flex; align-items: center; gap: 0.5ch; }
 .related-note { margin-top: 24px; }
 .connections { margin-top: 32px; }
 .connections h2 { font-size: 1rem; }
