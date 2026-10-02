@@ -9,8 +9,6 @@ Keep only outstanding ideas here; remove completed work. The redesign can take a
 - [ ] **Decide and publish licensing terms.** Review the existing MIT `LICENSE` scope against code, site writing, original doodles/photos, and third-party media. Use the checklist in `design/publishing-review.md` to write reviewed terms in `content/readme/_index.md`, document the same scope in the repository, and make the footer consistent. The review checklist is not a license.
 - [ ] **Verify privacy practices.** Check actual hosting/CDN logs, analytics, cookies/storage, embedded resources, and contact paths; decide whether a privacy notice is needed. Use `design/publishing-review.md` to write an accurate statement in `content/readme/_index.md` if one is needed. The review checklist is not a privacy policy.
 - [ ] **Confirm new content publication dates.** Catalog and RSS use each page's explicit original date. The build/readme dates currently record when their pages were first written on this unpublished branch; confirm their actual first-publication dates before release, without borrowing project/write-up dates or moving historical shards.
-- [ ] **Review homepage identity copy.** Rewrite `content/_index.md` in your own voice before merging; its current text is a starting point, not a verified biography.
-
 - [ ] **Review the dev build’s content and context.** Rewrite `content/builds/dev.md` in your own voice; its current setup-focused account needs a deeper editorial pass.
 
 ## Make the site and repository easier to understand

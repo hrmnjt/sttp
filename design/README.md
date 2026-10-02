@@ -2,18 +2,41 @@
 
 ## Direction
 
-One column, system monospace throughout, Gruvbox, and a few purposeful
-sketches. Header, footer, and section sketches share an outer rail; articles
-keep a 70-character reading measure and tighter spacing on phones. No font downloads, JavaScript controls, or
+One main content flow, system monospace throughout, Gruvbox, and a few purposeful
+sketches. Every page shares a 1100px outer frame (988px inside desktop
+padding), keeping the header and footer stationary between routes. The homepage,
+shards/builds indexes, and catalog use that full layout area. Individual shards
+and builds share the homepage's left rail: paragraphs, lists, and blockquotes
+stay at 70ch, while titles, code, images, tables, and the dev diagram can use the
+full frame. WAL and readme retain centred 70ch columns. Phones use tighter spacing between
+lists and archive links, while retaining breathing room between sections.
+Footer navigation keeps 44px targets; inline legal links keep 24px targets
+without the oversized line gaps. No font downloads, JavaScript controls, or
 animated decoration. Keep the software/database vocabulary without building
 a fake terminal.
 
-- Home previews recent shards, compact builds, and populated WAL entries.
+- Home previews the three most recent shards, compact builds, and populated WAL entries.
+  The intro keeps a 70ch reading measure. Subtle 136px section sketches share
+  a right-hand alignment rail and sit behind content in an isolated stacking
+  context; list marks hang slightly below their headings. The build mark is
+  centred on its heading band so cards retain a regular grid. Text is kept
+  clear of the marks, and card surfaces remain opaque. Phones retain compact
+  72px marks. Heading links extend their underline toward the sketch, leaving
+  a 16px gap; hover and focus affordances remain on the real link.
+- Builds use repo-style cards on home and their section index: a linked name,
+  independent `[code]` link when available, and description. Cards are capped at two columns
+  on desktop, one at widths up to 640px. Home and the section index share the
+  regular grid and let a lone card fill the width. No fake repository stats.
+  Shards and WAL keep their row/log layouts.
 - Section indexes are the full lists. `/wal/` shows short entries in full,
   with individual permalinks retained; inline heading/footnote IDs are namespaced.
 - `/readme/` is one document, linked in the footer, not another homepage lane.
 - `/catalog/` is one interleaved newest-first timeline, not a grouped directory.
-  Visible `[shard]`, `[build]`, `[wal]`, and `[readme]` labels identify the type.
+  Visible `[shard]`, `[build]`, `[wal]`, and `[readme]` labels identify the type;
+  green, muted blue, amber, and neutral text help scanning without relying on color.
+- Article images reserve their original dimensions to avoid layout jumps and
+  link to full-resolution originals with accessible labels and keyboard focus.
+  Native image viewing works without a modal or JavaScript.
 
 ## Dates and publication
 
@@ -35,7 +58,10 @@ hugo server
 hugo server --buildDrafts
 ```
 
-All four WAL samples are `draft = true`. A normal build excludes them from the
+The four WAL samples and two lorem-ipsum builds (`/builds/lorem-ipsum/` and
+`/builds/dolor-sit-amet/`) are `draft = true`. The builds offer short and longer
+copy for comparing the homepage, section index, and individual layouts.
+A normal build excludes these samples from the
 homepage, catalog, RSS, and individual routes. Never deploy with `--buildDrafts`.
 Replace samples with real entries before publishing. The homepage hides WAL
 entirely until it has content; `/wal/` still has an honest empty state.
@@ -46,10 +72,24 @@ write reviewed personal text or practices into the readme when ready.
 
 ## Connections
 
-On a shard, `related_build = "/builds/dev"` links to a build and
-`related = "/shards/2026-02-01-dev"` links to another shard. The destination
-shows a “linked from” backlink. Builds have their own `source` URL and optional
-`writeup`/`related` page references. Unresolved references fail the build.
+Shards and builds use optional lists of internal content paths:
+
+```toml
+related_shards = ["/shards/2026-02-01-dev", "/shards/2026-03-06-ivanti-osascript"]
+related_builds = ["/builds/dev"]
+```
+
+Connections combine declared references and incoming backlinks. A build collects
+all shards that name it in `related_builds`; it needs no primary write-up or
+manually maintained list. Shard↔shard and build↔build references also appear on
+both ends. Canonical URLs deduplicate repeated/reciprocal references. Two groups,
+“related shards” and “related builds”, show original publication dates newest
+first, independent of `lastmod`; empty groups and sections stay hidden. Drafts
+only contribute in draft previews. All fields are lists, even for one reference.
+Missing targets, wrong content types, self-links, scalar values, and the old
+`writeup`/`related`/`related_build` fields fail the build. Authored inline links
+remain independent of this metadata graph.
+
 Heading permalinks, Markdown source, and Git history remain available without
 JavaScript. The latter two point to `main`, so new source pages need to be
 merged before those links are live.
