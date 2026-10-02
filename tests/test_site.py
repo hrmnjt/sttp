@@ -248,9 +248,11 @@ class SiteTests(unittest.TestCase):
     def test_source_labels_and_build_writeup_deduplication(self):
         for output in (self.release, self.drafts):
             shard = self.page(output, "2026/02/01/dev/index.html")
-            text = " ".join(shard.main_text)
-            for label in ("[code]", "[markdown]", "[history]"):
+            text = " ".join(" ".join(shard.main_text).split())
+            for label in ("[code]", "view [markdown]", "view [history]"):
                 self.assertIn(label, text)
+            self.assertEqual(sum(tag == "span" and attrs.get("class") == "source-link"
+                                 for tag, attrs in shard.elements), 2)
             self.assertNotIn("↗", text)
             build = self.page(output, "builds/dev/index.html")
             writeups = [attrs for tag, attrs in build.links
