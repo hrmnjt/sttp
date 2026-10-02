@@ -5,3 +5,10 @@ resources/_gen/
 
 # Editor
 .zed
+
+# Python test cache
+__pycache__/
+
+# Development-only browser tooling and captures
+node_modules/
+.artifacts/

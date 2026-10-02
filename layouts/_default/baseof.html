@@ -1,3 +1,5 @@
+{{- partial "validate-page.html" . -}}
+{{- $wideContent := or .IsHome (and .IsSection (in (slice "shards" "builds" "catalog") .Section)) (and .IsPage (in (slice "shards" "builds") .Section)) -}}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,31 +7,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
+    {{ $description := partial "description.html" . }}
     <title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} - {{ .Site.Title }}{{ end }}</title>
-    <meta name="description" content="{{ if .IsHome }}{{ .Site.Params.description }}{{ else }}{{ .Summary | plainify | truncate 160 }}{{ end }}">
+    <meta name="description" content="{{ $description }}">
 
     <!-- Open Graph Tags -->
     <meta property="og:title" content="{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }}{{ end }}">
-    <meta property="og:description" content="{{ if .IsHome }}{{ .Site.Params.description }}{{ else }}{{ .Summary | plainify | truncate 160 }}{{ end }}">
+    <meta property="og:description" content="{{ $description }}">
     <meta property="og:url" content="{{ .Permalink }}">
-    <meta property="og:type" content="{{ if .IsHome }}website{{ else }}article{{ end }}">
+    <meta property="og:type" content="{{ if and .IsPage (eq .Section "shards") }}article{{ else }}website{{ end }}">
     <meta property="og:site_name" content="{{ .Site.Title }}">
 
     <!-- Twitter Card Tags -->
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }}{{ end }}">
-    <meta name="twitter:description" content="{{ if .IsHome }}{{ .Site.Params.description }}{{ else }}{{ .Summary | plainify | truncate 160 }}{{ end }}">
+    <meta name="twitter:description" content="{{ $description }}">
 
     <link rel="canonical" href="{{ .Permalink }}">
     <link rel="alternate" type="application/rss+xml" title="{{ .Site.Title }}" href="/index.xml">
     <link rel="icon" href="{{ "favicon.ico" | relURL }}">
     <link rel="apple-touch-icon" href="{{ "apple-touch-icon.png" | relURL }}">
-    <link rel="manifest" href="{{ "site.webmanifest" | relURL }}">
 
-    {{ $style := resources.Get "css/main.css" | resources.Minify | resources.Fingerprint "sha256" }}
+    {{ $style := slice (resources.Get "css/chroma.css") (resources.Get "css/main.css") | resources.Concat "css/site.css" | resources.Minify | resources.Fingerprint "sha256" }}
     <link rel="preload" as="style" href="{{ $style.RelPermalink }}" integrity="{{ $style.Data.Integrity }}">
     <link rel="stylesheet" href="{{ $style.RelPermalink }}" integrity="{{ $style.Data.Integrity }}">
-
     <meta name="theme-color" content="#282828">
 
     {{ partial "schema.html" . }}
@@ -38,23 +39,23 @@
     <a href="#main" class="skip-to-content">Skip to main content</a>
 
     <header>
-        <a href="/">{{ .Site.Title }}</a>
+        <div class="site-identity">
+            <a class="site-brand" href="/"{{ if .IsHome }} aria-current="page"{{ end }}>hrmnjt.dev <span class="protocol-name">/ sttp</span></a>
+            <p class="protocol-expansion">secure thought transfer protocol</p>
+        </div>
+        <nav aria-label="Primary">
+            <a href="/catalog/"{{ if eq .Section "catalog" }} aria-current="page"{{ end }}>catalog</a>
+            <a href="/index.xml">rss</a>
+        </nav>
     </header>
 
-    <main id="main">
+    <main id="main" tabindex="-1"{{ if not $wideContent }} class="reading-layout"{{ end }}>
         {{ block "main" . }}{{ end }}
     </main>
 
     <footer>
-        <nav>
-            <a href="/">Index</a>
-            <a href="/index.xml">RSS</a>
-
-            <!-- TODO: come back to this someday -->
-            <!-- <a href="/about/">About</a> -->
-            <!-- <a href="/colophon/">Colophon</a> -->
-        </nav>
-        <p>© {{ now.Format "2006" }} {{ site.Params.author }}. All rights reserved.</p>
+        <nav aria-label="Site information"><a href="/readme/"{{ if eq .Section "readme" }} aria-current="page"{{ end }}>readme</a></nav>
+        <p class="footer-legal"><span>© {{ now.Format "2006" }} {{ site.Params.author }}.</span><span><a href="https://github.com/hrmnjt/sttp/blob/main/LICENSE">MIT license</a>; <a href="/readme/#reuse">scope under review</a>.</span></p>
     </footer>
 </body>
 </html>

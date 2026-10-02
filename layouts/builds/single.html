@@ -1,0 +1,14 @@
+{{ define "main" }}
+<article class="article-wide">
+    <p class="back-link"><a href="/builds/">← builds</a></p>
+    <h1>{{ .Title }}</h1>
+    <p class="section-note">{{ .Description }}</p>
+    <nav class="utility-links" aria-label="Build links">
+        {{ with .Params.source }}<a href="{{ . }}">[code]</a>{{ end }}
+    </nav>
+    <div class="article-prose">
+        {{ partial "prose.html" (dict "Page" .) }}
+    </div>
+    {{ partial "connections.html" . }}
+</article>
+{{ end }}

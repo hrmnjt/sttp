@@ -1,0 +1,16 @@
+{{ define "main" }}
+<section aria-labelledby="catalog-title">
+    <h1 id="catalog-title">catalog</h1>
+    {{ .Content }}
+    <ol class="catalog-timeline" aria-label="All content, newest first">
+        {{ range partial "timeline-pages.html" . }}
+        {{ $kind := partial "content-kind.html" . }}
+        <li>
+            <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>
+            <span class="content-kind" data-kind="{{ $kind }}">[{{ $kind }}]</span>
+            <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+        </li>
+        {{ end }}
+    </ol>
+</section>
+{{ end }}

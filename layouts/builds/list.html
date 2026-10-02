@@ -1,0 +1,7 @@
+{{ define "main" }}
+<section aria-labelledby="builds-title">
+    {{ partial "section-heading.html" (dict "Page" . "Level" 1 "ID" "builds-title") }}
+    {{ .Content }}
+    {{ partial "build-list.html" .RegularPages.ByTitle }}
+</section>
+{{ end }}
