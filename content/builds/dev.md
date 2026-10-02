@@ -4,8 +4,6 @@ description = "My Mac setup, dotfiles, and bootstrap workflow."
 # This page was written on this date; it is not the project's launch date.
 date = 2026-09-26
 source = "https://github.com/hrmnjt/dev"
-writeup = "/shards/2026-02-01-dev"
-related = "/shards/2026-03-06-ivanti-osascript"
 +++
 
 A personal setup built around `brew bundle` for packages, `just` for tasks, and

@@ -25,6 +25,10 @@ class Page(HTMLParser):
         self.schemas = []
         self.scripts = []
         self.entries = []
+        self.connections = {}
+        self._connection_group = None
+        self._connection_item = None
+        self._connection_link = False
         self.main_text = []
         self._main = False
         self._catalog = False
@@ -40,6 +44,19 @@ class Page(HTMLParser):
             self.ids.append(attrs["id"])
         for attribute in ("aria-labelledby", "aria-describedby"):
             self.aria_refs.extend(attrs.get(attribute, "").split())
+        if tag == "section" and attrs.get("class") == "connection-group":
+            self._connection_group = attrs["aria-labelledby"].replace("post-connections-", "related-")
+            self.connections[self._connection_group] = []
+        if self._connection_group:
+            if tag == "li":
+                self._connection_item = {"date": "", "url": "", "title": ""}
+                self.connections[self._connection_group].append(self._connection_item)
+            if self._connection_item is not None:
+                if tag == "time":
+                    self._connection_item["date"] = attrs["datetime"]
+                if tag == "a":
+                    self._connection_item["url"] = attrs["href"]
+                    self._connection_link = True
         if tag == "main":
             self._main = True
         if tag == "meta":
@@ -64,6 +81,12 @@ class Page(HTMLParser):
                     self._capture = "title"
 
     def handle_endtag(self, tag):
+        if tag == "section":
+            self._connection_group = None
+        if tag == "li":
+            self._connection_item = None
+        if tag == "a":
+            self._connection_link = False
         if tag == "main":
             self._main = False
         if tag == "script" and self._script is not None:
@@ -80,6 +103,8 @@ class Page(HTMLParser):
                 self._catalog = False
 
     def handle_data(self, text):
+        if self._connection_item is not None and self._connection_link:
+            self._connection_item["title"] += text
         if self._main:
             self.main_text.append(text)
         if self._script is not None:
@@ -101,9 +126,13 @@ class SiteTests(unittest.TestCase):
         # Interleave all stream types, with repeated headings and footnotes in WAL.
         cls.fixtures = {
             "wal/test-first.md": ('"log fixture first"', "2026-03-05", None),
-            "builds/test-build.md": ('"build fixture"', "2026-03-04",
-                                     'writeup = "/shards/2026-02-01-dev"\n'),
-            "shards/test-shard.md": ('"shard fixture"', "2026-03-03", 'slug = "timeline-fixture"\n'),
+            "builds/test-build.md": ('"zz build fixture"', "2026-03-04",
+                                     'related_shards = ["/shards/2026-02-01-dev", "/shards/test-shard"]\n'
+                                     'related_builds = ["/builds/dev"]\n'),
+            "shards/test-shard.md": ('"shard fixture"', "2026-03-03",
+                                     'slug = "timeline-fixture"\nlastmod = 2026-09-26\n'
+                                     'related_builds = ["/builds/dev", "/builds/dev", "/builds/test-build"]\n'
+                                     'related_shards = ["/shards/2026-02-01-dev", "/shards/2026-02-08-rfd"]\n'),
             "wal/test-second.md": ('"log fixture second"', "2026-03-02", None),
         }
         for name, (title, date, extra) in cls.fixtures.items():
@@ -191,6 +220,141 @@ class SiteTests(unittest.TestCase):
             self.assertFalse((self.release / route).exists())
         self.assertFalse((self.release / "site.webmanifest").exists())
 
+    def test_shared_frame_keeps_log_and_readme_in_a_reading_column(self):
+        wide_routes = {"index.html", "shards/index.html", "builds/index.html", "catalog/index.html"}
+        for output in (self.release, self.drafts):
+            for path, page in self.pages[output].items():
+                bodies = [attrs for tag, attrs in page.elements if tag == "body"]
+                mains = [attrs for tag, attrs in page.elements if tag == "main"]
+                self.assertEqual(len(bodies), 1)
+                self.assertEqual(len(mains), 1)
+                self.assertNotIn("wide-layout", bodies[0].get("class", "").split())
+                route = path.relative_to(output).as_posix()
+                wide_article = any(tag == "article" and
+                                   "article-wide" in attrs.get("class", "").split()
+                                   for tag, attrs in page.elements)
+                self.assertEqual("reading-layout" in mains[0].get("class", "").split(),
+                                 not (route in wide_routes or wide_article), route)
+
+    def test_wide_articles_keep_prose_separate_from_page_furniture(self):
+        for output in (self.release, self.drafts):
+            for route in ("2026/02/08/rfd/index.html", "builds/dev/index.html"):
+                page = self.page(output, route)
+                self.assertEqual(sum(tag == "article" and attrs.get("class") == "article-wide"
+                                     for tag, attrs in page.elements), 1)
+                self.assertEqual(sum(tag == "div" and attrs.get("class") == "article-prose"
+                                     for tag, attrs in page.elements), 1)
+            harlequin = self.page(output, "2024/12/02/readdatawithharlequin/index.html")
+            self.assertEqual(sum(tag == "figure" and attrs.get("class") == "article-image"
+                                 for tag, attrs in harlequin.elements), 2)
+
+    def test_home_profile_keeps_authored_strikethrough_history(self):
+        for output in (self.release, self.drafts):
+            page = self.page(output, "index.html")
+            self.assertEqual(sum(tag == "del" for tag, _ in page.elements), 4)
+            for url in ("https://www.mu-sigma.com/", "https://www.majidalfuttaim.com/",
+                        "https://www.doh.gov.ae/en/"):
+                self.assertIn(url, [attrs.get("href") for _, attrs in page.links])
+            text = " ".join(page.main_text)
+            for phrase in ("backend applications", "system programming", "wild-wild internet"):
+                self.assertIn(phrase, text)
+
+    def test_article_images_reserve_dimensions_and_link_to_full_size(self):
+        for output in (self.release, self.drafts):
+            for path, page in self.pages[output].items():
+                links = [attrs for tag, attrs in page.links
+                         if tag == "a" and attrs.get("class") == "image-fullsize"]
+                for link in links:
+                    images = [attrs for tag, attrs in page.links
+                              if tag == "img" and attrs.get("src") == link["href"]]
+                    self.assertEqual(len(images), 1)
+                    image = images[0]
+                    self.assertGreater(int(image["width"]), 0)
+                    self.assertGreater(int(image["height"]), 0)
+                    self.assertEqual(image["loading"], "lazy")
+                    self.assertEqual(image["decoding"], "async")
+                    self.assertIn(image["alt"], link["aria-label"])
+                    self.assertTrue(link["aria-label"].startswith("View full-size image:"))
+                    self.assertTrue((output / link["href"].lstrip("/")).is_file())
+            harlequin = self.page(output, "2024/12/02/readdatawithharlequin/index.html")
+            self.assertEqual(sum(tag == "a" and attrs.get("class") == "image-fullsize"
+                                 for tag, attrs in harlequin.links), 2)
+
+    def test_catalog_type_tokens_preserve_explicit_text_labels(self):
+        for output in (self.release, self.drafts):
+            page = self.page(output, "catalog/index.html")
+            tokens = [attrs["data-kind"] for tag, attrs in page.elements
+                      if tag == "span" and attrs.get("class") == "content-kind"]
+            self.assertEqual(tokens, [entry["kind"].strip("[]") for entry in page.entries])
+            self.assertTrue(set(tokens) <= {"shard", "build", "wal", "readme"})
+            if output == self.drafts:
+                self.assertEqual(set(tokens), {"shard", "build", "wal", "readme"})
+
+    def test_footer_keeps_licensing_caveat_separate_from_navigation(self):
+        for output in (self.release, self.drafts):
+            for page in self.pages[output].values():
+                self.assertEqual(sum(tag == "p" and attrs.get("class") == "footer-legal"
+                                     for tag, attrs in page.elements), 1)
+                self.assertIn("/readme/#reuse", [attrs.get("href") for _, attrs in page.links])
+                self.assertIn("https://github.com/hrmnjt/sttp/blob/main/LICENSE",
+                              [attrs.get("href") for _, attrs in page.links])
+
+    def test_home_previews_only_the_three_newest_shards(self):
+        for output in (self.release, self.drafts):
+            index = self.page(output, "shards/index.html")
+            archive_urls = [attrs["href"] for tag, attrs in index.links
+                            if tag == "a" and attrs.get("href", "").startswith("/")
+                            and attrs["href"].split("/")[1].isdigit()]
+            home_urls = [attrs["href"] for tag, attrs in self.page(output, "index.html").links
+                         if tag == "a" and attrs.get("href", "") in archive_urls]
+            self.assertEqual(home_urls, archive_urls[:3])
+            self.assertGreater(len(archive_urls), 3)
+
+    def test_build_layout_samples_are_preview_only(self):
+        for slug in ("lorem-ipsum", "dolor-sit-amet"):
+            route = f"/builds/{slug}/"
+            self.assertFalse((self.release / route.lstrip("/")).exists())
+            self.assertTrue((self.drafts / route.lstrip("/") / "index.html").exists())
+            for directory in ("index.html", "builds/index.html", "catalog/index.html"):
+                for output, present in ((self.release, False), (self.drafts, True)):
+                    urls = [attrs.get("href") for tag, attrs in self.page(output, directory).links
+                            if tag == "a"]
+                    self.assertEqual(route in urls, present, f"{directory}: {route}")
+            for output, present in ((self.release, False), (self.drafts, True)):
+                items = ET.parse(output / "index.xml").findall("./channel/item")
+                self.assertEqual("https://hrmnjt.dev" + route in
+                                 [item.findtext("link") for item in items], present)
+
+    def test_build_cards_keep_page_and_repository_links_distinct(self):
+        for output in (self.release, self.drafts):
+            for directory in ("index.html", "builds/index.html"):
+                page = self.page(output, directory)
+                lists = [attrs for tag, attrs in page.elements
+                         if tag == "ul" and attrs.get("class") == "build-list"]
+                self.assertEqual(len(lists), 1)
+                self.assertEqual(lists[0].get("role"), "list")
+                cards = [attrs for tag, attrs in page.elements
+                         if tag == "li" and attrs.get("class") == "build-card"]
+                names = [attrs for tag, attrs in page.links
+                         if tag == "a" and attrs.get("class") == "build-name"]
+                sources = [attrs for tag, attrs in page.links
+                           if tag == "a" and attrs.get("class") == "build-code"]
+                self.assertEqual(len(cards), len(names))
+                self.assertIn("/builds/dev/", [attrs["href"] for attrs in names])
+                self.assertIn("https://github.com/hrmnjt/dev", [attrs["href"] for attrs in sources])
+                self.assertTrue(all(attrs.get("aria-label", "").startswith("Code repository for ")
+                                    for attrs in sources))
+                for attrs in names:
+                    self.assertTrue(attrs["href"].startswith("/builds/"))
+                if output == self.release:
+                    self.assertEqual(len(cards), 1)
+                elif directory == "index.html":
+                    self.assertEqual(len(cards), 3)
+                else:
+                    # The fixture deliberately has no repository URL: no invented code link.
+                    self.assertEqual(len(cards), 4)
+                    self.assertEqual(len(sources), 3)
+
     def test_wal_shows_full_entries_and_unique_anchor_targets(self):
         path = self.drafts / "wal/index.html"
         page = self.pages[self.drafts][path]
@@ -245,7 +409,7 @@ class SiteTests(unittest.TestCase):
             self.assertEqual(headings["appendix"], "h2")
             self.assertEqual(headings["rfd-template"], "h3")
 
-    def test_source_labels_and_build_writeup_deduplication(self):
+    def test_source_labels_keep_view_outside_the_bracketed_links(self):
         for output in (self.release, self.drafts):
             shard = self.page(output, "2026/02/01/dev/index.html")
             text = " ".join(" ".join(shard.main_text).split())
@@ -254,14 +418,52 @@ class SiteTests(unittest.TestCase):
             self.assertEqual(sum(tag == "span" and attrs.get("class") == "source-link"
                                  for tag, attrs in shard.elements), 2)
             self.assertNotIn("↗", text)
+
+    def test_build_collects_all_shard_backlinks_in_original_date_order(self):
+        for output in (self.release, self.drafts):
             build = self.page(output, "builds/dev/index.html")
-            writeups = [attrs for tag, attrs in build.links
-                        if tag == "a" and attrs.get("href") == "/2026/02/01/dev/"]
-            self.assertEqual(len(writeups), 1)  # authored body link retained
-        # If a build does not link its write-up in the body, keep the navigation link.
-        fixture = self.page(self.drafts, "builds/test-build/index.html")
-        self.assertIn("main shard", " ".join(fixture.main_text))
-        self.assertIn("/2026/02/01/dev/", [attrs.get("href") for _, attrs in fixture.links])
+            entries = build.connections["related-shards"]
+            urls = [entry["url"] for entry in entries]
+            expected = ["/2026/03/06/ivanti-osascript/", "/2026/02/01/dev/"]
+            if output == self.drafts:
+                expected.insert(1, "/2026/03/03/timeline-fixture/")
+            self.assertEqual(urls, expected)
+            if output == self.drafts:
+                self.assertEqual([entry["url"] for entry in build.connections["related-builds"]],
+                                 ["/builds/test-build/"])
+            else:
+                self.assertNotIn("related-builds", build.connections)
+            self.assertNotIn("main shard →", " ".join(build.main_text))
+            self.assertEqual([entry["date"] for entry in entries],
+                             sorted([entry["date"] for entry in entries], reverse=True))
+
+    def test_connections_support_many_targets_reciprocity_and_deduplication(self):
+        fixture = self.page(self.drafts, "2026/03/03/timeline-fixture/index.html")
+        self.assertEqual([entry["url"] for entry in fixture.connections["related-builds"]],
+                         ["/builds/dev/", "/builds/test-build/"])
+        self.assertEqual([entry["url"] for entry in fixture.connections["related-shards"]],
+                         ["/2026/02/08/rfd/", "/2026/02/01/dev/"])
+        # Both ends declare this edge, but it appears only once on each end.
+        build = self.page(self.drafts, "builds/test-build/index.html")
+        self.assertEqual([entry["url"] for entry in build.connections["related-shards"]],
+                         ["/2026/03/03/timeline-fixture/", "/2026/02/01/dev/"])
+        self.assertEqual([entry["url"] for entry in build.connections["related-builds"]],
+                         ["/builds/dev/"])
+        rfd = self.page(self.drafts, "2026/02/08/rfd/index.html")
+        self.assertEqual([entry["url"] for entry in rfd.connections["related-shards"]],
+                         ["/2026/03/03/timeline-fixture/"])
+        self.assertEqual(self.page(self.release, "2026/02/08/rfd/index.html").connections, {})
+        # A shard gets an incoming build edge as well as its explicitly named build.
+        dev = self.page(self.drafts, "2026/02/01/dev/index.html")
+        self.assertEqual([entry["url"] for entry in dev.connections["related-builds"]],
+                         ["/builds/dev/", "/builds/test-build/"])
+        for output in (self.release, self.drafts):
+            for page in self.pages[output].values():
+                for entries in page.connections.values():
+                    urls = [entry["url"] for entry in entries]
+                    self.assertEqual(len(urls), len(set(urls)))
+                    dates = [entry["date"] for entry in entries]
+                    self.assertEqual(dates, sorted(dates, reverse=True))
 
     def test_generated_local_links_and_anchors(self):
         for output in (self.release, self.drafts):
@@ -291,9 +493,21 @@ class SiteTests(unittest.TestCase):
         cases = (
             ('title = "bad"\n', "needs an explicit date"),
             ('date = 2026-03-01\n', "needs an explicit title"),
-            ('title = "bad"\ndate = 2026-03-01\nrelated = "/shards/not-there"\n',
+            ('title = "bad"\ndate = 2026-03-01\nrelated_shards = ["/shards/not-there"]\n',
              "unresolved content relationship"),
         )
+        base = 'title = "bad"\ndate = 2026-03-01\n'
+        cases += tuple((base + relationship + "\n", error) for relationship, error in (
+            ('related_shards = "/shards/2026-02-01-dev"', "must be a list"),
+            ('related_builds = ["/shards/2026-02-01-dev"]', "must point to a builds page"),
+            ('related_shards = ["/builds/dev"]', "must point to a shards page"),
+            ('related_builds = ["/builds"]', "must point to a builds page"),
+            ('related_builds = ["/builds/invalid"]', "cannot reference itself"),
+            ('related_builds = [42]', "needs string content paths"),
+            ('writeup = "/shards/2026-02-01-dev"', "uses legacy relationship"),
+            ('related = "/shards/2026-02-01-dev"', "uses legacy relationship"),
+            ('related_build = "/builds/dev"', "uses legacy relationship"),
+        ))
         try:
             for metadata, error in cases:
                 bad.write_text(f"+++\n{metadata}+++\n\nInvalid fixture.\n")

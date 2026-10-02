@@ -1,17 +1,17 @@
 {{ define "main" }}
 <section class="home-intro" aria-labelledby="intro-title">
-    <h1 id="intro-title">Hi, I'm Harman.</h1>
+    <h1 id="intro-title">{{ .Params.intro_title | default "Hi, I'm Harman." }}</h1>
     {{ .Content }}
 </section>
 {{ with .Site.GetPage "/shards" }}
 <section class="home-section" aria-labelledby="home-shards">
     {{ partial "section-heading.html" (dict "Page" . "Level" 2 "ID" "home-shards" "Linked" true "Note" "Partitioned thoughts. No global ordering promised.") }}
-    {{ partial "dated-list.html" (first 5 .RegularPages.ByDate.Reverse) }}
+    {{ partial "dated-list.html" (first 3 .RegularPages.ByDate.Reverse) }}
     <p class="archive-link"><a href="{{ .RelPermalink }}">all shards →</a></p>
 </section>
 {{ end }}
 {{ with .Site.GetPage "/builds" }}{{ if .RegularPages }}
-<section class="home-section" aria-labelledby="home-builds">
+<section class="home-section home-builds" aria-labelledby="home-builds">
     {{ partial "section-heading.html" (dict "Page" . "Level" 2 "ID" "home-builds" "Linked" true "Note" "Things that escaped the scratch buffer.") }}
     {{ partial "build-list.html" (first 3 .RegularPages.ByTitle) }}
     {{ if gt (len .RegularPages) 3 }}<p class="archive-link"><a href="{{ .RelPermalink }}">all builds →</a></p>{{ end }}

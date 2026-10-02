@@ -1,4 +1,5 @@
 {{- partial "validate-page.html" . -}}
+{{- $wideContent := or .IsHome (and .IsSection (in (slice "shards" "builds" "catalog") .Section)) (and .IsPage (in (slice "shards" "builds") .Section)) -}}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -48,13 +49,13 @@
         </nav>
     </header>
 
-    <main id="main" tabindex="-1">
+    <main id="main" tabindex="-1"{{ if not $wideContent }} class="reading-layout"{{ end }}>
         {{ block "main" . }}{{ end }}
     </main>
 
     <footer>
         <nav aria-label="Site information"><a href="/readme/"{{ if eq .Section "readme" }} aria-current="page"{{ end }}>readme</a></nav>
-        <p>© {{ now.Format "2006" }} {{ site.Params.author }} · <a href="https://github.com/hrmnjt/sttp/blob/main/LICENSE">MIT license</a>; <a href="/readme/#reuse">scope under review</a>.</p>
+        <p class="footer-legal"><span>© {{ now.Format "2006" }} {{ site.Params.author }}.</span><span><a href="https://github.com/hrmnjt/sttp/blob/main/LICENSE">MIT license</a>; <a href="/readme/#reuse">scope under review</a>.</span></p>
     </footer>
 </body>
 </html>

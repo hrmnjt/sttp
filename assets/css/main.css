@@ -9,21 +9,33 @@
     --pre-bg: #1d2021;
     --accent: #b8bb26;
     --accent-hover: #fabd2f;
+    --kind-shard: #b8bb26;
+    --kind-build: #83a598;
+    --kind-wal: #d79921;
     --font-mono: ui-monospace, "Cascadia Mono", "Segoe UI Mono", "Liberation Mono", Menlo, Monaco, Consolas, monospace;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
 body {
-    max-width: 860px;
+    max-width: 1100px;
     margin: 0 auto;
     padding: 24px;
     background: var(--bg-primary);
     color: var(--text-primary);
     font: 1rem/1.75 var(--font-mono);
 }
-/* Shared outer rail; long-form text keeps its own reading measure. */
+/* Stable site furniture, with a centred reading column on text-led pages. */
 main { min-width: 0; }
+main.reading-layout { max-width: 70ch; margin-inline: auto; }
 article { max-width: 70ch; }
+/* Shared left rail; prose stays readable while technical material has room. */
+article.article-wide { max-width: none; }
+.article-wide > p,
+.article-wide > .migrated-notice,
+.article-wide > .connections,
+.article-wide .article-prose > :is(p, ul, ol, dl, blockquote),
+.article-wide .footnotes > ol,
+.shards-index > p { max-width: 70ch; }
 h1, h2, h3, p, ul, ol { margin-top: 0; }
 h1, h2, h3 {
     font-family: var(--font-mono);
@@ -95,7 +107,7 @@ body > header nav, body > footer nav, .utility-links {
     gap: 0 18px;
     font: 0.85rem/1.6 var(--font-mono);
 }
-body > header nav a, body > footer a, .utility-links a {
+body > header nav a, body > footer nav a, .utility-links a {
     display: inline-flex;
     align-items: center;
     min-height: 44px;
@@ -110,12 +122,15 @@ body > footer {
     font: 0.8rem/1.6 var(--font-mono);
 }
 body > footer p { margin: 0; }
+.footer-legal { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; }
+.footer-legal > span { min-width: 0; }
+.footer-legal a { display: inline-block; min-height: 24px; padding: 2px 0; }
 
 /* One column; the names do the organising. */
 .home-intro { margin-bottom: 36px; }
 .home-intro h1 { font-size: 1.25rem; }
-.home-intro p { max-width: 60ch; font-family: var(--font-mono); font-size: 0.95rem; }
-.home-section { margin-top: 32px; }
+.home-intro p { max-width: 70ch; font-family: var(--font-mono); font-size: 0.95rem; }
+.home-section { position: relative; isolation: isolate; margin-top: 32px; }
 .section-heading {
     display: flex;
     align-items: center;
@@ -126,7 +141,14 @@ body > footer p { margin: 0; }
 .section-copy { min-width: 0; }
 .section-heading h1, .section-heading h2 { margin: 0; }
 .section-heading img { flex: none; width: 40px; height: auto; margin: 0; }
-.home-section .section-heading img { width: 104px; }
+/* Modest marks share a right rail and sit behind the content, not above it. */
+.home-section .section-heading { position: relative; align-items: flex-start; }
+.home-section .section-copy { flex: 1; padding-right: 152px; }
+.home-section .section-heading h2 a { display: block; border-bottom: 1px solid currentColor; text-decoration: none; }
+.home-section .section-heading img { position: absolute; top: -12px; right: 0; z-index: -1; width: 136px; pointer-events: none; }
+.home-section .dated-list { padding-right: 160px; }
+/* Centre the build mark on the header band; keep the card grid regular. */
+.home-builds .section-heading img { top: 50%; transform: translateY(-50%); }
 .section-note { color: var(--text-secondary); }
 .section-copy > .section-note { margin: 4px 0 0; font: 0.85rem/1.7 var(--font-mono); }
 .archive-link, .back-link { font: 0.85rem/1.7 var(--font-mono); }
@@ -142,9 +164,24 @@ body > footer p { margin: 0; }
 .dated-list li { display: grid; grid-template-columns: 10ch minmax(0, 1fr); gap: 18px; padding: 7px 0; }
 .dated-list time, .catalog-timeline time { color: var(--text-secondary); font-size: 0.85rem; }
 .dated-list a, .build-list a, .catalog-timeline a { overflow-wrap: anywhere; }
-.build-list li { padding: 8px 0; }
-.build-list a { font-weight: 700; }
-.build-list span { display: block; color: var(--text-secondary); font: 0.85rem/1.7 var(--font-mono); }
+/* Repo-like cards for builds; the other streams stay simple rows. */
+.build-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+.build-card {
+    min-width: 0;
+    padding: 12px 16px 16px;
+    border: 1px dashed var(--border-color);
+    background: var(--bg-primary);
+}
+.build-card:only-child { grid-column: 1 / -1; }
+.build-card-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.build-card-heading a { display: inline-flex; align-items: center; min-height: 44px; padding: 6px 0; }
+.build-name { min-width: 0; font-weight: 700; }
+.build-code { flex: none; white-space: nowrap; font-size: 0.8rem; }
+.build-card-description { margin: 4px 0 0; color: var(--text-secondary); font: 0.85rem/1.7 var(--font-mono); overflow-wrap: anywhere; }
 .catalog-timeline li {
     display: grid;
     grid-template-columns: 10ch 8ch minmax(0, 1fr);
@@ -154,6 +191,9 @@ body > footer p { margin: 0; }
     border-bottom: 1px dashed var(--border-color);
 }
 .content-kind { color: var(--text-secondary); font-size: 0.8rem; }
+.content-kind[data-kind="shard"] { color: var(--kind-shard); }
+.content-kind[data-kind="build"] { color: var(--kind-build); }
+.content-kind[data-kind="wal"] { color: var(--kind-wal); }
 
 /* Short log entries are readable here, not hidden behind excerpts. */
 .wal-log { border-left: 1px dotted var(--border-color); padding-left: 22px; }
@@ -183,12 +223,11 @@ article li { margin-bottom: 0.4em; }
 .utility-links { margin-bottom: 20px; }
 .source-trail { margin: 28px 0 0; padding-top: 8px; border-top: 1px dashed var(--border-color); }
 .source-link { display: inline-flex; align-items: center; gap: 0.5ch; }
-.related-note { margin-top: 24px; }
 .connections { margin-top: 32px; }
 .connections h2 { font-size: 1rem; }
-.connections ul { list-style: none; padding: 0; }
-.connections li { display: flex; align-items: baseline; gap: 16px; }
-.connections li span { min-width: 12ch; color: var(--text-secondary); font: 0.8rem/1.7 var(--font-mono); }
+.connections .connection-group h3 { margin: 16px 0 4px; color: var(--text-secondary); font-size: 0.85rem; }
+.connections .dated-list { margin: 0; padding: 0; }
+.connections .dated-list li { margin: 0; }
 .migrated-notice { margin: 24px 0; padding: 12px 16px; border-left: 2px dashed var(--border-color); color: var(--text-secondary); font-size: 0.9rem; }
 
 code, pre, .highlight { font-family: var(--font-mono); }
@@ -203,6 +242,11 @@ article hr { margin: 1.8em 0; border: 0; border-top: 1px dashed var(--border-col
 blockquote { margin: 1.5em 0; padding: 0.2em 0 0.2em 1.25em; border-left: 2px dashed var(--border-color); color: var(--text-secondary); }
 blockquote > :last-child { margin-bottom: 0; }
 img { display: block; max-width: 100%; height: auto; margin: 1.5em 0; }
+.image-fullsize { display: block; width: fit-content; max-width: 100%; margin: 1.5em 0; cursor: zoom-in; }
+.article-image { margin: 1.5em 0; }
+.article-image .image-fullsize { margin: 0; }
+.image-fullsize picture { display: block; }
+.image-fullsize img { margin: 0; }
 table { display: block; max-width: 100%; overflow-x: auto; border-collapse: collapse; margin: 1.5em 0; }
 th, td { padding: 8px 12px; border: 1px solid var(--border-color); text-align: left; }
 .footnotes { margin-top: 32px; padding-top: 16px; border-top: 1px dashed var(--border-color); font-size: 0.9rem; }
@@ -222,15 +266,21 @@ th, td { padding: 8px 12px; border: 1px solid var(--border-color); text-align: l
 .dev-flow-route code { padding: 0; background: none; font-size: 1em; overflow-wrap: anywhere; }
 
 @media (min-width: 768px) { body { padding: 40px 56px; } }
+@media (max-width: 640px) {
+    .home-section .section-heading { align-items: center; }
+    .home-section .section-copy { padding-right: 0; }
+    .home-section .section-heading img { position: static; transform: none; width: 72px; }
+    .home-section .dated-list { padding-right: 0; }
+    .build-list { grid-template-columns: 1fr; }
+    .home-section > .dated-list { margin-bottom: 8px; }
+    .home-section .archive-link { margin-top: 8px; }
+}
 @media (max-width: 560px) {
     body { line-height: 1.65; }
     article p { margin-bottom: 1em; }
-    .home-section .section-heading img { width: 72px; }
     .dated-list li { grid-template-columns: minmax(0, 1fr); gap: 0; padding: 10px 0; }
     .catalog-timeline li { grid-template-columns: 10ch minmax(0, 1fr); gap: 2px 12px; }
     .catalog-timeline li > a { grid-column: 1 / -1; }
-    .connections li { display: block; }
-    .connections li span { display: block; }
     .dev-flow { padding: 12px 14px; }
     .dev-flow-route { grid-template-columns: minmax(0, 1fr); gap: 2px; }
     .dev-flow-route img { display: none; }

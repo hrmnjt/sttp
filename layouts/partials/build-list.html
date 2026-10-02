@@ -1,5 +1,12 @@
-<ul class="build-list">
+<ul class="build-list" role="list">
     {{ range . }}
-    <li><a href="{{ .RelPermalink }}">{{ .Title }}</a>{{ with .Description }}<span>{{ . }}</span>{{ end }}</li>
+    {{ $build := . }}
+    <li class="build-card">
+        <div class="build-card-heading">
+            <a class="build-name" href="{{ .RelPermalink }}">{{ .Title }}</a>
+            {{ with .Params.source }}<a class="build-code" href="{{ . }}" aria-label="Code repository for {{ $build.Title }}">[code]</a>{{ end }}
+        </div>
+        {{ with .Description }}<p class="build-card-description">{{ . }}</p>{{ end }}
+    </li>
     {{ end }}
 </ul>

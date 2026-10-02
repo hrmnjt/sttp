@@ -1,18 +1,14 @@
 {{ define "main" }}
-<article>
+<article class="article-wide">
     <p class="back-link"><a href="/builds/">← builds</a></p>
     <h1>{{ .Title }}</h1>
     <p class="section-note">{{ .Description }}</p>
     <nav class="utility-links" aria-label="Build links">
         {{ with .Params.source }}<a href="{{ . }}">[code]</a>{{ end }}
-        {{ with .Params.writeup }}{{ with $.Site.GetPage . }}
-        {{/* An authored write-up link in the body needs no duplicate here. */}}
-        {{ if not (in $.Content (printf `href="%s"` .RelPermalink)) }}<a href="{{ .RelPermalink }}">main shard →</a>{{ end }}
-        {{ end }}{{ end }}
     </nav>
-    {{ partial "prose.html" (dict "Page" .) }}
-    {{ with .Params.related }}{{ with $.Site.GetPage . }}
-    <p class="related-note">Also: <a href="{{ .RelPermalink }}">{{ .Title }}</a></p>
-    {{ end }}{{ end }}
+    <div class="article-prose">
+        {{ partial "prose.html" (dict "Page" .) }}
+    </div>
+    {{ partial "connections.html" . }}
 </article>
 {{ end }}

@@ -14,7 +14,8 @@
     - Fingerprints output based on content (cache busting)
     - Falls back to original format if WebP not supported
     - Adds lazy loading
-    - Uses <picture> element for modern browsers
+    - Uses a <picture> element for modern browsers
+    - Reserves intrinsic dimensions and links to the full-resolution fallback
 */ -}}
 
 {{- $src := .Get "src" -}}
@@ -42,7 +43,11 @@
 {{- /* Fingerprint the original-format fallback too; /images/* is cached immutably. */ -}}
 {{- $fallback := $image | resources.Fingerprint "sha256" -}}
 
+<figure class="article-image">
+<a class="image-fullsize" href="{{ $fallback.RelPermalink }}" aria-label="View full-size image: {{ $alt }}">
 <picture>
   <source srcset="{{ $webp.RelPermalink }}" type="image/webp">
-  <img src="{{ $fallback.RelPermalink }}" alt="{{ $alt }}"{{ if $title }} title="{{ $title }}"{{ end }} loading="lazy">
+  <img src="{{ $fallback.RelPermalink }}" alt="{{ $alt }}"{{ if $title }} title="{{ $title }}"{{ end }} width="{{ $image.Width }}" height="{{ $image.Height }}" loading="lazy" decoding="async">
 </picture>
+</a>
+</figure>

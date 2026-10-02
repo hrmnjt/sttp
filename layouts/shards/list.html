@@ -1,5 +1,5 @@
 {{ define "main" }}
-<section aria-labelledby="shards-title">
+<section class="shards-index" aria-labelledby="shards-title">
     {{ partial "section-heading.html" (dict "Page" . "Level" 1 "ID" "shards-title") }}
     {{ .Content }}
     {{ partial "dated-list.html" .RegularPages.ByDate.Reverse }}
