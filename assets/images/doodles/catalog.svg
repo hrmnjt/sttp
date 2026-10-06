@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 80" fill="none">
+  <!-- A loose stack of index cards: different things in one collection. -->
+  <g stroke="#bdae93" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M19 23 L67 11 L79 53 L31 66 Z"/>
+    <path d="M13 30 L68 23 L75 66 L20 72 Z"/>
+    <path d="M22 24 L80 29 L76 70 L18 65 Z" fill="#282828"/>
+    <path d="M44 38 l24 2 M43 48 l20 2 M42 58 l26 2" stroke-width="1.2"/>
+    <path d="M12 17 l-5 -3 M9 26 l-5 1 M83 19 l5 -3 M84 59 l6 2" stroke-width="1.2"/>
+  </g>
+  <g stroke="#b8bb26" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M30 33 l5 5 -6 4 -4 -5 Z M28 47 l7 1 -1 7 -7 -1 Z"/>
+    <path d="M26 60 l6 1 M67 76 q8 1 13 -2"/>
+  </g>
+</svg>

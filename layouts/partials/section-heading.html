@@ -4,7 +4,7 @@
         {{ with .Note }}<p class="section-note">{{ . }}</p>{{ end }}
         {{ with .Intro }}<div class="section-intro">{{ . }}</div>{{ end }}
     </div>
-    {{ if in (slice "builds" "shards" "wal") .Page.Section }}
+    {{ if in (slice "builds" "shards" "wal" "catalog") .Page.Section }}
         {{ $name := cond (eq .Page.Section "shards") "shard" .Page.Section }}
         {{ $mark := resources.Get (printf "images/doodles/%s.svg" $name) | resources.Fingerprint "sha256" }}
         <img src="{{ $mark.RelPermalink }}" alt="" width="48" height="40" aria-hidden="true">
