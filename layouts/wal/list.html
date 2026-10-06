@@ -6,8 +6,8 @@
         {{ range .RegularPages.ByDate.Reverse }}
         <li>
             <article aria-labelledby="wal-title-{{ .File.UniqueID }}">
-                <time class="article-date" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>
                 <h2 id="wal-title-{{ .File.UniqueID }}"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+                <time class="article-date" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>
                 {{ partial "prose.html" (dict "Page" . "Prefix" (printf "wal-%s-" .File.UniqueID)) }}
             </article>
         </li>

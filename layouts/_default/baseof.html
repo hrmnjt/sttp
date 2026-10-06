@@ -1,5 +1,4 @@
 {{- partial "validate-page.html" . -}}
-{{- $wideContent := or .IsHome (and .IsSection (in (slice "shards" "builds" "wal" "catalog" "readme") .Section)) (and .IsPage (in (slice "shards" "builds" "wal") .Section)) -}}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,7 +14,7 @@
     <meta property="og:title" content="{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }}{{ end }}">
     <meta property="og:description" content="{{ $description }}">
     <meta property="og:url" content="{{ .Permalink }}">
-    <meta property="og:type" content="{{ if and .IsPage (eq .Section "shards") }}article{{ else }}website{{ end }}">
+    <meta property="og:type" content="{{ if and .IsPage (in (slice "shards" "builds" "wal") .Section) }}article{{ else }}website{{ end }}">
     <meta property="og:site_name" content="{{ .Site.Title }}">
 
     <!-- Twitter Card Tags -->
@@ -25,8 +24,8 @@
 
     <link rel="canonical" href="{{ .Permalink }}">
     <link rel="alternate" type="application/rss+xml" title="{{ .Site.Title }}" href="/index.xml">
-    <link rel="icon" href="{{ "favicon.ico" | relURL }}">
-    <link rel="apple-touch-icon" href="{{ "apple-touch-icon.png" | relURL }}">
+    <link rel="icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
     {{ $style := slice (resources.Get "css/chroma.css") (resources.Get "css/main.css") | resources.Concat "css/site.css" | resources.Minify | resources.Fingerprint "sha256" }}
     <link rel="preload" as="style" href="{{ $style.RelPermalink }}" integrity="{{ $style.Data.Integrity }}">
@@ -49,13 +48,20 @@
         </nav>
     </header>
 
-    <main id="main" tabindex="-1"{{ if not $wideContent }} class="reading-layout"{{ end }}>
+    <main id="main" tabindex="-1">
         {{ block "main" . }}{{ end }}
     </main>
 
     <footer>
-        <nav aria-label="Site information"><a href="/readme/"{{ if eq .Section "readme" }} aria-current="page"{{ end }}>readme</a></nav>
-        <p class="footer-legal"><span>© {{ now.Format "2006" }} {{ site.Params.author }}.</span><span><a href="https://github.com/hrmnjt/sttp/blob/main/LICENSE">MIT license</a>; <a href="/readme/#reuse">scope under review</a>.</span></p>
+        <nav aria-label="Site sections">
+            {{- range slice "shards" "builds" "wal" "catalog" "readme" }}
+            {{- with site.GetPage (printf "/%s" .) }}{{ if or (ne .Section "wal") .RegularPages }}
+            <a href="{{ .RelPermalink }}"{{ if eq $ . }} aria-current="page"{{ end }}>{{ .Title }}</a>
+            {{- end }}{{ end }}
+            {{- end }}
+            <a href="/index.xml">rss</a>
+        </nav>
+        <p class="footer-legal"><span>© {{ now.Format "2006" }} {{ site.Params.author }}.</span><span>Code under <a href="https://github.com/hrmnjt/sttp/blob/main/LICENSE">MIT</a>; writing and sketches under <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.</span><span><a href="/readme/#reuse">Reuse terms</a></span></p>
     </footer>
     {{ partial "image-viewer-script.html" . }}
 </body>

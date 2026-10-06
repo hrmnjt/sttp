@@ -1,6 +1,5 @@
 +++
 title = "shards"
-sort_by = "date"
 +++
 
 In databases, sharding splits a dataset into smaller partitions, often spread

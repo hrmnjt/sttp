@@ -15,7 +15,7 @@
                 {{- errorf "content page %q: %s must be a list of content paths" $.File.Path $field -}}
             {{- else -}}
                 {{- if not (in (slice "shards" "builds") $.Section) -}}
-                    {{- errorf "content page %q: connections are supported on shards and builds" $.File.Path -}}
+                    {{- errorf "content page %q: backlinks are supported on shards and builds" $.File.Path -}}
                 {{- end -}}
                 {{- range $references -}}
                     {{- if ne (printf "%T" .) "string" -}}

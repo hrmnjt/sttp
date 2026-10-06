@@ -6,14 +6,7 @@
         {{ $kind := partial "content-kind.html" . }}
         <li>
             <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>
-            <span class="content-kind" data-kind="{{ $kind }}">
-                {{- if in (slice "shard" "build" "wal") $kind -}}
-                    {{- $name := cond (eq $kind "build") "builds" $kind -}}
-                    {{- $original := resources.Get (printf "images/doodles/%s.svg" $name) -}}
-                    {{- $neutral := replace $original.Content "#b8bb26" "#bdae93" -}}
-                    {{- $mark := resources.FromString (printf "images/doodles/catalog-mark-%s.svg" $name) $neutral | resources.Fingerprint "sha256" -}}
-                    <img class="catalog-mark" src="{{ $mark.RelPermalink }}" alt="" width="24" height="20" aria-hidden="true">
-                {{- end -}}[{{ $kind }}]</span>
+            <span class="content-kind" data-kind="{{ $kind }}">{{ partial "kind-mark.html" $kind }}[{{ $kind }}]</span>
             <a href="{{ .RelPermalink }}">{{ .Title }}</a>
         </li>
         {{ end }}
