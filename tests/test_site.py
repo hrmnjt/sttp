@@ -225,7 +225,7 @@ class SiteTests(unittest.TestCase):
             self.assertFalse((self.release / route).exists())
         self.assertFalse((self.release / "site.webmanifest").exists())
 
-    def test_shared_frame_keeps_standalone_log_and_readme_in_a_reading_column(self):
+    def test_shared_frame_keeps_only_readme_in_a_reading_column(self):
         wide_routes = {"index.html", "shards/index.html", "builds/index.html",
                        "wal/index.html", "catalog/index.html"}
         for output in (self.release, self.drafts):
@@ -244,14 +244,15 @@ class SiteTests(unittest.TestCase):
 
     def test_section_indexes_group_intro_and_decorative_mark(self):
         for output in (self.release, self.drafts):
-            for section in ("shards", "builds", "wal"):
+            for section in ("shards", "builds", "wal", "catalog"):
                 page = self.page(output, f"{section}/index.html")
                 self.assertEqual(sum(tag == "section" and "section-index" in
                                      attrs.get("class", "").split() for tag, attrs in page.elements), 1)
                 self.assertEqual(sum(tag == "div" and attrs.get("class") == "section-intro"
                                      for tag, attrs in page.elements), 1)
                 marks = [attrs for tag, attrs in page.links if tag == "img"
-                         and "/doodles/" in attrs.get("src", "")]
+                         and "/doodles/" in attrs.get("src", "")
+                         and attrs.get("class") != "catalog-mark"]
                 self.assertEqual(len(marks), 1)
                 self.assertIn("alt", marks[0])
                 self.assertFalse(marks[0]["alt"])
@@ -259,7 +260,10 @@ class SiteTests(unittest.TestCase):
 
     def test_wide_articles_keep_prose_separate_from_page_furniture(self):
         for output in (self.release, self.drafts):
-            for route in ("2026/02/08/rfd/index.html", "builds/dev/index.html"):
+            routes = ["2026/02/08/rfd/index.html", "builds/dev/index.html"]
+            if output == self.drafts:
+                routes.append("wal/test-first/index.html")
+            for route in routes:
                 page = self.page(output, route)
                 self.assertEqual(sum(tag == "article" and attrs.get("class") == "article-wide"
                                      for tag, attrs in page.elements), 1)
@@ -268,6 +272,20 @@ class SiteTests(unittest.TestCase):
             harlequin = self.page(output, "2024/12/02/readdatawithharlequin/index.html")
             self.assertEqual(sum(tag == "figure" and attrs.get("class") == "article-image"
                                  for tag, attrs in harlequin.elements), 2)
+
+    def test_articles_link_back_to_their_section_indexes(self):
+        for output in (self.release, self.drafts):
+            routes = [("2026/02/08/rfd/index.html", "/shards/", "← shards"),
+                      ("builds/dev/index.html", "/builds/", "← builds")]
+            if output == self.drafts:
+                routes.append(("wal/test-first/index.html", "/wal/", "← wal"))
+            for route, href, text in routes:
+                page = self.page(output, route)
+                self.assertEqual(sum(tag == "p" and attrs.get("class") == "back-link"
+                                     for tag, attrs in page.elements), 1)
+                self.assertIn(href, [attrs.get("href") for tag, attrs in page.links
+                                    if tag == "a"])
+                self.assertIn(text, " ".join(page.main_text))
 
     def test_home_profile_keeps_authored_strikethrough_history(self):
         for output in (self.release, self.drafts):
@@ -310,6 +328,22 @@ class SiteTests(unittest.TestCase):
             self.assertTrue(set(tokens) <= {"shard", "build", "wal", "readme"})
             if output == self.drafts:
                 self.assertEqual(set(tokens), {"shard", "build", "wal", "readme"})
+
+    def test_catalog_marks_are_decorative_and_preserve_timeline_labels(self):
+        for output in (self.release, self.drafts):
+            page = self.page(output, "catalog/index.html")
+            marks = [attrs for tag, attrs in page.links
+                     if tag == "img" and attrs.get("class") == "catalog-mark"]
+            expected = sum(entry["kind"] in ("[shard]", "[build]", "[wal]")
+                           for entry in page.entries)
+            self.assertEqual(len(marks), expected)
+            for mark in marks:
+                self.assertIn("alt", mark)
+                self.assertFalse(mark["alt"])
+                self.assertEqual(mark["aria-hidden"], "true")
+                self.assertEqual(mark["width"], "24")
+                self.assertTrue((output / mark["src"].lstrip("/")).is_file())
+            self.assertFalse([s for s in page.scripts if s.get("src")])
 
     def test_footer_keeps_licensing_caveat_separate_from_navigation(self):
         for output in (self.release, self.drafts):

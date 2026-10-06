@@ -5,11 +5,14 @@
 One main content flow, system monospace throughout, Gruvbox, and a few purposeful
 sketches. Every page shares a 1100px outer frame (988px inside desktop
 padding), keeping the header and footer stationary between routes. The homepage,
-shards/builds/WAL indexes, and catalog use that full layout area. Individual shards
-and builds share the homepage's left rail: paragraphs, lists, and blockquotes
+shards/builds/WAL indexes, and catalog use that full layout area. Individual shards,
+builds, and WAL entries share the homepage's left rail: paragraphs, lists, and blockquotes
 stay at 70ch, while titles, code, images, tables, and the dev diagram can use the
 full frame. WAL's listing header and timeline share that full frame, with entry
-prose capped at 70ch. Individual WAL entries and readme retain centred 70ch columns.
+prose capped at 70ch. Only readme retains a centred 70ch column.
+Individual shards, builds, and WAL entries include a consistent back-to-section link.
+Their page titles echo the listing underline with a single 1px muted rule across
+that frame. No extra sketch or repeated subheading rules: the article stays quiet.
 Phones use tighter spacing between
 lists and archive links, while retaining breathing room between sections.
 Footer navigation keeps 44px targets; inline legal links keep 24px targets
@@ -26,22 +29,30 @@ a fake terminal.
   64px marks. A desktop-only 96px notch in the top card border below the builds
   sketch is a reversible visual experiment; cards retain their full borders on
   phones. Heading links extend their underline toward the sketch, leaving
-  a 16px gap; hover and focus affordances remain on the real link.
+  a 16px gap; hover and focus affordances remain on the real link. The introduction
+  title scales from 24–28px; section headings from about 21–24px, without increasing
+  article subheadings or the site brand.
 - Builds use repo-style cards on home and their section index: a linked name,
   independent `[code]` link when available, and description. Cards are capped at two columns
   on desktop, one at widths up to 640px. Home and the section index share the
   regular grid and let a lone card fill the width. No fake repository stats.
   Shards and WAL keep their row/log layouts.
-- Shards/builds/WAL indexes use 136px sketches alongside grouped titles and
+- Shards/builds/WAL/catalog indexes use 136px sketches alongside grouped titles and
   introductions, kept in normal flow with clearance before the lists/cards.
+  Their title underline extends toward the sketch with the same 16px gap as home.
   On phones, 72px marks sit beside titles and introductions span the full width.
-  Homepage sketch placement is unchanged.
+  Catalog uses a hand-drawn stack of index cards. Homepage sketch placement is unchanged.
 - Section indexes are the full lists. `/wal/` shows short entries in full,
   with individual permalinks retained; inline heading/footnote IDs are namespaced.
 - `/readme/` is one document, linked in the footer, not another homepage lane.
 - `/catalog/` is one interleaved newest-first timeline, not a grouped directory.
   Visible `[shard]`, `[build]`, `[wal]`, and `[readme]` labels identify the type;
   green, muted blue, amber, and neutral text help scanning without relying on color.
+  Shard/build/WAL rows include 24px versions of the section sketches beside their
+  labels, decorative and non-interactive. Readme keeps its neutral text label.
+  The type column reserves icon space; phone titles still span the full row.
+  Rows share shards' unruled spacing, not notebook separators. Icons are positioned
+  independently of label text so dates, tags, and first title lines share a baseline.
 - Article images reserve their original dimensions to avoid layout jumps and
   link to full-resolution originals with accessible labels and keyboard focus.
   A small self-hosted script enhances these links with a native `<dialog>` viewer,

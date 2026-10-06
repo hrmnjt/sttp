@@ -30,6 +30,8 @@ main.reading-layout { max-width: 70ch; margin-inline: auto; }
 article { max-width: 70ch; }
 /* Shared left rail; prose stays readable while technical material has room. */
 article.article-wide { max-width: none; }
+/* Echo listing titles once, more quietly than the navigation headings. */
+.article-wide > h1 { padding-bottom: 8px; border-bottom: 1px solid var(--border-color); }
 .article-wide > p,
 .article-wide > .migrated-notice,
 .article-wide > .connections,
@@ -128,7 +130,7 @@ body > footer p { margin: 0; }
 
 /* One column; the names do the organising. */
 .home-intro { margin-bottom: 36px; }
-.home-intro h1 { font-size: 1.25rem; }
+.home-intro h1 { font-size: clamp(1.5rem, 3vw, 1.75rem); }
 .home-intro p { max-width: 70ch; font-family: var(--font-mono); font-size: 0.95rem; }
 .home-section { position: relative; isolation: isolate; margin-top: 32px; }
 .section-heading {
@@ -142,15 +144,17 @@ body > footer p { margin: 0; }
 .section-heading h1, .section-heading h2 { margin: 0; }
 .section-heading img { flex: none; width: 40px; height: auto; margin: 0; }
 /* Index marks stay in flow beside the title and introduction, clear of lists. */
-.section-index .section-heading { align-items: flex-start; gap: 24px; margin-bottom: 24px; }
+.section-index .section-heading { align-items: flex-start; gap: 16px; margin-bottom: 24px; }
 .section-index .section-copy { flex: 1; }
+.section-index .section-heading h1 { padding-bottom: 4px; border-bottom: 1px solid currentColor; }
 .section-index .section-heading img { width: 136px; pointer-events: none; }
 .section-index .section-intro { max-width: 70ch; margin-top: 12px; }
 .section-index .section-intro > :last-child { margin-bottom: 0; }
 /* Modest marks share a right rail and sit behind the content, not above it. */
 .home-section .section-heading { position: relative; align-items: flex-start; }
 .home-section .section-copy { flex: 1; padding-right: 136px; }
-.home-section .section-heading h2 a { display: block; border-bottom: 1px solid currentColor; text-decoration: none; }
+.home-section .section-heading h2 { font-size: clamp(1.3rem, 2.5vw, 1.5rem); }
+.home-section .section-heading h2 a { display: block; padding-bottom: 4px; border-bottom: 1px solid currentColor; text-decoration: none; }
 .home-section .section-heading img { position: absolute; top: -12px; right: 0; z-index: -1; width: 120px; pointer-events: none; }
 .home-section .dated-list { padding-right: 144px; }
 /* Centre the build mark on the header band; keep the card grid regular. */
@@ -203,13 +207,14 @@ body > footer p { margin: 0; }
 .build-card-description { margin: 4px 0 0; color: var(--text-secondary); font: 0.85rem/1.7 var(--font-mono); overflow-wrap: anywhere; }
 .catalog-timeline li {
     display: grid;
-    grid-template-columns: 10ch 8ch minmax(0, 1fr);
+    grid-template-columns: 10ch 12ch minmax(0, 1fr);
     align-items: baseline;
-    gap: 12px;
-    padding: 9px 0;
-    border-bottom: 1px dashed var(--border-color);
+    gap: 18px;
+    padding: 7px 0;
 }
-.content-kind { color: var(--text-secondary); font-size: 0.8rem; }
+/* Only label text sets the baseline; drawings cannot lift the badge above it. */
+.content-kind { position: relative; padding-left: 32px; color: var(--text-secondary); font-size: 0.8rem; white-space: nowrap; }
+.catalog-mark { position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 24px; height: auto; margin: 0; pointer-events: none; }
 .content-kind[data-kind="shard"] { color: var(--kind-shard); }
 .content-kind[data-kind="build"] { color: var(--kind-build); }
 .content-kind[data-kind="wal"] { color: var(--kind-wal); }

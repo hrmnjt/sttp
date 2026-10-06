@@ -1,5 +1,5 @@
 {{- partial "validate-page.html" . -}}
-{{- $wideContent := or .IsHome (and .IsSection (in (slice "shards" "builds" "wal" "catalog") .Section)) (and .IsPage (in (slice "shards" "builds") .Section)) -}}
+{{- $wideContent := or .IsHome (and .IsSection (in (slice "shards" "builds" "wal" "catalog") .Section)) (and .IsPage (in (slice "shards" "builds" "wal") .Section)) -}}
 <!DOCTYPE html>
 <html lang="en">
 <head>
