@@ -1,10 +1,27 @@
 {{ define "main" }}
-    <ul class="shard-list">
-        {{ range .Site.RegularPages }}
-            <li class="shard-item">
-                <span class="shard-date">{{ .Date.Format "2006-01-02" }}</span>
-                <a href="{{ .RelPermalink }}">{{ .Title }}</a>
-            </li>
-        {{ end }}
-    </ul>
+<section class="home-intro" aria-labelledby="intro-title">
+    <h1 id="intro-title">{{ .Params.intro_title | default "Hi, I'm Harman." | markdownify }}</h1>
+    {{ .Content }}
+</section>
+{{ with .Site.GetPage "/shards" }}
+<section class="home-section" aria-labelledby="home-shards">
+    {{ partial "section-heading.html" (dict "Page" . "Level" 2 "ID" "home-shards" "Linked" true "Note" "Partitioned thoughts. No global ordering promised.") }}
+    {{ partial "dated-list.html" (first 3 .RegularPages.ByDate.Reverse) }}
+    <p class="archive-link"><a href="{{ .RelPermalink }}">all shards →</a></p>
+</section>
+{{ end }}
+{{ with .Site.GetPage "/builds" }}{{ if .RegularPages }}
+<section class="home-section home-builds" aria-labelledby="home-builds">
+    {{ partial "section-heading.html" (dict "Page" . "Level" 2 "ID" "home-builds" "Linked" true "Note" "Things that escaped the scratch buffer.") }}
+    {{ partial "build-list.html" (first 3 .RegularPages.ByDate.Reverse) }}
+    {{ if gt (len .RegularPages) 3 }}<p class="archive-link"><a href="{{ .RelPermalink }}">all builds →</a></p>{{ end }}
+</section>
+{{ end }}{{ end }}
+{{ with .Site.GetPage "/wal" }}{{ if .RegularPages }}
+<section class="home-section" aria-labelledby="home-wal">
+    {{ partial "section-heading.html" (dict "Page" . "Level" 2 "ID" "home-wal" "Linked" true "Note" "Written before the thought is fully committed.") }}
+    {{ partial "dated-list.html" (first 3 .RegularPages.ByDate.Reverse) }}
+    <p class="archive-link"><a href="{{ .RelPermalink }}">full log →</a></p>
+</section>
+{{ end }}{{ end }}
 {{ end }}

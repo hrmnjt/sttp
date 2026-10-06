@@ -1,0 +1,18 @@
+{{ define "main" }}
+<section class="section-index" aria-labelledby="wal-title">
+    {{ partial "section-heading.html" (dict "Page" . "Level" 1 "ID" "wal-title" "Intro" .Content) }}
+    {{ if .RegularPages }}
+    <ol class="wal-log" aria-label="Write-ahead log, newest first">
+        {{ range .RegularPages.ByDate.Reverse }}
+        <li>
+            <article aria-labelledby="wal-title-{{ .File.UniqueID }}">
+                <h2 id="wal-title-{{ .File.UniqueID }}"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+                <time class="article-date" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>
+                {{ partial "prose.html" (dict "Page" . "Prefix" (printf "wal-%s-" .File.UniqueID)) }}
+            </article>
+        </li>
+        {{ end }}
+    </ol>
+    {{ else }}<p class="section-note">Nothing written to the log yet.</p>{{ end }}
+</section>
+{{ end }}

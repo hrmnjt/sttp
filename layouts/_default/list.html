@@ -1,11 +1,6 @@
 {{ define "main" }}
-    {{ .Content }}
-    <ul class="shard-list">
-        {{ range .Pages }}
-            <li class="shard-item">
-                <span class="shard-date">{{ .Date.Format "2006-01-02" }}</span>
-                <a href="{{ .RelPermalink }}">{{ .Title }}</a>
-            </li>
-        {{ end }}
-    </ul>
+<section class="section-index" aria-labelledby="{{ .Section }}-title">
+    {{ partial "section-heading.html" (dict "Page" . "Level" 1 "ID" (printf "%s-title" .Section) "Intro" .Content) }}
+    {{ partial "dated-list.html" .RegularPages.ByDate.Reverse }}
+</section>
 {{ end }}

@@ -1,0 +1,37 @@
+{{- if .File -}}
+    {{- if not .Params.title -}}{{- errorf "content page %q needs an explicit title" .File.Path -}}{{- end -}}
+    {{- if or .IsPage (eq .Section "readme") -}}
+        {{- if not .Params.date -}}{{- errorf "content page %q needs an explicit date" .File.Path -}}{{- end -}}
+    {{- end -}}
+    {{- range slice "writeup" "related" "related_build" -}}
+        {{- if isset $.Params . -}}
+            {{- errorf "content page %q uses legacy relationship %q; use related_shards/related_builds lists" $.File.Path . -}}
+        {{- end -}}
+    {{- end -}}
+    {{- range $field, $section := dict "related_shards" "shards" "related_builds" "builds" -}}
+        {{- if isset $.Params $field -}}
+            {{- $references := index $.Params $field -}}
+            {{- if not (reflect.IsSlice $references) -}}
+                {{- errorf "content page %q: %s must be a list of content paths" $.File.Path $field -}}
+            {{- else -}}
+                {{- if not (in (slice "shards" "builds") $.Section) -}}
+                    {{- errorf "content page %q: backlinks are supported on shards and builds" $.File.Path -}}
+                {{- end -}}
+                {{- range $references -}}
+                    {{- if ne (printf "%T" .) "string" -}}
+                        {{- errorf "content page %q: %s needs string content paths" $.File.Path $field -}}
+                    {{- else -}}
+                        {{- $target := site.GetPage . -}}
+                        {{- if not $target -}}
+                            {{- errorf "content page %q has an unresolved content relationship: %q" $.File.Path . -}}
+                        {{- else if not (and $target.IsPage (eq $target.Section $section)) -}}
+                            {{- errorf "content page %q: %s reference %q must point to a %s page" $.File.Path $field . $section -}}
+                        {{- else if eq $target.RelPermalink $.RelPermalink -}}
+                            {{- errorf "content page %q cannot reference itself in %s" $.File.Path $field -}}
+                        {{- end -}}
+                    {{- end -}}
+                {{- end -}}
+            {{- end -}}
+        {{- end -}}
+    {{- end -}}
+{{- end -}}

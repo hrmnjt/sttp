@@ -1,0 +1,30 @@
+{{- /* Combine declared edges and backlinks; canonical URLs deduplicate aliases. */ -}}
+{{- $current := . -}}
+{{- $connected := dict -}}
+{{- range slice "related_shards" "related_builds" -}}
+    {{- range index $current.Params . -}}
+        {{- with $current.Site.GetPage . -}}
+            {{- if ne .RelPermalink $current.RelPermalink -}}
+                {{- $connected = merge $connected (dict .RelPermalink .) -}}
+            {{- end -}}
+        {{- end -}}
+    {{- end -}}
+{{- end -}}
+{{- $incomingField := cond (eq .Section "builds") "related_builds" "related_shards" -}}
+{{- range where .Site.RegularPages "Section" "in" (slice "shards" "builds") -}}
+    {{- $candidate := . -}}
+    {{- range index .Params $incomingField -}}
+        {{- with $current.Site.GetPage . -}}
+            {{- if and (eq .RelPermalink $current.RelPermalink) (ne $candidate.RelPermalink $current.RelPermalink) -}}
+                {{- $connected = merge $connected (dict $candidate.RelPermalink $candidate) -}}
+            {{- end -}}
+        {{- end -}}
+    {{- end -}}
+{{- end -}}
+{{- $shards := slice -}}
+{{- $builds := slice -}}
+{{- range $connected -}}
+    {{- if eq .Section "shards" -}}{{- $shards = $shards | append . -}}{{- end -}}
+    {{- if eq .Section "builds" -}}{{- $builds = $builds | append . -}}{{- end -}}
+{{- end -}}
+{{- return (dict "shards" (sort $shards "Date" "desc") "builds" (sort $builds "Date" "desc")) -}}

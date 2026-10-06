@@ -1,38 +1,14 @@
-{{- if .IsPage -}}
-  {{- /* Article structured data */ -}}
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    "headline": "{{ .Title }}",
-    "description": "{{ .Summary | plainify | truncate 160 }}",
-    "url": "{{ .Permalink }}",
-    "datePublished": "{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}",
-    "dateModified": "{{ .Lastmod.Format "2006-01-02T15:04:05Z07:00" }}",
-    "author": {
-      "@type": "Person",
-      "name": "{{ .Site.Params.author }}"
-    },
-    "publisher": {
-      "@type": "Organization",
-      "name": "{{ .Site.Title }}",
-      "url": "{{ .Site.BaseURL }}"
-    }
-  }
-  </script>
+{{- $author := dict "@type" "Person" "name" .Site.Params.author -}}
+{{- $kind := partial "content-kind.html" . -}}
+{{- $data := false -}}
+{{- if and .IsPage (in (slice "shard" "build" "wal") $kind) -}}
+    {{- $data = dict "@context" "https://schema.org" "@type" (cond (eq $kind "build") "Article" "BlogPosting")
+        "headline" .Title "description" (partial "description.html" .) "url" .Permalink
+        "datePublished" (.Date.Format "2006-01-02T15:04:05Z07:00")
+        "dateModified" (.Lastmod.Format "2006-01-02T15:04:05Z07:00")
+        "author" $author "publisher" (dict "@type" "Organization" "name" .Site.Title "url" .Site.BaseURL) -}}
 {{- else if .IsHome -}}
-  {{- /* Website structured data for homepage */ -}}
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "{{ .Site.Title }}",
-    "url": "{{ .Site.BaseURL }}",
-    "description": "{{ .Site.Params.description }}",
-    "author": {
-      "@type": "Person",
-      "name": "{{ .Site.Params.author }}"
-    }
-  }
-  </script>
+    {{- $data = dict "@context" "https://schema.org" "@type" "WebSite" "name" .Site.Title
+        "url" .Permalink "description" (partial "description.html" .) "author" $author -}}
 {{- end -}}
+{{- with $data }}<script type="application/ld+json">{{ . | jsonify | safeJS }}</script>{{ end -}}

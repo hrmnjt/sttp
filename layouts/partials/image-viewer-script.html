@@ -1,0 +1,11 @@
+{{- /* WAL indexes render entries inline; archives for other sections do not. */ -}}
+{{- $hasImages := .HasShortcode "img-optimized" -}}
+{{- if and .IsSection (eq .Section "wal") -}}
+    {{- range .RegularPages -}}
+        {{- if .HasShortcode "img-optimized" -}}{{- $hasImages = true -}}{{- end -}}
+    {{- end -}}
+{{- end -}}
+{{- if $hasImages -}}
+    {{- $script := resources.Get "js/image-viewer.js" | resources.Minify | resources.Fingerprint "sha256" -}}
+    <script src="{{ $script.RelPermalink }}" integrity="{{ $script.Data.Integrity }}" defer></script>
+{{- end -}}

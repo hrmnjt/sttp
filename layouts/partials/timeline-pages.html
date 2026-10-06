@@ -1,0 +1,11 @@
+{{- /* Only real content, not home/section directory scaffolding. */ -}}
+{{- $pages := site.RegularPages -}}
+{{- with site.GetPage "/readme" -}}
+    {{- $pages = $pages | append . -}}
+{{- end -}}
+{{- range $pages -}}
+    {{- if not .Params.date -}}
+        {{- errorf "timeline page %q needs an explicit date (the page's own date, not its linked write-up)" .File.Path -}}
+    {{- end -}}
+{{- end -}}
+{{- return $pages.ByDate.Reverse -}}

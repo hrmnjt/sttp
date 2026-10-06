@@ -22,11 +22,24 @@ jobs:
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v3
         with:
-          hugo-version: "0.166.0"
+          hugo-version: "0.167.0"
           extended: true
 
       - name: Build
         run: hugo --panicOnWarning --printPathWarnings
+
+      - name: Check publishing structure
+        run: python3 -m unittest discover -s tests -v
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Check screenshot runner (no browser required)
+        run: |
+          npm ci --ignore-scripts
+          npm run test:screenshots
 
       - name: Check local links
         uses: lycheeverse/lychee-action@v2.9.0

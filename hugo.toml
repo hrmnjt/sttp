@@ -1,6 +1,6 @@
 baseURL = 'https://hrmnjt.dev'
 locale = 'en-us'
-title = 'hrmnjt.dev::sttp://secure_thought_transfer_protocol'
+title = 'hrmnjt.dev'
 
 # Disable taxonomy pages
 disableKinds = ['taxonomy', 'term']
@@ -21,13 +21,14 @@ disableHugoGeneratorInject = true
     codeFences = true
     guessSyntax = false
     lineNos = false
-    noClasses = true
+    noClasses = false
     tabWidth = 4
     style = "gruvbox"
 
 [params]
   author = 'hrmnjt'
-  description = 'Rough, unpolished thoughts and ideas'
+  description = "Harman's projects, notes, and working log."
+  source_repo = 'https://github.com/hrmnjt/sttp'
 
 # Output formats
 [outputs]

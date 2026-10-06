@@ -1,0 +1,5 @@
+{{- $highlight := transform.HighlightCodeBlock . -}}
+<figure class="code-block">
+    {{ with .Type }}<figcaption>{{ . }}</figcaption>{{ end }}
+    {{ $highlight.Wrapped }}
+</figure>
