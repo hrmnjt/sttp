@@ -225,9 +225,9 @@ class SiteTests(unittest.TestCase):
             self.assertFalse((self.release / route).exists())
         self.assertFalse((self.release / "site.webmanifest").exists())
 
-    def test_shared_frame_keeps_only_readme_in_a_reading_column(self):
+    def test_shared_frame_aligns_all_primary_content_pages(self):
         wide_routes = {"index.html", "shards/index.html", "builds/index.html",
-                       "wal/index.html", "catalog/index.html"}
+                       "wal/index.html", "catalog/index.html", "readme/index.html"}
         for output in (self.release, self.drafts):
             for path, page in self.pages[output].items():
                 bodies = [attrs for tag, attrs in page.elements if tag == "body"]
@@ -260,7 +260,8 @@ class SiteTests(unittest.TestCase):
 
     def test_wide_articles_keep_prose_separate_from_page_furniture(self):
         for output in (self.release, self.drafts):
-            routes = ["2026/02/08/rfd/index.html", "builds/dev/index.html"]
+            routes = ["2026/02/08/rfd/index.html", "builds/dev/index.html",
+                      "readme/index.html"]
             if output == self.drafts:
                 routes.append("wal/test-first/index.html")
             for route in routes:
@@ -273,10 +274,27 @@ class SiteTests(unittest.TestCase):
             self.assertEqual(sum(tag == "figure" and attrs.get("class") == "article-image"
                                  for tag, attrs in harlequin.elements), 2)
 
+    def test_shard_connections_and_source_links_share_one_closing_area(self):
+        for output in (self.release, self.drafts):
+            for route in ("2026/02/01/dev/index.html", "2026/02/08/rfd/index.html"):
+                page = self.page(output, route)
+                self.assertEqual(sum(tag == "footer" and attrs.get("class") == "article-meta"
+                                     for tag, attrs in page.elements), 1)
+                html = (output / route).read_text()
+                start = html.index('article-meta')
+                end = html.index('</footer>', start)
+                self.assertIn('aria-label="Shard source"', html[start:end])
+                if page.connections:
+                    self.assertIn('post-connections', html[start:end])
+                self.assertEqual(sum(tag == "nav" and "source-trail" in
+                                     attrs.get("class", "").split()
+                                     for tag, attrs in page.elements), 1)
+
     def test_articles_link_back_to_their_section_indexes(self):
         for output in (self.release, self.drafts):
             routes = [("2026/02/08/rfd/index.html", "/shards/", "← shards"),
-                      ("builds/dev/index.html", "/builds/", "← builds")]
+                      ("builds/dev/index.html", "/builds/", "← builds"),
+                      ("readme/index.html", "/", "← home")]
             if output == self.drafts:
                 routes.append(("wal/test-first/index.html", "/wal/", "← wal"))
             for route, href, text in routes:
@@ -342,7 +360,14 @@ class SiteTests(unittest.TestCase):
                 self.assertFalse(mark["alt"])
                 self.assertEqual(mark["aria-hidden"], "true")
                 self.assertEqual(mark["width"], "24")
-                self.assertTrue((output / mark["src"].lstrip("/")).is_file())
+                svg = output / mark["src"].lstrip("/")
+                self.assertTrue(svg.is_file())
+                self.assertNotIn("#b8bb26", svg.read_text())
+                self.assertIn("#bdae93", svg.read_text())
+            # Neutral row variants must not alter the large section sketch.
+            header = next(attrs for tag, attrs in page.links if tag == "img"
+                          and attrs.get("class") != "catalog-mark")
+            self.assertIn("#b8bb26", (output / header["src"].lstrip("/")).read_text())
             self.assertFalse([s for s in page.scripts if s.get("src")])
 
     def test_footer_keeps_licensing_caveat_separate_from_navigation(self):

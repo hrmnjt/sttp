@@ -1,7 +1,10 @@
 {{ define "main" }}
-<article>
+<article class="article-wide">
+    <p class="back-link"><a href="/">← home</a></p>
     <h1>readme</h1>
     <p class="article-date">revised <time datetime="{{ .Lastmod.Format "2006-01-02" }}">{{ .Lastmod.Format "2006-01-02" }}</time></p>
-    {{ partial "prose.html" (dict "Page" .) }}
+    <div class="article-prose">
+        {{ partial "prose.html" (dict "Page" .) }}
+    </div>
 </article>
 {{ end }}
