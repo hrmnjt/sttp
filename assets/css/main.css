@@ -141,14 +141,33 @@ body > footer p { margin: 0; }
 .section-copy { min-width: 0; }
 .section-heading h1, .section-heading h2 { margin: 0; }
 .section-heading img { flex: none; width: 40px; height: auto; margin: 0; }
+/* Index marks stay in flow beside the title and introduction, clear of lists. */
+.section-index .section-heading { align-items: flex-start; gap: 24px; margin-bottom: 24px; }
+.section-index .section-copy { flex: 1; }
+.section-index .section-heading img { width: 136px; pointer-events: none; }
+.section-index .section-intro { max-width: 70ch; margin-top: 12px; }
+.section-index .section-intro > :last-child { margin-bottom: 0; }
 /* Modest marks share a right rail and sit behind the content, not above it. */
 .home-section .section-heading { position: relative; align-items: flex-start; }
-.home-section .section-copy { flex: 1; padding-right: 152px; }
+.home-section .section-copy { flex: 1; padding-right: 136px; }
 .home-section .section-heading h2 a { display: block; border-bottom: 1px solid currentColor; text-decoration: none; }
-.home-section .section-heading img { position: absolute; top: -12px; right: 0; z-index: -1; width: 136px; pointer-events: none; }
-.home-section .dated-list { padding-right: 160px; }
+.home-section .section-heading img { position: absolute; top: -12px; right: 0; z-index: -1; width: 120px; pointer-events: none; }
+.home-section .dated-list { padding-right: 144px; }
 /* Centre the build mark on the header band; keep the card grid regular. */
 .home-builds .section-heading img { top: 50%; transform: translateY(-50%); }
+/* Small, reversible border-notch experiment beneath the builds mark. */
+.home-builds .build-list { position: relative; }
+.home-builds .build-list::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 12px;
+    width: 96px;
+    height: 1px;
+    background: var(--bg-primary);
+    pointer-events: none;
+    z-index: 1;
+}
 .section-note { color: var(--text-secondary); }
 .section-copy > .section-note { margin: 4px 0 0; font: 0.85rem/1.7 var(--font-mono); }
 .archive-link, .back-link { font: 0.85rem/1.7 var(--font-mono); }
@@ -247,6 +266,51 @@ img { display: block; max-width: 100%; height: auto; margin: 1.5em 0; }
 .article-image .image-fullsize { margin: 0; }
 .image-fullsize picture { display: block; }
 .image-fullsize img { margin: 0; }
+/* Native top-layer viewer; no layout changes until an image is opened. */
+html.image-viewing { overflow: hidden; }
+.image-viewer {
+    position: fixed;
+    inset: 0;
+    width: calc(100% - 32px);
+    height: calc(100% - 32px);
+    height: calc(100dvh - 32px);
+    max-width: none;
+    max-height: none;
+    margin: auto;
+    padding: 16px;
+    border: 1px dashed var(--border-color);
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font: 0.85rem/1.6 var(--font-mono);
+}
+.image-viewer[open] { display: flex; flex-direction: column; gap: 12px; }
+.image-viewer::backdrop { background: rgb(0 0 0 / 80%); }
+.image-viewer-toolbar { display: flex; align-items: center; gap: 8px; flex: none; }
+.image-viewer-toolbar h2 { flex: 1; min-width: 0; margin: 0; font-size: 1em; }
+.image-viewer button {
+    flex: none;
+    min-height: 44px;
+    min-width: 44px;
+    padding: 6px 10px;
+    border: 1px dashed var(--border-color);
+    background: transparent;
+    color: var(--accent);
+    font: inherit;
+    cursor: pointer;
+}
+.image-viewer button:hover { color: var(--accent-hover); }
+.image-viewer button:focus-visible { outline: 2px solid var(--accent-hover); outline-offset: 3px; }
+.image-viewer button:disabled { color: var(--text-secondary); cursor: default; }
+.image-viewer button[aria-pressed="true"] { border-color: var(--accent); }
+.image-viewer-status { margin: 0; color: var(--text-secondary); }
+.image-viewer-canvas { flex: 1; min-height: 0; min-width: 0; display: flex; align-items: center; justify-content: center; overflow: auto; overscroll-behavior: contain; }
+.image-viewer img { flex: none; width: auto; height: auto; max-width: 100%; max-height: 100%; margin: 0; object-fit: contain; }
+.image-viewer.is-zoomed .image-viewer-canvas { display: block; }
+.image-viewer.is-zoomed img { max-width: none; max-height: none; }
+.image-viewer-original { flex: none; }
+@media (max-width: 560px) {
+    .image-viewer { width: calc(100% - 16px); height: calc(100% - 16px); height: calc(100dvh - 16px); padding: 12px; }
+}
 table { display: block; max-width: 100%; overflow-x: auto; border-collapse: collapse; margin: 1.5em 0; }
 th, td { padding: 8px 12px; border: 1px solid var(--border-color); text-align: left; }
 .footnotes { margin-top: 32px; padding-top: 16px; border-top: 1px dashed var(--border-color); font-size: 0.9rem; }
@@ -267,9 +331,15 @@ th, td { padding: 8px 12px; border: 1px solid var(--border-color); text-align: l
 
 @media (min-width: 768px) { body { padding: 40px 56px; } }
 @media (max-width: 640px) {
+    .section-index .section-heading { display: grid; grid-template-columns: minmax(0, 1fr) 72px; align-items: center; gap: 12px 16px; }
+    .section-index .section-copy { display: contents; }
+    .section-index .section-copy > h1 { grid-column: 1; grid-row: 1; }
+    .section-index .section-heading img { grid-column: 2; grid-row: 1; width: 72px; }
+    .section-index .section-intro { grid-column: 1 / -1; grid-row: 2; margin-top: 0; }
     .home-section .section-heading { align-items: center; }
     .home-section .section-copy { padding-right: 0; }
-    .home-section .section-heading img { position: static; transform: none; width: 72px; }
+    .home-section .section-heading img { position: static; transform: none; width: 64px; }
+    .home-builds .build-list::before { content: none; }
     .home-section .dated-list { padding-right: 0; }
     .build-list { grid-template-columns: 1fr; }
     .home-section > .dated-list { margin-bottom: 8px; }

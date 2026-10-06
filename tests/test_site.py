@@ -1,4 +1,6 @@
 """Generated-site regression checks. Uses only Python's standard library and Hugo."""
+import base64
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -146,6 +148,9 @@ class SiteTests(unittest.TestCase):
                 '\n```python\nprint("fixture")\n```\n\n```\nliteral <tag> & text\n```\n'
 
             )
+        # An index rendering image-bearing WAL entries also needs the viewer.
+        with (cls.source / "content/wal/test-first.md").open("a") as fixture:
+            fixture.write('\n{{< img-optimized src="duckdb-query.png" alt="WAL image fixture" >}}\n')
         cls.release = Path(cls.tmp.name) / "release"
         cls.drafts = Path(cls.tmp.name) / "drafts"
         for output, extra in ((cls.release, []), (cls.drafts, ["--buildDrafts"])):
@@ -220,8 +225,9 @@ class SiteTests(unittest.TestCase):
             self.assertFalse((self.release / route).exists())
         self.assertFalse((self.release / "site.webmanifest").exists())
 
-    def test_shared_frame_keeps_log_and_readme_in_a_reading_column(self):
-        wide_routes = {"index.html", "shards/index.html", "builds/index.html", "catalog/index.html"}
+    def test_shared_frame_keeps_standalone_log_and_readme_in_a_reading_column(self):
+        wide_routes = {"index.html", "shards/index.html", "builds/index.html",
+                       "wal/index.html", "catalog/index.html"}
         for output in (self.release, self.drafts):
             for path, page in self.pages[output].items():
                 bodies = [attrs for tag, attrs in page.elements if tag == "body"]
@@ -235,6 +241,21 @@ class SiteTests(unittest.TestCase):
                                    for tag, attrs in page.elements)
                 self.assertEqual("reading-layout" in mains[0].get("class", "").split(),
                                  not (route in wide_routes or wide_article), route)
+
+    def test_section_indexes_group_intro_and_decorative_mark(self):
+        for output in (self.release, self.drafts):
+            for section in ("shards", "builds", "wal"):
+                page = self.page(output, f"{section}/index.html")
+                self.assertEqual(sum(tag == "section" and "section-index" in
+                                     attrs.get("class", "").split() for tag, attrs in page.elements), 1)
+                self.assertEqual(sum(tag == "div" and attrs.get("class") == "section-intro"
+                                     for tag, attrs in page.elements), 1)
+                marks = [attrs for tag, attrs in page.links if tag == "img"
+                         and "/doodles/" in attrs.get("src", "")]
+                self.assertEqual(len(marks), 1)
+                self.assertIn("alt", marks[0])
+                self.assertFalse(marks[0]["alt"])
+                self.assertEqual(marks[0]["aria-hidden"], "true")
 
     def test_wide_articles_keep_prose_separate_from_page_furniture(self):
         for output in (self.release, self.drafts):
@@ -376,7 +397,7 @@ class SiteTests(unittest.TestCase):
             for path, page in self.pages[output].items():
                 for schema in page.schemas:
                     self.assertEqual(schema["description"], page.meta["description"])
-                self.assertTrue(all(script.get("type") == "application/ld+json"
+                self.assertTrue(all(script.get("type") == "application/ld+json" or script.get("src")
                                     for script in page.scripts))
             shard = (output / "2026/02/01/dev/index.html").read_text()
             self.assertGreater(shard.index("Markdown source"), shard.index("connections"))
@@ -399,6 +420,29 @@ class SiteTests(unittest.TestCase):
         self.assertIn("text / scroll long lines horizontally", text)
         self.assertIn("literal <tag> & text", text)
         self.assertFalse(any(tag == "tag" for tag, _ in page.elements))
+
+    def test_image_viewer_is_same_origin_fingerprinted_and_only_loaded_with_images(self):
+        for output in (self.release, self.drafts):
+            for path, page in self.pages[output].items():
+                scripts = [script for script in page.scripts if script.get("src")]
+                has_images = any(tag == "a" and attrs.get("class") == "image-fullsize"
+                                 for tag, attrs in page.links)
+                self.assertEqual(len(scripts), int(has_images), str(path))
+                for script in scripts:
+                    url = urlsplit(script["src"])
+                    self.assertFalse(url.netloc)
+                    self.assertTrue(url.path.startswith("/js/image-viewer.min."))
+                    self.assertIn("defer", script)
+                    data = (output / url.path.lstrip("/")).read_bytes()
+                    integrity = "sha256-" + base64.b64encode(hashlib.sha256(data).digest()).decode()
+                    self.assertEqual(script["integrity"], integrity)
+            self.assertEqual(len([s for s in self.page(output, "index.html").scripts if s.get("src")]), 0)
+        wal = self.page(self.drafts, "wal/index.html")
+        self.assertEqual(len([s for s in wal.scripts if s.get("src")]), 1)
+        headers = (ROOT / "static/_headers").read_text()
+        self.assertIn("script-src 'self';", headers)
+        self.assertNotIn("script-src 'self' 'unsafe-inline'", headers)
+        self.assertIn("/js/*", headers)
 
     def test_rfd_appendix_has_a_subordinate_heading_and_stable_anchors(self):
         for output in (self.release, self.drafts):

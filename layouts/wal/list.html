@@ -1,7 +1,6 @@
 {{ define "main" }}
-<section aria-labelledby="wal-title">
-    {{ partial "section-heading.html" (dict "Page" . "Level" 1 "ID" "wal-title") }}
-    {{ .Content }}
+<section class="section-index" aria-labelledby="wal-title">
+    {{ partial "section-heading.html" (dict "Page" . "Level" 1 "ID" "wal-title" "Intro" .Content) }}
     {{ if .RegularPages }}
     <ol class="wal-log" aria-label="Write-ahead log, newest first">
         {{ range .RegularPages.ByDate.Reverse }}

@@ -1,7 +1,6 @@
 {{ define "main" }}
-<section class="shards-index" aria-labelledby="shards-title">
-    {{ partial "section-heading.html" (dict "Page" . "Level" 1 "ID" "shards-title") }}
-    {{ .Content }}
+<section class="shards-index section-index" aria-labelledby="shards-title">
+    {{ partial "section-heading.html" (dict "Page" . "Level" 1 "ID" "shards-title" "Intro" .Content) }}
     {{ partial "dated-list.html" .RegularPages.ByDate.Reverse }}
 </section>
 {{ end }}

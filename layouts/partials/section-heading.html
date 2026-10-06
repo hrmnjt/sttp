@@ -2,6 +2,7 @@
     <div class="section-copy">
         <h{{ .Level }} id="{{ .ID }}">{{ if .Linked }}<a href="{{ .Page.RelPermalink }}">{{ .Page.Title }}</a>{{ else }}{{ .Page.Title }}{{ end }}</h{{ .Level }}>
         {{ with .Note }}<p class="section-note">{{ . }}</p>{{ end }}
+        {{ with .Intro }}<div class="section-intro">{{ . }}</div>{{ end }}
     </div>
     {{ if in (slice "builds" "shards" "wal") .Page.Section }}
         {{ $name := cond (eq .Page.Section "shards") "shard" .Page.Section }}

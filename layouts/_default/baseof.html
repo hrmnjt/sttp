@@ -1,5 +1,5 @@
 {{- partial "validate-page.html" . -}}
-{{- $wideContent := or .IsHome (and .IsSection (in (slice "shards" "builds" "catalog") .Section)) (and .IsPage (in (slice "shards" "builds") .Section)) -}}
+{{- $wideContent := or .IsHome (and .IsSection (in (slice "shards" "builds" "wal" "catalog") .Section)) (and .IsPage (in (slice "shards" "builds") .Section)) -}}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -57,5 +57,6 @@
         <nav aria-label="Site information"><a href="/readme/"{{ if eq .Section "readme" }} aria-current="page"{{ end }}>readme</a></nav>
         <p class="footer-legal"><span>© {{ now.Format "2006" }} {{ site.Params.author }}.</span><span><a href="https://github.com/hrmnjt/sttp/blob/main/LICENSE">MIT license</a>; <a href="/readme/#reuse">scope under review</a>.</span></p>
     </footer>
+    {{ partial "image-viewer-script.html" . }}
 </body>
 </html>
