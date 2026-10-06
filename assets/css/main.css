@@ -1,17 +1,30 @@
 /* sttp: system monospace, comfortable reading, a few pencil marks. */
 :root {
     color-scheme: dark;
-    --bg-primary: #282828;
-    --text-primary: #ebdbb2;
-    --text-secondary: #bdae93;
-    --border-color: #665c54;
-    --code-bg: #3c3836;
-    --pre-bg: #1d2021;
-    --accent: #b8bb26;
-    --accent-hover: #fabd2f;
-    --kind-shard: #b8bb26;
-    --kind-build: #83a598;
-    --kind-wal: #d79921;
+    /* Gruvbox dark, by its own names. Nothing below uses a colour from outside it. */
+    --gb-bg0-hard: #1d2021;
+    --gb-bg0: #282828;
+    --gb-bg1: #3c3836;
+    --gb-bg3: #665c54;
+    --gb-fg1: #ebdbb2;
+    --gb-fg3: #bdae93;
+    --gb-green: #b8bb26;
+    --gb-yellow: #fabd2f;
+    --gb-blue: #83a598;
+    --gb-purple: #d3869b;
+    --gb-orange: #fe8019;
+    /* Roles. Green is for links only; each content kind takes one bright accent. */
+    --bg-primary: var(--gb-bg0);
+    --text-primary: var(--gb-fg1);
+    --text-secondary: var(--gb-fg3);
+    --border-color: var(--gb-bg3);
+    --code-bg: var(--gb-bg1);
+    --pre-bg: var(--gb-bg0-hard);
+    --accent: var(--gb-green);
+    --accent-hover: var(--gb-yellow);
+    --kind-shard: var(--gb-purple);
+    --kind-build: var(--gb-blue);
+    --kind-wal: var(--gb-orange);
     --font-mono: ui-monospace, "Cascadia Mono", "Segoe UI Mono", "Liberation Mono", Menlo, Monaco, Consolas, monospace;
 }
 
@@ -24,9 +37,8 @@ body {
     color: var(--text-primary);
     font: 1rem/1.75 var(--font-mono);
 }
-/* Stable site furniture, with a centred reading column on text-led pages. */
+/* Stable site furniture: every page shares one frame and one left rail. */
 main { min-width: 0; }
-main.reading-layout { max-width: 70ch; margin-inline: auto; }
 article { max-width: 70ch; }
 /* Shared left rail; prose stays readable while technical material has room. */
 article.article-wide { max-width: none; }
@@ -34,11 +46,8 @@ article.article-wide { max-width: none; }
 .article-wide > h1 { padding-bottom: 8px; border-bottom: 1px solid var(--border-color); }
 .article-wide > p,
 .article-wide > .migrated-notice,
-.article-wide > .connections,
-.article-wide > .article-meta,
 .article-wide .article-prose > :is(p, ul, ol, dl, blockquote),
-.article-wide .footnotes > ol,
-.shards-index > p { max-width: 70ch; }
+.article-wide .footnotes > ol { max-width: 70ch; }
 h1, h2, h3, p, ul, ol { margin-top: 0; }
 h1, h2, h3 {
     font-family: var(--font-mono);
@@ -114,7 +123,7 @@ body > header nav a, body > footer nav a, .utility-links a {
     display: inline-flex;
     align-items: center;
     min-height: 44px;
-    padding: 6px 2px;
+    padding: 6px 0;
 }
 nav a[aria-current="page"] { color: var(--text-primary); }
 body > footer {
@@ -147,7 +156,7 @@ body > footer p { margin: 0; }
 /* Index marks stay in flow beside the title and introduction, clear of lists. */
 .section-index .section-heading { align-items: flex-start; gap: 16px; margin-bottom: 24px; }
 .section-index .section-copy { flex: 1; }
-.section-index .section-heading h1 { padding-bottom: 4px; border-bottom: 1px solid currentColor; }
+.section-index .section-heading h1 { padding-bottom: 4px; border-bottom: 1px solid var(--border-color); }
 .section-index .section-heading img { width: 136px; pointer-events: none; }
 .section-index .section-intro { max-width: 70ch; margin-top: 12px; }
 .section-index .section-intro > :last-child { margin-bottom: 0; }
@@ -155,7 +164,7 @@ body > footer p { margin: 0; }
 .home-section .section-heading { position: relative; align-items: flex-start; }
 .home-section .section-copy { flex: 1; padding-right: 136px; }
 .home-section .section-heading h2 { font-size: clamp(1.3rem, 2.5vw, 1.5rem); }
-.home-section .section-heading h2 a { display: block; min-height: 44px; padding-bottom: 4px; border-bottom: 1px solid currentColor; text-decoration: none; }
+.home-section .section-heading h2 a { display: block; min-height: 44px; padding-bottom: 4px; border-bottom: 1px solid var(--border-color); text-decoration: none; }
 .home-section .section-heading img { position: absolute; top: -12px; right: 0; z-index: -1; width: 120px; pointer-events: none; }
 .home-section .dated-list { padding-right: 144px; }
 /* Centre the build mark on the header band; keep the card grid regular. */
@@ -197,16 +206,18 @@ body > footer p { margin: 0; }
 .build-card-description { margin: 4px 0 0; color: var(--text-secondary); font: 0.85rem/1.7 var(--font-mono); overflow-wrap: anywhere; }
 .catalog-timeline li {
     display: grid;
-    grid-template-columns: 10ch 12ch minmax(0, 1fr);
+    grid-template-columns: 10ch 13ch minmax(0, 1fr);
     align-items: baseline;
     gap: 18px;
 }
-/* Only label text sets the baseline; drawings cannot lift the badge above it. */
-.content-kind { position: relative; padding-left: 32px; color: var(--text-secondary); font-size: 0.8rem; white-space: nowrap; }
-.catalog-mark { position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 24px; height: auto; margin: 0; pointer-events: none; }
-.content-kind[data-kind="shard"] { color: var(--kind-shard); }
-.content-kind[data-kind="build"] { color: var(--kind-build); }
-.content-kind[data-kind="wal"] { color: var(--kind-wal); }
+/* Content kinds: one colour, one glyph, one bracketed name, wherever a kind is named.
+   Only label text sets the baseline; the glyph cannot lift the label above it. */
+[data-kind="shard"] { --kind: var(--kind-shard); }
+[data-kind="build"] { --kind: var(--kind-build); }
+[data-kind="wal"] { --kind: var(--kind-wal); }
+.content-kind { position: relative; padding-left: 28px; color: var(--kind, var(--text-secondary)); white-space: nowrap; }
+.catalog-timeline .content-kind { font-size: 0.85rem; }
+.kind-mark { position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 20px; height: 20px; pointer-events: none; }
 
 /* Short log entries are readable here, not hidden behind excerpts. */
 .wal-log { border-left: 1px dotted var(--border-color); padding-left: 22px; }
@@ -215,14 +226,14 @@ body > footer p { margin: 0; }
     content: "";
     position: absolute;
     left: -27px;
-    top: 9px;
+    top: 17px;
     width: 9px;
     height: 9px;
-    border: 2px solid var(--accent);
+    border: 2px solid var(--kind-wal);
     border-radius: 50%;
     background: var(--bg-primary);
 }
-.wal-log h2 { margin: 4px 0 12px; font-size: 1rem; }
+.wal-log h2 { margin: 0; font-size: 1rem; }
 .wal-log h2 > a { display: inline-flex; align-items: center; min-width: 44px; min-height: 44px; padding: 6px 0; }
 .wal-log article > :last-child { margin-bottom: 0; }
 
@@ -232,20 +243,22 @@ article h3 { margin: 1.7em 0 0.6em; }
 article ul, article ol { padding-left: 1.5em; margin-bottom: 1.4em; }
 article li { margin-bottom: 0.4em; }
 .article-date { display: block; margin-bottom: 24px; color: var(--text-secondary); font: 0.85rem/1.7 var(--font-mono); }
-.article-date span { margin-inline: 0.3em; }
-.wal-log .article-date { margin: 0; }
+.article-date span[aria-hidden] { margin-inline: 0.3em; }
+.wal-log .article-date { margin: 0 0 12px; }
 .utility-links { margin-bottom: 20px; }
+.build-links { margin: -12px 0 4px; }
+.build-links .repo { color: var(--text-secondary); margin-left: 1ch; }
 .article-meta { margin-top: 32px; padding-top: 16px; border-top: 1px dashed var(--border-color); }
-.article-meta .connections { margin-top: 0; }
-.article-meta .connections > h2 { margin-top: 0; }
+.article-meta .backlinks { margin-top: 0; }
+.article-meta .backlinks > h2 { margin-top: 0; }
 .article-meta .source-trail { margin: 12px 0 0; }
 .article-meta > .source-trail:first-child { margin-top: 0; }
 .source-link { display: inline-flex; align-items: center; gap: 0.5ch; }
-.connections { margin-top: 32px; }
-.connections h2 { font-size: 1rem; }
-.connections .connection-group h3 { margin: 16px 0 4px; color: var(--text-secondary); font-size: 0.85rem; }
-.connections .dated-list { margin: 0; padding: 0; }
-.connections .dated-list li { margin: 0; }
+.backlinks { margin-top: 32px; }
+.backlinks h2 { font-size: 1rem; }
+.backlinks .backlink-group h3 { width: fit-content; margin: 16px 0 4px; font-size: 0.85rem; }
+.backlinks .dated-list { margin: 0; padding: 0; }
+.backlinks .dated-list li { margin: 0; }
 .migrated-notice { margin: 24px 0; padding: 12px 16px; border-left: 2px dashed var(--border-color); color: var(--text-secondary); font-size: 0.9rem; }
 
 code, pre, .highlight { font-family: var(--font-mono); }
@@ -311,20 +324,20 @@ html.image-viewing { overflow: hidden; }
     .image-viewer { width: calc(100% - 16px); height: calc(100% - 16px); height: calc(100dvh - 16px); padding: 12px; }
 }
 table { display: block; max-width: 100%; overflow-x: auto; border-collapse: collapse; margin: 1.5em 0; }
-th, td { padding: 8px 12px; border: 1px solid var(--border-color); text-align: left; }
+th, td { padding: 8px 12px; border: 1px dashed var(--border-color); text-align: left; }
 .footnotes { margin-top: 32px; padding-top: 16px; border-top: 1px dashed var(--border-color); font-size: 0.9rem; }
 .footnotes hr { display: none; }
 .footnote-ref, .footnote-backref { display: inline-block; min-width: 24px; padding: 3px; }
 .footnote-backref { white-space: nowrap; font-family: var(--font-mono); }
 
 /* A real setup diagram, not decorative chrome. */
-.dev-flow { margin: 24px 0 32px; padding: 14px 18px; border-left: 2px solid var(--border-color); background: var(--code-bg); }
+.dev-flow { margin: 24px 0 32px; padding: 14px 18px; border: 1px dashed var(--border-color); }
 .dev-flow figcaption { margin-bottom: 10px; color: var(--text-secondary); font: 0.9rem/1.5 var(--font-mono); }
 .dev-flow ol { list-style: none; padding: 0; margin: 0; }
 .dev-flow li { margin: 0; padding: 8px 0; line-height: 1.5; }
 .dev-flow li + li { border-top: 1px dashed var(--border-color); }
 .dev-flow-label { display: block; margin-bottom: 5px; color: var(--text-secondary); font: 0.8rem/1.5 var(--font-mono); }
-.dev-flow-route { display: grid; grid-template-columns: minmax(0, 1fr) 34px minmax(0, 1.65fr) 34px minmax(0, 1.2fr); align-items: center; gap: 4px; font: 0.9rem/1.5 var(--font-mono); }
+.dev-flow-route { display: grid; grid-template-columns: 9ch 34px 25ch 34px minmax(0, 1fr); align-items: center; gap: 4px 10px; font: 0.9rem/1.5 var(--font-mono); }
 .dev-flow-route img { width: 34px; height: auto; margin: 0; }
 .dev-flow-route code { padding: 0; background: none; font-size: 1em; overflow-wrap: anywhere; }
 

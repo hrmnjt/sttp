@@ -6,8 +6,7 @@ Keep only outstanding ideas here; remove completed work. The redesign can take a
 
 ## Before merging the redesign
 
-- [ ] **Decide and publish licensing terms.** Review the existing MIT `LICENSE` scope against code, site writing, original doodles/photos, and third-party media. Use the checklist in `design/publishing-review.md` to write reviewed terms in `content/readme/_index.md`, document the same scope in the repository, and make the footer consistent. The review checklist is not a license.
-- [ ] **Verify privacy practices.** Check actual hosting/CDN logs, analytics, cookies/storage, embedded resources, and contact paths; decide whether a privacy notice is needed. Use `design/publishing-review.md` to write an accurate statement in `content/readme/_index.md` if one is needed. The review checklist is not a privacy policy.
+- [ ] **Verify privacy practices.** Check the deployed site, not just the repository: what Cloudflare Pages logs for ordinary requests and how long it keeps it; whether any analytics, cookies, local storage, embeds, or third-party scripts are actually served; and who readers should contact. Write only what you have verified into `content/readme/_index.md`, or drop the idea if no notice is needed.
 - [ ] **Confirm new content publication dates.** Catalog and RSS use each page's explicit original date. The build/readme dates currently record when their pages were first written on this unpublished branch; confirm their actual first-publication dates before release, without borrowing project/write-up dates or moving historical shards.
 - [ ] **Review the dev build’s content and context.** Rewrite `content/builds/dev.md` in your own voice; its current setup-focused account needs a deeper editorial pass.
 
@@ -17,7 +16,7 @@ Keep only outstanding ideas here; remove completed work. The redesign can take a
 
 ## Polish after the essentials
 
-- [ ] **Finish post sharing metadata.** HTML, Open Graph, and Twitter metadata already prefer explicit descriptions. JSON-LD now uses the same description. Add useful descriptions to newer posts that lack them and verify representative previews.
+- [ ] **Finish post sharing metadata.** HTML, Open Graph, and Twitter metadata already prefer explicit descriptions. JSON-LD now uses the same description and covers shards, builds, and WAL entries. Add useful descriptions to newer posts that lack them and verify representative previews.
 - [ ] **Check real-device media and layout.** Normal/draft Chromium captures and 320–1440px layout checks pass. Verify system-font rendering, long titles, links, code, and media in Safari and on a real phone.
 
 ### Visual direction: readable, accessible, still nerdy

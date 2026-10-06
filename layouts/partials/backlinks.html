@@ -1,0 +1,18 @@
+{{- $links := partial "backlinks-data.html" . -}}
+{{- if or $links.shards $links.builds -}}
+<section class="backlinks" aria-labelledby="post-backlinks">
+    <h2 id="post-backlinks">backlinks <a class="heading-permalink" href="#post-backlinks" aria-label="Link to section: backlinks">#</a></h2>
+    {{ with $links.shards }}
+    <section class="backlink-group" aria-labelledby="post-backlinks-shards">
+        <h3 id="post-backlinks-shards" class="content-kind" data-kind="shard">{{ partial "kind-mark.html" "shard" }}related shards</h3>
+        {{ partial "dated-list.html" . }}
+    </section>
+    {{ end }}
+    {{ with $links.builds }}
+    <section class="backlink-group" aria-labelledby="post-backlinks-builds">
+        <h3 id="post-backlinks-builds" class="content-kind" data-kind="build">{{ partial "kind-mark.html" "build" }}related builds</h3>
+        {{ partial "dated-list.html" . }}
+    </section>
+    {{ end }}
+</section>
+{{- end -}}

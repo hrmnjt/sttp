@@ -27,10 +27,10 @@ class Page(HTMLParser):
         self.schemas = []
         self.scripts = []
         self.entries = []
-        self.connections = {}
-        self._connection_group = None
-        self._connection_item = None
-        self._connection_link = False
+        self.backlinks = {}
+        self._backlink_group = None
+        self._backlink_item = None
+        self._backlink_link = False
         self.main_text = []
         self._main = False
         self._catalog = False
@@ -46,19 +46,19 @@ class Page(HTMLParser):
             self.ids.append(attrs["id"])
         for attribute in ("aria-labelledby", "aria-describedby"):
             self.aria_refs.extend(attrs.get(attribute, "").split())
-        if tag == "section" and attrs.get("class") == "connection-group":
-            self._connection_group = attrs["aria-labelledby"].replace("post-connections-", "related-")
-            self.connections[self._connection_group] = []
-        if self._connection_group:
+        if tag == "section" and attrs.get("class") == "backlink-group":
+            self._backlink_group = attrs["aria-labelledby"].replace("post-backlinks-", "related-")
+            self.backlinks[self._backlink_group] = []
+        if self._backlink_group:
             if tag == "li":
-                self._connection_item = {"date": "", "url": "", "title": ""}
-                self.connections[self._connection_group].append(self._connection_item)
-            if self._connection_item is not None:
+                self._backlink_item = {"date": "", "url": "", "title": ""}
+                self.backlinks[self._backlink_group].append(self._backlink_item)
+            if self._backlink_item is not None:
                 if tag == "time":
-                    self._connection_item["date"] = attrs["datetime"]
+                    self._backlink_item["date"] = attrs["datetime"]
                 if tag == "a":
-                    self._connection_item["url"] = attrs["href"]
-                    self._connection_link = True
+                    self._backlink_item["url"] = attrs["href"]
+                    self._backlink_link = True
         if tag == "main":
             self._main = True
         if tag == "meta":
@@ -84,11 +84,11 @@ class Page(HTMLParser):
 
     def handle_endtag(self, tag):
         if tag == "section":
-            self._connection_group = None
+            self._backlink_group = None
         if tag == "li":
-            self._connection_item = None
+            self._backlink_item = None
         if tag == "a":
-            self._connection_link = False
+            self._backlink_link = False
         if tag == "main":
             self._main = False
         if tag == "script" and self._script is not None:
@@ -105,8 +105,8 @@ class Page(HTMLParser):
                 self._catalog = False
 
     def handle_data(self, text):
-        if self._connection_item is not None and self._connection_link:
-            self._connection_item["title"] += text
+        if self._backlink_item is not None and self._backlink_link:
+            self._backlink_item["title"] += text
         if self._main:
             self.main_text.append(text)
         if self._script is not None:
@@ -225,9 +225,7 @@ class SiteTests(unittest.TestCase):
             self.assertFalse((self.release / route).exists())
         self.assertFalse((self.release / "site.webmanifest").exists())
 
-    def test_shared_frame_aligns_all_primary_content_pages(self):
-        wide_routes = {"index.html", "shards/index.html", "builds/index.html",
-                       "wal/index.html", "catalog/index.html", "readme/index.html"}
+    def test_shared_frame_aligns_every_page(self):
         for output in (self.release, self.drafts):
             for path, page in self.pages[output].items():
                 bodies = [attrs for tag, attrs in page.elements if tag == "body"]
@@ -236,11 +234,11 @@ class SiteTests(unittest.TestCase):
                 self.assertEqual(len(mains), 1)
                 self.assertNotIn("wide-layout", bodies[0].get("class", "").split())
                 route = path.relative_to(output).as_posix()
-                wide_article = any(tag == "article" and
-                                   "article-wide" in attrs.get("class", "").split()
-                                   for tag, attrs in page.elements)
-                self.assertEqual("reading-layout" in mains[0].get("class", "").split(),
-                                 not (route in wide_routes or wide_article), route)
+                # No page opts out of the shared left rail, including the 404.
+                self.assertNotIn("class", mains[0], route)
+                for tag, attrs in page.elements:
+                    if tag == "article" and "aria-labelledby" not in attrs:
+                        self.assertEqual(attrs.get("class"), "article-wide", route)
 
     def test_section_indexes_group_intro_and_decorative_mark(self):
         for output in (self.release, self.drafts):
@@ -251,8 +249,7 @@ class SiteTests(unittest.TestCase):
                 self.assertEqual(sum(tag == "div" and attrs.get("class") == "section-intro"
                                      for tag, attrs in page.elements), 1)
                 marks = [attrs for tag, attrs in page.links if tag == "img"
-                         and "/doodles/" in attrs.get("src", "")
-                         and attrs.get("class") != "catalog-mark"]
+                         and "/doodles/" in attrs.get("src", "")]
                 self.assertEqual(len(marks), 1)
                 self.assertIn("alt", marks[0])
                 self.assertFalse(marks[0]["alt"])
@@ -274,18 +271,25 @@ class SiteTests(unittest.TestCase):
             self.assertEqual(sum(tag == "figure" and attrs.get("class") == "article-image"
                                  for tag, attrs in harlequin.elements), 2)
 
-    def test_shard_connections_and_source_links_share_one_closing_area(self):
+    def test_backlinks_and_source_links_share_one_closing_area(self):
         for output in (self.release, self.drafts):
-            for route in ("2026/02/01/dev/index.html", "2026/02/08/rfd/index.html"):
+            routes = [("2026/02/01/dev/index.html", "Shard source"),
+                      ("2026/02/08/rfd/index.html", "Shard source"),
+                      ("builds/dev/index.html", "Build source"),
+                      ("readme/index.html", "Readme source")]
+            if output == self.drafts:
+                routes.append(("wal/test-first/index.html", "WAL entry source"))
+            for route, label in routes:
                 page = self.page(output, route)
                 self.assertEqual(sum(tag == "footer" and attrs.get("class") == "article-meta"
                                      for tag, attrs in page.elements), 1)
                 html = (output / route).read_text()
                 start = html.index('article-meta')
                 end = html.index('</footer>', start)
-                self.assertIn('aria-label="Shard source"', html[start:end])
-                if page.connections:
-                    self.assertIn('post-connections', html[start:end])
+                self.assertIn(f'aria-label="{label}"', html[start:end])
+                self.assertIn("view [markdown]", " ".join(" ".join(page.main_text).split()))
+                if page.backlinks:
+                    self.assertIn('post-backlinks', html[start:end])
                 self.assertEqual(sum(tag == "nav" and "source-trail" in
                                      attrs.get("class", "").split()
                                      for tag, attrs in page.elements), 1)
@@ -347,28 +351,60 @@ class SiteTests(unittest.TestCase):
             if output == self.drafts:
                 self.assertEqual(set(tokens), {"shard", "build", "wal", "readme"})
 
-    def test_catalog_marks_are_decorative_and_preserve_timeline_labels(self):
+    def test_kind_marks_are_decorative_and_take_their_label_colour(self):
         for output in (self.release, self.drafts):
             page = self.page(output, "catalog/index.html")
-            marks = [attrs for tag, attrs in page.links
-                     if tag == "img" and attrs.get("class") == "catalog-mark"]
-            expected = sum(entry["kind"] in ("[shard]", "[build]", "[wal]")
-                           for entry in page.entries)
-            self.assertEqual(len(marks), expected)
+            marks = [attrs for tag, attrs in page.elements
+                     if tag == "svg" and attrs.get("class") == "kind-mark"]
+            # Every row has a glyph, readme included; the text label still names the kind.
+            self.assertEqual(len(marks), len(page.entries))
             for mark in marks:
-                self.assertIn("alt", mark)
-                self.assertFalse(mark["alt"])
                 self.assertEqual(mark["aria-hidden"], "true")
-                self.assertEqual(mark["width"], "24")
-                svg = output / mark["src"].lstrip("/")
-                self.assertTrue(svg.is_file())
-                self.assertNotIn("#b8bb26", svg.read_text())
-                self.assertIn("#bdae93", svg.read_text())
-            # Neutral row variants must not alter the large section sketch.
-            header = next(attrs for tag, attrs in page.links if tag == "img"
-                          and attrs.get("class") != "catalog-mark")
-            self.assertIn("#b8bb26", (output / header["src"].lstrip("/")).read_text())
+                self.assertEqual(mark["stroke"], "currentColor")
             self.assertFalse([s for s in page.scripts if s.get("src")])
+        # Kinds name a Gruvbox palette entry; sketches keep the shared green accent.
+        css = (ROOT / "assets/css/main.css").read_text()
+        for token in ("--kind-shard", "--kind-build", "--kind-wal"):
+            self.assertRegex(css.split(f"{token}: ")[1].split(";")[0], r"^var\(--gb-[a-z]+\)$")
+        for sketch in ("shard", "builds", "wal", "catalog"):
+            self.assertIn("#b8bb26", (ROOT / f"assets/images/doodles/{sketch}.svg").read_text())
+        # Every article names its own kind in its date line.
+        for route, kind in (("2026/02/08/rfd/index.html", "shard"), ("builds/dev/index.html", "build"),
+                            ("readme/index.html", "readme")):
+            tokens = [attrs["data-kind"] for tag, attrs in self.page(self.release, route).elements
+                      if tag == "span" and attrs.get("class") == "content-kind"]
+            self.assertEqual(tokens, [kind], route)
+        ivanti = self.page(self.release, "2026/03/06/ivanti-osascript/index.html")
+        groups = [attrs.get("data-kind") for tag, attrs in ivanti.elements
+                  if tag == "h3" and attrs.get("class") == "content-kind"]
+        self.assertEqual(groups, ["shard", "build"])
+
+    def test_footer_links_every_populated_section(self):
+        for output, sections in (
+                (self.release, ["/shards/", "/builds/", "/catalog/", "/readme/", "/index.xml"]),
+                (self.drafts, ["/shards/", "/builds/", "/wal/", "/catalog/", "/readme/", "/index.xml"])):
+            for route in ("404.html", "builds/index.html"):
+                elements = self.page(output, route).elements
+                start = max(i for i, (tag, attrs) in enumerate(elements)
+                            if tag == "nav" and attrs.get("aria-label") == "Site sections")
+                links = [attrs for tag, attrs in elements[start:]
+                         if tag == "a" and attrs.get("href") in sections]
+                self.assertEqual([attrs["href"] for attrs in links], sections)
+                current = [attrs["href"] for attrs in links if attrs.get("aria-current") == "page"]
+                self.assertEqual(current, ["/builds/"] if route.startswith("builds") else [])
+
+    def test_builds_lead_with_their_code_link(self):
+        for output in (self.release, self.drafts):
+            build = (output / "builds/dev/index.html").read_text()
+            self.assertLess(build.index("Build code"), build.index("article-prose"))
+            footer = build[build.index("article-meta"):]
+            self.assertNotIn("[code]", footer[:footer.index("</footer>")])
+            self.assertIn("github.com/hrmnjt/dev", " ".join(self.page(output, "builds/dev/index.html").main_text))
+
+    def test_404_points_to_the_catalog_on_the_shared_rail(self):
+        page = self.page(self.release, "404.html")
+        self.assertIn("/catalog/", [attrs.get("href") for tag, attrs in page.links if tag == "a"])
+        self.assertNotIn("all shards", " ".join(page.main_text))
 
     def test_footer_keeps_licensing_caveat_separate_from_navigation(self):
         for output in (self.release, self.drafts):
@@ -378,6 +414,10 @@ class SiteTests(unittest.TestCase):
                 self.assertIn("/readme/#reuse", [attrs.get("href") for _, attrs in page.links])
                 self.assertIn("https://github.com/hrmnjt/sttp/blob/main/LICENSE",
                               [attrs.get("href") for _, attrs in page.links])
+                licences = [attrs.get("href") for tag, attrs in page.links
+                            if tag == "a" and attrs.get("rel") == "license"]
+                self.assertEqual(licences, ["https://creativecommons.org/licenses/by/4.0/"])
+                self.assertNotIn("under review", (ROOT / "content/readme/_index.md").read_text())
 
     def test_home_previews_only_the_three_newest_shards(self):
         for output in (self.release, self.drafts):
@@ -459,7 +499,7 @@ class SiteTests(unittest.TestCase):
                 self.assertTrue(all(script.get("type") == "application/ld+json" or script.get("src")
                                     for script in page.scripts))
             shard = (output / "2026/02/01/dev/index.html").read_text()
-            self.assertGreater(shard.index("Markdown source"), shard.index("connections"))
+            self.assertGreater(shard.index("Markdown source"), shard.index("backlinks"))
             build = self.page(output, "builds/dev/index.html")
             self.assertIn("https://github.com/hrmnjt/dev", [attrs.get("href") for _, attrs in build.links])
 
@@ -475,8 +515,10 @@ class SiteTests(unittest.TestCase):
             self.assertNotIn("background", attrs.get("style", ""))
         self.assertIn("chroma", blocks[0].get("class", ""))
         text = " ".join(page.main_text)
-        self.assertIn("python / scroll long lines horizontally", text)
-        self.assertIn("text / scroll long lines horizontally", text)
+        # The python fence is captioned; the unlabelled one is not called "text".
+        self.assertEqual(sum(tag == "figcaption" for tag, _ in page.elements) -
+                         sum(attrs.get("id") == "caption" for _, attrs in page.elements), 1)
+        self.assertNotIn("scroll long lines", text)  # language only; no blanket hint
         self.assertIn("literal <tag> & text", text)
         self.assertFalse(any(tag == "tag" for tag, _ in page.elements))
 
@@ -525,44 +567,44 @@ class SiteTests(unittest.TestCase):
     def test_build_collects_all_shard_backlinks_in_original_date_order(self):
         for output in (self.release, self.drafts):
             build = self.page(output, "builds/dev/index.html")
-            entries = build.connections["related-shards"]
+            entries = build.backlinks["related-shards"]
             urls = [entry["url"] for entry in entries]
             expected = ["/2026/03/06/ivanti-osascript/", "/2026/02/01/dev/"]
             if output == self.drafts:
                 expected.insert(1, "/2026/03/03/timeline-fixture/")
             self.assertEqual(urls, expected)
             if output == self.drafts:
-                self.assertEqual([entry["url"] for entry in build.connections["related-builds"]],
+                self.assertEqual([entry["url"] for entry in build.backlinks["related-builds"]],
                                  ["/builds/test-build/"])
             else:
-                self.assertNotIn("related-builds", build.connections)
+                self.assertNotIn("related-builds", build.backlinks)
             self.assertNotIn("main shard →", " ".join(build.main_text))
             self.assertEqual([entry["date"] for entry in entries],
                              sorted([entry["date"] for entry in entries], reverse=True))
 
-    def test_connections_support_many_targets_reciprocity_and_deduplication(self):
+    def test_backlinks_support_many_targets_reciprocity_and_deduplication(self):
         fixture = self.page(self.drafts, "2026/03/03/timeline-fixture/index.html")
-        self.assertEqual([entry["url"] for entry in fixture.connections["related-builds"]],
+        self.assertEqual([entry["url"] for entry in fixture.backlinks["related-builds"]],
                          ["/builds/dev/", "/builds/test-build/"])
-        self.assertEqual([entry["url"] for entry in fixture.connections["related-shards"]],
+        self.assertEqual([entry["url"] for entry in fixture.backlinks["related-shards"]],
                          ["/2026/02/08/rfd/", "/2026/02/01/dev/"])
         # Both ends declare this edge, but it appears only once on each end.
         build = self.page(self.drafts, "builds/test-build/index.html")
-        self.assertEqual([entry["url"] for entry in build.connections["related-shards"]],
+        self.assertEqual([entry["url"] for entry in build.backlinks["related-shards"]],
                          ["/2026/03/03/timeline-fixture/", "/2026/02/01/dev/"])
-        self.assertEqual([entry["url"] for entry in build.connections["related-builds"]],
+        self.assertEqual([entry["url"] for entry in build.backlinks["related-builds"]],
                          ["/builds/dev/"])
         rfd = self.page(self.drafts, "2026/02/08/rfd/index.html")
-        self.assertEqual([entry["url"] for entry in rfd.connections["related-shards"]],
+        self.assertEqual([entry["url"] for entry in rfd.backlinks["related-shards"]],
                          ["/2026/03/03/timeline-fixture/"])
-        self.assertEqual(self.page(self.release, "2026/02/08/rfd/index.html").connections, {})
+        self.assertEqual(self.page(self.release, "2026/02/08/rfd/index.html").backlinks, {})
         # A shard gets an incoming build edge as well as its explicitly named build.
         dev = self.page(self.drafts, "2026/02/01/dev/index.html")
-        self.assertEqual([entry["url"] for entry in dev.connections["related-builds"]],
+        self.assertEqual([entry["url"] for entry in dev.backlinks["related-builds"]],
                          ["/builds/dev/", "/builds/test-build/"])
         for output in (self.release, self.drafts):
             for page in self.pages[output].values():
-                for entries in page.connections.values():
+                for entries in page.backlinks.values():
                     urls = [entry["url"] for entry in entries]
                     self.assertEqual(len(urls), len(set(urls)))
                     dates = [entry["date"] for entry in entries]

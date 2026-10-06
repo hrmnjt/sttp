@@ -1,11 +1,23 @@
 {{ define "main" }}
-<article{{ if eq .Section "shards" }} class="article-wide"{{ end }}>
-    {{ if eq .Section "shards" }}<p class="back-link"><a href="/shards/">← shards</a></p>{{ end }}
+{{- $kind := partial "content-kind.html" . -}}
+<article class="article-wide">
+    {{ with .Parent }}<p class="back-link"><a href="{{ .RelPermalink }}">← {{ .Title }}</a></p>{{ end }}
     <h1>{{ .Title }}</h1>
-    <div class="article-date">
+    {{ if eq $kind "build" }}
+    {{ with .Description }}<p class="section-note">{{ . }}</p>{{ end }}
+    {{- /* A build's code is part of what it is, so its link leads rather than trails. */ -}}
+    {{ with .Params.source }}
+    <nav class="utility-links build-links" aria-label="Build code">
+        <a href="{{ . }}">[code]<span class="repo">{{ . | replaceRE `^https?://` "" | strings.TrimSuffix "/" }}</span></a>
+    </nav>
+    {{ end }}
+    {{ end }}
+    <p class="article-date">
+        <span class="content-kind" data-kind="{{ $kind }}">{{ partial "kind-mark.html" $kind }}[{{ $kind }}]</span>
+        <span aria-hidden="true">·</span>
         <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>
-        <span aria-hidden="true">·</span> {{ .ReadingTime }} min read
-    </div>
+        {{ if eq $kind "shard" }}<span aria-hidden="true">·</span> {{ .ReadingTime }} min read{{ end }}
+    </p>
     {{ if .Params.migrated }}
     <div class="migrated-notice">
         [migrated] this post has been migrated over from an older version of this site;
@@ -16,16 +28,6 @@
     <div class="article-prose">
         {{ partial "prose.html" (dict "Page" .) }}
     </div>
-    <footer class="article-meta">
-        {{ partial "connections.html" . }}
-        {{ with .File }}
-        {{ $path := printf "content/%s" .Path }}
-        <nav class="utility-links source-trail" aria-label="Shard source">
-            {{ with $.Params.source }}<a href="{{ . }}">[code]</a>{{ end }}
-            <span class="source-link">view <a href="{{ printf "%s/blob/main/%s?plain=1" site.Params.source_repo $path }}" aria-label="Markdown source">[markdown]</a></span>
-            <span class="source-link">view <a href="{{ printf "%s/commits/main/%s" site.Params.source_repo $path }}" aria-label="Git history">[history]</a></span>
-        </nav>
-        {{ end }}
-    </footer>
+    {{ partial "article-footer.html" . }}
 </article>
 {{ end }}

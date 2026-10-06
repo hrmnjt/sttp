@@ -8,7 +8,7 @@ self-hosted modal viewer; original links still work without JavaScript.
 
 ## Run locally
 
-Use Hugo Extended 0.166.0 (the version pinned in CI). Python 3.11+ is needed
+Use Hugo Extended 0.167.0 (the version pinned in CI). Python 3.11+ is needed
 only for the repository tests. The site itself needs no Node dependencies or
 downloaded fonts. Optional screenshot tooling needs Node 20+ and Chromium.
 
@@ -59,11 +59,11 @@ or missing capture regions, while retaining screenshots for inspection.
 
 The image-viewer tests need an installed Chromium browser. They check the deployed
 CSP, keyboard/touch dismissal, actual-size scrolling, focus/position restoration,
-and no-JavaScript fallback. See `design/screenshots.md` for optional WebKit checks.
+and no-JavaScript fallback.
 
 Runner tests require no browser installation; they include a real Hugo server
-smoke check when Hugo is available. See `design/screenshots.md` for routes,
-reproducibility details, and supported-host setup. Playwright's bundled
+smoke check when Hugo is available. `npm run screenshots -- --help` lists the
+options. Playwright's bundled
 browsers do not support Alpine Linux; run captures on your Mac or a supported
 Linux host. Browser packages are never part of the deployed site.
 
@@ -76,13 +76,41 @@ Linux host. Browser packages are never part of the deployed site.
 - `assets/`: fingerprinted CSS, image-viewer JavaScript, images, and section sketches.
 - `layouts/`: Hugo templates, Markdown hooks, and shortcodes.
 - `static/`: favicons and Cloudflare Pages header configuration.
-- `design/`: preview instructions and unpublished review notes.
 - `scripts/screenshots.mjs`: optional browser capture runner.
 
 Use explicit titles and content dates, not automatic Git timestamps. A build
 page's date is not the linked shard's date. Keep substantive revisions in
 `lastmod`; catalog chronology uses the original `date`. Review draft samples
-and personal copy before publishing. See `design/README.md` for details.
+and personal copy before publishing.
+
+## Design notes
+
+System monospace and Gruvbox dark throughout; `assets/css/main.css` names the
+palette (`--gb-*`) and assigns roles from it. Every page shares one 1100px frame
+and one left rail, with prose capped at 70ch.
+
+Each content kind is one colour, one glyph, and one lowercase name, always used
+together:
+
+| kind   | colour          | glyph                         |
+| ------ | --------------- | ----------------------------- |
+| shard  | Gruvbox purple  | faceted fragment              |
+| build  | Gruvbox blue    | cube                          |
+| wal    | Gruvbox orange  | ledger page                   |
+| readme | neutral         | page with a folded corner     |
+
+Green is reserved for links. The glyphs in `layouts/partials/kind-mark.html`
+reuse the outlines of the section sketches in `assets/images/doodles/`. The
+sketches themselves stay tan with green accents; only glyphs and labels take a
+kind's colour. Catalog rows, article date lines, and backlink headings carry it.
+
+Shards and builds link to each other with front-matter lists of content paths:
+
+    related_shards = ["/shards/2026-02-01-dev"]
+    related_builds = ["/builds/dev"]
+
+Each page's "backlinks" section shows the pages it names and the pages that
+name it. Unresolved, mistyped, or self-referencing entries fail the build.
 
 ## Deployment
 
@@ -93,6 +121,13 @@ Verify headers and canonical/feed URLs on the deployed release.
 
 ## Licensing
 
-The repository contains an MIT `LICENSE`. Its scope across site code, writing,
-and media is under review; this README does not change existing permissions.
-The review checklist is in `design/publishing-review.md`.
+Code and content are licensed separately.
+
+- **Code** (`layouts/`, `assets/css/`, `assets/js/`, `scripts/`, `tests/`,
+  configuration, and code snippets inside posts): MIT, see `LICENSE`.
+- **Content** (`content/`, the sketches in `assets/images/doodles/`, and the
+  author's own images): Creative Commons Attribution 4.0 International, see
+  `LICENSE-CC-BY-4.0`. Credit "Harman (hrmnjt)" and link to the original page.
+
+Third-party logos, screenshots of other people's software, and quoted material
+are not covered by either license and remain with their owners.

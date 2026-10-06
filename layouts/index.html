@@ -1,6 +1,6 @@
 {{ define "main" }}
 <section class="home-intro" aria-labelledby="intro-title">
-    <h1 id="intro-title">{{ .Params.intro_title | default "Hi, I'm Harman." }}</h1>
+    <h1 id="intro-title">{{ .Params.intro_title | default "Hi, I'm Harman." | markdownify }}</h1>
     {{ .Content }}
 </section>
 {{ with .Site.GetPage "/shards" }}
@@ -13,7 +13,7 @@
 {{ with .Site.GetPage "/builds" }}{{ if .RegularPages }}
 <section class="home-section home-builds" aria-labelledby="home-builds">
     {{ partial "section-heading.html" (dict "Page" . "Level" 2 "ID" "home-builds" "Linked" true "Note" "Things that escaped the scratch buffer.") }}
-    {{ partial "build-list.html" (first 3 .RegularPages.ByTitle) }}
+    {{ partial "build-list.html" (first 3 .RegularPages.ByDate.Reverse) }}
     {{ if gt (len .RegularPages) 3 }}<p class="archive-link"><a href="{{ .RelPermalink }}">all builds →</a></p>{{ end }}
 </section>
 {{ end }}{{ end }}

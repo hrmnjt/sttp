@@ -3,7 +3,7 @@ title = "readme"
 description = "Documentation for this corner of the web."
 # Date the original readme page was written, not the redesign's release date.
 date = 2026-09-26
-lastmod = 2026-10-01
+lastmod = 2026-10-06
 outputs = ["HTML"]
 +++
 
@@ -35,6 +35,14 @@ without JavaScript, with visible keyboard focus and scrollable code and tables.
 
 ## reuse
 
-The repository contains an [MIT license](https://github.com/hrmnjt/sttp/blob/main/LICENSE).
-Its scope across code, writing, and media is still under review. This note does
-not replace the existing license or grant new permissions.
+Code and content are licensed separately.
+
+- **Code** is under the [MIT license](https://github.com/hrmnjt/sttp/blob/main/LICENSE):
+  the site's templates, styles, and scripts, and the code snippets inside posts.
+- **Content** is under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/):
+  the writing, the sketches, and my own images. Share or adapt it for any purpose,
+  as long as you credit Harman (hrmnjt), link to the original page, and say if
+  you changed it.
+
+Logos, screenshots of other people's software, and quoted material stay with
+their owners.

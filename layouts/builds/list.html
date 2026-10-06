@@ -1,6 +1,6 @@
 {{ define "main" }}
 <section class="section-index" aria-labelledby="builds-title">
     {{ partial "section-heading.html" (dict "Page" . "Level" 1 "ID" "builds-title" "Intro" .Content) }}
-    {{ partial "build-list.html" .RegularPages.ByTitle }}
+    {{ partial "build-list.html" .RegularPages.ByDate.Reverse }}
 </section>
 {{ end }}

@@ -1,0 +1,15 @@
+{{- /* Every article closes the same way: backlinks, then its source trail.
+       Builds show their code link under the title instead. */ -}}
+{{- $kind := partial "content-kind.html" . -}}
+{{- $labels := dict "shard" "Shard source" "build" "Build source" "wal" "WAL entry source" "readme" "Readme source" -}}
+<footer class="article-meta">
+    {{ if in (slice "shard" "build") $kind }}{{ partial "backlinks.html" . }}{{ end }}
+    {{ with .File }}
+    {{ $path := printf "content/%s" .Path }}
+    <nav class="utility-links source-trail" aria-label="{{ index $labels $kind | default "Page source" }}">
+        {{ if ne $kind "build" }}{{ with $.Params.source }}<a href="{{ . }}">[code]</a>{{ end }}{{ end }}
+        <span class="source-link">view <a href="{{ printf "%s/blob/main/%s?plain=1" site.Params.source_repo $path }}" aria-label="Markdown source">[markdown]</a></span>
+        <span class="source-link">view <a href="{{ printf "%s/commits/main/%s" site.Params.source_repo $path }}" aria-label="Git history">[history]</a></span>
+    </nav>
+    {{ end }}
+</footer>
