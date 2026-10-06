@@ -35,6 +35,7 @@ article.article-wide { max-width: none; }
 .article-wide > p,
 .article-wide > .migrated-notice,
 .article-wide > .connections,
+.article-wide > .article-meta,
 .article-wide .article-prose > :is(p, ul, ol, dl, blockquote),
 .article-wide .footnotes > ol,
 .shards-index > p { max-width: 70ch; }
@@ -154,29 +155,16 @@ body > footer p { margin: 0; }
 .home-section .section-heading { position: relative; align-items: flex-start; }
 .home-section .section-copy { flex: 1; padding-right: 136px; }
 .home-section .section-heading h2 { font-size: clamp(1.3rem, 2.5vw, 1.5rem); }
-.home-section .section-heading h2 a { display: block; padding-bottom: 4px; border-bottom: 1px solid currentColor; text-decoration: none; }
+.home-section .section-heading h2 a { display: block; min-height: 44px; padding-bottom: 4px; border-bottom: 1px solid currentColor; text-decoration: none; }
 .home-section .section-heading img { position: absolute; top: -12px; right: 0; z-index: -1; width: 120px; pointer-events: none; }
 .home-section .dated-list { padding-right: 144px; }
 /* Centre the build mark on the header band; keep the card grid regular. */
 .home-builds .section-heading img { top: 50%; transform: translateY(-50%); }
-/* Small, reversible border-notch experiment beneath the builds mark. */
-.home-builds .build-list { position: relative; }
-.home-builds .build-list::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    right: 12px;
-    width: 96px;
-    height: 1px;
-    background: var(--bg-primary);
-    pointer-events: none;
-    z-index: 1;
-}
 .section-note { color: var(--text-secondary); }
 .section-copy > .section-note { margin: 4px 0 0; font: 0.85rem/1.7 var(--font-mono); }
 .archive-link, .back-link { font: 0.85rem/1.7 var(--font-mono); }
 .archive-link { margin: 10px 0 0; }
-.archive-link a, .back-link a { display: inline-block; padding: 6px 0; }
+.archive-link a, .back-link a { display: inline-flex; align-items: center; min-width: 44px; min-height: 44px; padding: 6px 0; }
 
 .dated-list, .build-list, .catalog-timeline, .wal-log {
     list-style: none;
@@ -184,7 +172,9 @@ body > footer p { margin: 0; }
     margin: 20px 0;
 }
 .dated-list, .build-list, .catalog-timeline { font: 0.95rem/1.7 var(--font-mono); }
-.dated-list li { display: grid; grid-template-columns: 10ch minmax(0, 1fr); gap: 18px; padding: 7px 0; }
+.dated-list li { display: grid; grid-template-columns: 10ch minmax(0, 1fr); align-items: baseline; gap: 18px; }
+/* Row padding belongs to the real link, not a non-clickable surrounding item. */
+.dated-list li > a, .catalog-timeline li > a { display: block; min-height: 44px; padding: 9px 0; }
 .dated-list time, .catalog-timeline time { color: var(--text-secondary); font-size: 0.85rem; }
 .dated-list a, .build-list a, .catalog-timeline a { overflow-wrap: anywhere; }
 /* Repo-like cards for builds; the other streams stay simple rows. */
@@ -201,7 +191,7 @@ body > footer p { margin: 0; }
 }
 .build-card:only-child { grid-column: 1 / -1; }
 .build-card-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
-.build-card-heading a { display: inline-flex; align-items: center; min-height: 44px; padding: 6px 0; }
+.build-card-heading a { display: inline-flex; align-items: center; min-width: 44px; min-height: 44px; padding: 6px 0; }
 .build-name { min-width: 0; font-weight: 700; }
 .build-code { flex: none; white-space: nowrap; font-size: 0.8rem; }
 .build-card-description { margin: 4px 0 0; color: var(--text-secondary); font: 0.85rem/1.7 var(--font-mono); overflow-wrap: anywhere; }
@@ -210,7 +200,6 @@ body > footer p { margin: 0; }
     grid-template-columns: 10ch 12ch minmax(0, 1fr);
     align-items: baseline;
     gap: 18px;
-    padding: 7px 0;
 }
 /* Only label text sets the baseline; drawings cannot lift the badge above it. */
 .content-kind { position: relative; padding-left: 32px; color: var(--text-secondary); font-size: 0.8rem; white-space: nowrap; }
@@ -234,6 +223,7 @@ body > footer p { margin: 0; }
     background: var(--bg-primary);
 }
 .wal-log h2 { margin: 4px 0 12px; font-size: 1rem; }
+.wal-log h2 > a { display: inline-flex; align-items: center; min-width: 44px; min-height: 44px; padding: 6px 0; }
 .wal-log article > :last-child { margin-bottom: 0; }
 
 /* Content, followed by its source trail. */
@@ -245,7 +235,11 @@ article li { margin-bottom: 0.4em; }
 .article-date span { margin-inline: 0.3em; }
 .wal-log .article-date { margin: 0; }
 .utility-links { margin-bottom: 20px; }
-.source-trail { margin: 28px 0 0; padding-top: 8px; border-top: 1px dashed var(--border-color); }
+.article-meta { margin-top: 32px; padding-top: 16px; border-top: 1px dashed var(--border-color); }
+.article-meta .connections { margin-top: 0; }
+.article-meta .connections > h2 { margin-top: 0; }
+.article-meta .source-trail { margin: 12px 0 0; }
+.article-meta > .source-trail:first-child { margin-top: 0; }
 .source-link { display: inline-flex; align-items: center; gap: 0.5ch; }
 .connections { margin-top: 32px; }
 .connections h2 { font-size: 1rem; }
@@ -344,7 +338,6 @@ th, td { padding: 8px 12px; border: 1px solid var(--border-color); text-align: l
     .home-section .section-heading { align-items: center; }
     .home-section .section-copy { padding-right: 0; }
     .home-section .section-heading img { position: static; transform: none; width: 64px; }
-    .home-builds .build-list::before { content: none; }
     .home-section .dated-list { padding-right: 0; }
     .build-list { grid-template-columns: 1fr; }
     .home-section > .dated-list { margin-bottom: 8px; }
@@ -353,8 +346,8 @@ th, td { padding: 8px 12px; border: 1px solid var(--border-color); text-align: l
 @media (max-width: 560px) {
     body { line-height: 1.65; }
     article p { margin-bottom: 1em; }
-    .dated-list li { grid-template-columns: minmax(0, 1fr); gap: 0; padding: 10px 0; }
-    .catalog-timeline li { grid-template-columns: 10ch minmax(0, 1fr); gap: 2px 12px; }
+    .dated-list li { grid-template-columns: minmax(0, 1fr); gap: 0; padding: 4px 0; }
+    .catalog-timeline li { grid-template-columns: 10ch minmax(0, 1fr); gap: 2px 12px; padding: 4px 0; }
     .catalog-timeline li > a { grid-column: 1 / -1; }
     .dev-flow { padding: 12px 14px; }
     .dev-flow-route { grid-template-columns: minmax(0, 1fr); gap: 2px; }

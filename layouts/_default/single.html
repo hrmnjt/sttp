@@ -16,14 +16,16 @@
     <div class="article-prose">
         {{ partial "prose.html" (dict "Page" .) }}
     </div>
-    {{ partial "connections.html" . }}
-    {{ with .File }}
-    {{ $path := printf "content/%s" .Path }}
-    <nav class="utility-links source-trail" aria-label="Shard source">
-        {{ with $.Params.source }}<a href="{{ . }}">[code]</a>{{ end }}
-        <span class="source-link">view <a href="{{ printf "%s/blob/main/%s?plain=1" site.Params.source_repo $path }}" aria-label="Markdown source">[markdown]</a></span>
-        <span class="source-link">view <a href="{{ printf "%s/commits/main/%s" site.Params.source_repo $path }}" aria-label="Git history">[history]</a></span>
-    </nav>
-    {{ end }}
+    <footer class="article-meta">
+        {{ partial "connections.html" . }}
+        {{ with .File }}
+        {{ $path := printf "content/%s" .Path }}
+        <nav class="utility-links source-trail" aria-label="Shard source">
+            {{ with $.Params.source }}<a href="{{ . }}">[code]</a>{{ end }}
+            <span class="source-link">view <a href="{{ printf "%s/blob/main/%s?plain=1" site.Params.source_repo $path }}" aria-label="Markdown source">[markdown]</a></span>
+            <span class="source-link">view <a href="{{ printf "%s/commits/main/%s" site.Params.source_repo $path }}" aria-label="Git history">[history]</a></span>
+        </nav>
+        {{ end }}
+    </footer>
 </article>
 {{ end }}
