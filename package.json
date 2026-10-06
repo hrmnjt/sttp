@@ -7,7 +7,8 @@
   },
   "scripts": {
     "screenshots": "node scripts/screenshots.mjs",
-    "test:screenshots": "node --test tests/screenshots.test.mjs"
+    "test:screenshots": "node --test tests/screenshots.test.mjs",
+    "test:images": "node --test tests/image-viewer.browser.test.mjs"
   },
   "devDependencies": {
     "playwright": "1.63.0"

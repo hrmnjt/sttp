@@ -3,7 +3,8 @@
 [Harman's site](https://hrmnjt.dev) — secure thought transfer protocol.
 A small personal site built with Hugo: shards, builds, a write-ahead log,
 and one readme. System monospace, Gruvbox, and a few useful sketches.
-The catalog interleaves content in date order.
+The catalog interleaves content in date order. Article images open in a small,
+self-hosted modal viewer; original links still work without JavaScript.
 
 ## Run locally
 
@@ -54,6 +55,11 @@ The runner fails on page overflow, broken requests/images, browser errors,
 or missing capture regions, while retaining screenshots for inspection.
 
     npm run test:screenshots
+    npm run test:images
+
+The image-viewer tests need an installed Chromium browser. They check the deployed
+CSP, keyboard/touch dismissal, actual-size scrolling, focus/position restoration,
+and no-JavaScript fallback. See `design/screenshots.md` for optional WebKit checks.
 
 Runner tests require no browser installation; they include a real Hugo server
 smoke check when Hugo is available. See `design/screenshots.md` for routes,
@@ -67,7 +73,7 @@ Linux host. Browser packages are never part of the deployed site.
 - `content/builds/`: build pages, with their own date and repository link.
 - `content/wal/`: short dated entries, readable in full on the log page.
 - `content/readme/_index.md`: the site's single context document.
-- `assets/`: fingerprinted CSS, images, and section sketches.
+- `assets/`: fingerprinted CSS, image-viewer JavaScript, images, and section sketches.
 - `layouts/`: Hugo templates, Markdown hooks, and shortcodes.
 - `static/`: favicons and Cloudflare Pages header configuration.
 - `design/`: preview instructions and unpublished review notes.

@@ -88,6 +88,35 @@ surrounding context rather than producing enormous full-page article images.
 Adjust `ROUTES` and `VIEWPORTS` in `scripts/screenshots.mjs` as content evolves.
 Missing expected regions are reported rather than silently skipped.
 
+## Image modal checks and captures
+
+The optional viewer checks use their own loopback Hugo server on port 1321 and
+exercise the **actual CSP** from `static/_headers` (Hugo doesn't serve those
+headers automatically). They cover 320/390/768/1440px layouts, keyboard and touch
+opening, fit/actual-size viewing, forward/reverse focus cycling, scroll restoration,
+Escape/button/backdrop dismissal, load errors, modified clicks, and no-JS/no-dialog
+fallbacks. No framework or browser tooling ships with the published site.
+
+```sh
+npm run test:images
+npx playwright install webkit
+IMAGE_TEST_BROWSER=webkit npm run test:images
+IMAGE_VIEWER_SCREENSHOTS=.artifacts/screenshots/image-viewer npm run test:images
+```
+
+`IMAGE_TEST_PORT` selects another unused port. Chromium honors the same
+`PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH` override as the capture runner. Optional
+captures are `image-modal-{chromium,webkit}-{390,1440}.png`; without the output
+variable, tests don't write captures. WebKit checks aren't a substitute for
+Safari/VoiceOver or a physical phone review.
+
+For project-local browser installs (without writing a global browser cache):
+
+```sh
+PLAYWRIGHT_BROWSERS_PATH="$PWD/.artifacts/playwright-browsers" npx playwright install chromium webkit
+PLAYWRIGHT_BROWSERS_PATH="$PWD/.artifacts/playwright-browsers" npm run test:images
+```
+
 ## Stability and diagnostics
 
 - Fixed locale (`en-US`), timezone (`UTC`), dark color scheme, and reduced motion.

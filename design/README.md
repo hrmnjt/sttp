@@ -5,29 +5,37 @@
 One main content flow, system monospace throughout, Gruvbox, and a few purposeful
 sketches. Every page shares a 1100px outer frame (988px inside desktop
 padding), keeping the header and footer stationary between routes. The homepage,
-shards/builds indexes, and catalog use that full layout area. Individual shards
+shards/builds/WAL indexes, and catalog use that full layout area. Individual shards
 and builds share the homepage's left rail: paragraphs, lists, and blockquotes
 stay at 70ch, while titles, code, images, tables, and the dev diagram can use the
-full frame. WAL and readme retain centred 70ch columns. Phones use tighter spacing between
+full frame. WAL's listing header and timeline share that full frame, with entry
+prose capped at 70ch. Individual WAL entries and readme retain centred 70ch columns.
+Phones use tighter spacing between
 lists and archive links, while retaining breathing room between sections.
 Footer navigation keeps 44px targets; inline legal links keep 24px targets
-without the oversized line gaps. No font downloads, JavaScript controls, or
+without the oversized line gaps. No font downloads, client-side framework, or
 animated decoration. Keep the software/database vocabulary without building
 a fake terminal.
 
 - Home previews the three most recent shards, compact builds, and populated WAL entries.
-  The intro keeps a 70ch reading measure. Subtle 136px section sketches share
+  The intro keeps a 70ch reading measure. Subtle 120px section sketches share
   a right-hand alignment rail and sit behind content in an isolated stacking
   context; list marks hang slightly below their headings. The build mark is
   centred on its heading band so cards retain a regular grid. Text is kept
   clear of the marks, and card surfaces remain opaque. Phones retain compact
-  72px marks. Heading links extend their underline toward the sketch, leaving
+  64px marks. A desktop-only 96px notch in the top card border below the builds
+  sketch is a reversible visual experiment; cards retain their full borders on
+  phones. Heading links extend their underline toward the sketch, leaving
   a 16px gap; hover and focus affordances remain on the real link.
 - Builds use repo-style cards on home and their section index: a linked name,
   independent `[code]` link when available, and description. Cards are capped at two columns
   on desktop, one at widths up to 640px. Home and the section index share the
   regular grid and let a lone card fill the width. No fake repository stats.
   Shards and WAL keep their row/log layouts.
+- Shards/builds/WAL indexes use 136px sketches alongside grouped titles and
+  introductions, kept in normal flow with clearance before the lists/cards.
+  On phones, 72px marks sit beside titles and introductions span the full width.
+  Homepage sketch placement is unchanged.
 - Section indexes are the full lists. `/wal/` shows short entries in full,
   with individual permalinks retained; inline heading/footnote IDs are namespaced.
 - `/readme/` is one document, linked in the footer, not another homepage lane.
@@ -36,7 +44,13 @@ a fake terminal.
   green, muted blue, amber, and neutral text help scanning without relying on color.
 - Article images reserve their original dimensions to avoid layout jumps and
   link to full-resolution originals with accessible labels and keyboard focus.
-  Native image viewing works without a modal or JavaScript.
+  A small self-hosted script enhances these links with a native `<dialog>` viewer,
+  loaded only on pages containing optimized images (including inline WAL entries).
+  Escape, close, or backdrop clicks return to the same article position and image
+  link focus. `[1:1]` toggles scrollable original pixels for small screenshots.
+  Links still open originals without JavaScript or native dialog support; modified
+  clicks retain normal browser behavior. CSP permits same-origin scripts only,
+  with no inline executable script, library, analytics, or external dependency.
 
 ## Dates and publication
 

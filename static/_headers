@@ -8,7 +8,7 @@
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: geolocation=(), microphone=(), camera=(), payment=()
   Strict-Transport-Security: max-age=31536000
-  Content-Security-Policy: default-src 'self'; script-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; frame-ancestors 'none'
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; frame-ancestors 'none'
   Cache-Control: public, max-age=3600, must-revalidate
 
 # More specific cache rules must unset the global Cache-Control before replacing it.
@@ -29,6 +29,11 @@
 
 # CSS files - cache for 6 months (Hugo fingerprints changes automatically)
 /css/*
+  ! Cache-Control
+  Cache-Control: public, max-age=15552000, immutable
+
+# Viewer script - fingerprinted, same-origin progressive enhancement
+/js/*
   ! Cache-Control
   Cache-Control: public, max-age=15552000, immutable
 
