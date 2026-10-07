@@ -17,7 +17,7 @@ lacus vel augue laoreet rutrum faucibus dolor auctor.[^1]
 
 ## consectetur adipiscing
 
-Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Morbi leo
+Integer posuere erat a ante venenatis dapibus posuere velit aliquet.{{< sidenote >}}Sample sidenote: a short aside with a [link](/readme/) that sits beside the line it annotates.{{< /sidenote >}} Morbi leo
 risus, porta ac consectetur ac, vestibulum at eros. Duis mollis, est non commodo
 luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.
 
@@ -26,7 +26,7 @@ luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.
 
 Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut
 fermentum massa justo sit amet risus. Sed posuere consectetur est at lobortis.
-Maecenas sed diam eget risus varius blandit sit amet non magna.
+Maecenas sed diam eget risus varius blandit sit amet non magna.{{< sidenote >}}A second note, to check lettering and spacing before a list.{{< /sidenote >}}
 
 ## integer posuere
 

@@ -25,6 +25,9 @@
     --kind-shard: var(--gb-purple);
     --kind-build: var(--gb-blue);
     --kind-wal: var(--gb-orange);
+    /* Type: body at 1rem, then two smaller steps and nothing in between. */
+    --fs-small: 0.875rem;
+    --fs-fine: 0.8rem;
     --font-mono: ui-monospace, "Cascadia Mono", "Segoe UI Mono", "Liberation Mono", Menlo, Monaco, Consolas, monospace;
 }
 
@@ -37,13 +40,15 @@ body {
     color: var(--text-primary);
     font: 1rem/1.75 var(--font-mono);
 }
+/* Lines: dashed rules divide the page; dotted lines box content or run vertically.
+   Nothing is solid except focus outlines. */
 /* Stable site furniture: every page shares one frame and one left rail. */
 main { min-width: 0; }
 article { max-width: 70ch; }
 /* Shared left rail; prose stays readable while technical material has room. */
 article.article-wide { max-width: none; }
 /* Echo listing titles once, more quietly than the navigation headings. */
-.article-wide > h1 { padding-bottom: 8px; border-bottom: 1px solid var(--border-color); }
+.article-wide > h1 { padding-bottom: 8px; border-bottom: 1px dashed var(--border-color); }
 .article-wide > p,
 .article-wide > .migrated-notice,
 .article-wide .article-prose > :is(p, ul, ol, dl, blockquote),
@@ -60,6 +65,9 @@ h3 { font-size: 1rem; }
 p { margin-bottom: 1.2em; }
 a { color: var(--accent); text-underline-offset: 0.2em; }
 a:hover { color: var(--accent-hover); }
+/* Square brackets mark text the site adds ([shard], [code], [ext], [return]).
+   Green ones are links; muted or kind-coloured ones are labels. */
+.article-prose a[href^="http"]:not(.dev-flow a)::after { content: "[ext]"; margin-left: 0.3em; color: var(--text-secondary); font-size: var(--fs-fine); }
 a:focus-visible, [tabindex]:focus-visible {
     outline: 2px solid var(--accent-hover);
     outline-offset: 4px;
@@ -110,14 +118,14 @@ body > header {
 .protocol-expansion {
     margin: 0;
     color: var(--text-secondary);
-    font-size: 0.78rem;
+    font-size: var(--fs-fine);
     overflow-wrap: anywhere;
 }
 body > header nav, body > footer nav, .utility-links {
     display: flex;
     flex-wrap: wrap;
     gap: 0 18px;
-    font: 0.85rem/1.6 var(--font-mono);
+    font: var(--fs-small)/1.6 var(--font-mono);
 }
 body > header nav a, body > footer nav a, .utility-links a {
     display: inline-flex;
@@ -131,7 +139,7 @@ body > footer {
     padding-top: 12px;
     border-top: 1px dashed var(--border-color);
     color: var(--text-secondary);
-    font: 0.8rem/1.6 var(--font-mono);
+    font: var(--fs-fine)/1.6 var(--font-mono);
 }
 body > footer p { margin: 0; }
 .footer-legal { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; }
@@ -141,7 +149,7 @@ body > footer p { margin: 0; }
 /* One column; the names do the organising. */
 .home-intro { margin-bottom: 36px; }
 .home-intro h1 { font-size: clamp(1.5rem, 3vw, 1.75rem); }
-.home-intro p { max-width: 70ch; font-family: var(--font-mono); font-size: 0.95rem; }
+.home-intro p { max-width: 70ch; font-family: var(--font-mono); font-size: 1rem; }
 .home-section { position: relative; isolation: isolate; margin-top: 32px; }
 .section-heading {
     display: flex;
@@ -156,7 +164,7 @@ body > footer p { margin: 0; }
 /* Index marks stay in flow beside the title and introduction, clear of lists. */
 .section-index .section-heading { align-items: flex-start; gap: 16px; margin-bottom: 24px; }
 .section-index .section-copy { flex: 1; }
-.section-index .section-heading h1 { padding-bottom: 4px; border-bottom: 1px solid var(--border-color); }
+.section-index .section-heading h1 { padding-bottom: 4px; border-bottom: 1px dashed var(--border-color); }
 .section-index .section-heading img { width: 136px; pointer-events: none; }
 .section-index .section-intro { max-width: 70ch; margin-top: 12px; }
 .section-index .section-intro > :last-child { margin-bottom: 0; }
@@ -164,14 +172,14 @@ body > footer p { margin: 0; }
 .home-section .section-heading { position: relative; align-items: flex-start; }
 .home-section .section-copy { flex: 1; padding-right: 136px; }
 .home-section .section-heading h2 { font-size: clamp(1.3rem, 2.5vw, 1.5rem); }
-.home-section .section-heading h2 a { display: block; min-height: 44px; padding-bottom: 4px; border-bottom: 1px solid var(--border-color); text-decoration: none; }
+.home-section .section-heading h2 a { display: block; min-height: 44px; padding-bottom: 4px; border-bottom: 1px dashed var(--border-color); text-decoration: none; }
 .home-section .section-heading img { position: absolute; top: -12px; right: 0; z-index: -1; width: 120px; pointer-events: none; }
 .home-section .dated-list { padding-right: 144px; }
 /* Centre the build mark on the header band; keep the card grid regular. */
 .home-builds .section-heading img { top: 50%; transform: translateY(-50%); }
 .section-note { color: var(--text-secondary); }
-.section-copy > .section-note { margin: 4px 0 0; font: 0.85rem/1.7 var(--font-mono); }
-.archive-link, .back-link { font: 0.85rem/1.7 var(--font-mono); }
+.section-copy > .section-note { margin: 4px 0 0; font: var(--fs-small)/1.7 var(--font-mono); }
+.archive-link, .back-link { font: var(--fs-small)/1.7 var(--font-mono); }
 .archive-link { margin: 10px 0 0; }
 .archive-link a, .back-link a { display: inline-flex; align-items: center; min-width: 44px; min-height: 44px; padding: 6px 0; }
 
@@ -180,12 +188,14 @@ body > footer p { margin: 0; }
     padding: 0;
     margin: 20px 0;
 }
-.dated-list, .build-list, .catalog-timeline { font: 0.95rem/1.7 var(--font-mono); }
+.dated-list, .build-list, .catalog-timeline { font: 1rem/1.7 var(--font-mono); }
 .dated-list li { display: grid; grid-template-columns: 10ch minmax(0, 1fr); align-items: baseline; gap: 18px; }
 /* Row padding belongs to the real link, not a non-clickable surrounding item. */
 .dated-list li > a, .catalog-timeline li > a { display: block; min-height: 44px; padding: 9px 0; }
-.dated-list time, .catalog-timeline time { color: var(--text-secondary); font-size: 0.85rem; }
-.dated-list a, .build-list a, .catalog-timeline a { overflow-wrap: anywhere; }
+.dated-list time, .catalog-timeline time { color: var(--text-secondary); font-size: var(--fs-small); }
+.dated-list a, .build-list a, .catalog-timeline a { overflow-wrap: anywhere; text-decoration: none; }
+.dated-list a:hover, .build-list a:hover, .catalog-timeline a:hover,
+.dated-list a:focus-visible, .build-list a:focus-visible, .catalog-timeline a:focus-visible { text-decoration: underline; }
 /* Repo-like cards for builds; the other streams stay simple rows. */
 .build-list {
     display: grid;
@@ -195,15 +205,15 @@ body > footer p { margin: 0; }
 .build-card {
     min-width: 0;
     padding: 12px 16px 16px;
-    border: 1px dashed var(--border-color);
+    border: 1px dotted var(--border-color);
     background: var(--bg-primary);
 }
 .build-card:only-child { grid-column: 1 / -1; }
 .build-card-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
 .build-card-heading a { display: inline-flex; align-items: center; min-width: 44px; min-height: 44px; padding: 6px 0; }
 .build-name { min-width: 0; font-weight: 700; }
-.build-code { flex: none; white-space: nowrap; font-size: 0.8rem; }
-.build-card-description { margin: 4px 0 0; color: var(--text-secondary); font: 0.85rem/1.7 var(--font-mono); overflow-wrap: anywhere; }
+.build-code { flex: none; white-space: nowrap; font-size: var(--fs-fine); }
+.build-card-description { margin: 4px 0 0; color: var(--text-secondary); font: var(--fs-small)/1.7 var(--font-mono); overflow-wrap: anywhere; }
 .catalog-timeline li {
     display: grid;
     grid-template-columns: 10ch 13ch minmax(0, 1fr);
@@ -216,7 +226,7 @@ body > footer p { margin: 0; }
 [data-kind="build"] { --kind: var(--kind-build); }
 [data-kind="wal"] { --kind: var(--kind-wal); }
 .content-kind { position: relative; padding-left: 28px; color: var(--kind, var(--text-secondary)); white-space: nowrap; }
-.catalog-timeline .content-kind { font-size: 0.85rem; }
+.catalog-timeline .content-kind { font-size: var(--fs-small); }
 .kind-mark { position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 20px; height: 20px; pointer-events: none; }
 
 /* Short log entries are readable here, not hidden behind excerpts. */
@@ -242,7 +252,7 @@ article h2 { margin: 2em 0 0.7em; }
 article h3 { margin: 1.7em 0 0.6em; }
 article ul, article ol { padding-left: 1.5em; margin-bottom: 1.4em; }
 article li { margin-bottom: 0.4em; }
-.article-date { display: block; margin-bottom: 24px; color: var(--text-secondary); font: 0.85rem/1.7 var(--font-mono); }
+.article-date { display: block; margin-bottom: 24px; color: var(--text-secondary); font: var(--fs-small)/1.7 var(--font-mono); }
 .article-date span[aria-hidden] { margin-inline: 0.3em; }
 .wal-log .article-date { margin: 0 0 12px; }
 .utility-links { margin-bottom: 20px; }
@@ -256,21 +266,21 @@ article li { margin-bottom: 0.4em; }
 .source-link { display: inline-flex; align-items: center; gap: 0.5ch; }
 .backlinks { margin-top: 32px; }
 .backlinks h2 { font-size: 1rem; }
-.backlinks .backlink-group h3 { width: fit-content; margin: 16px 0 4px; font-size: 0.85rem; }
+.backlinks .backlink-group h3 { width: fit-content; margin: 16px 0 4px; font-size: var(--fs-small); }
 .backlinks .dated-list { margin: 0; padding: 0; }
 .backlinks .dated-list li { margin: 0; }
-.migrated-notice { margin: 24px 0; padding: 12px 16px; border-left: 2px dashed var(--border-color); color: var(--text-secondary); font-size: 0.9rem; }
+.migrated-notice { margin: 24px 0; padding: 12px 16px; border: 1px dotted var(--text-secondary); background: var(--code-bg); color: var(--text-secondary); font-size: var(--fs-small); }
 
 code, pre, .highlight { font-family: var(--font-mono); }
 code { padding: 0.1em 0.25em; background: var(--code-bg); font-size: 0.9em; }
-pre { padding: 16px; margin: 1.5em 0; overflow-x: auto; background: var(--pre-bg); border: 1px dashed var(--border-color); font-size: 0.85rem; line-height: 1.6; }
+pre { padding: 16px; margin: 1.5em 0; overflow-x: auto; background: var(--pre-bg); border: 1px dotted var(--border-color); font-size: var(--fs-small); line-height: 1.6; }
 pre.chroma { background: var(--pre-bg); }
 pre code { padding: 0; background: none; font-size: inherit; }
 .code-block { min-width: 0; margin: 1.5em 0; }
-.code-block figcaption { margin-bottom: 8px; color: var(--text-secondary); font: 0.8rem/1.6 var(--font-mono); }
+.code-block figcaption { margin-bottom: 8px; color: var(--text-secondary); font: var(--fs-fine)/1.6 var(--font-mono); }
 .code-block pre { margin: 0; }
 article hr { margin: 1.8em 0; border: 0; border-top: 1px dashed var(--border-color); }
-blockquote { margin: 1.5em 0; padding: 0.2em 0 0.2em 1.25em; border-left: 2px dashed var(--border-color); color: var(--text-secondary); }
+blockquote { margin: 1.5em 0; padding: 0.2em 0 0.2em 1.25em; border-left: 2px dotted var(--border-color); color: var(--text-secondary); }
 blockquote > :last-child { margin-bottom: 0; }
 img { display: block; max-width: 100%; height: auto; margin: 1.5em 0; }
 .image-fullsize { display: block; width: fit-content; max-width: 100%; margin: 1.5em 0; cursor: zoom-in; }
@@ -290,10 +300,10 @@ html.image-viewing { overflow: hidden; }
     max-height: none;
     margin: auto;
     padding: 16px;
-    border: 1px dashed var(--border-color);
+    border: 1px dotted var(--border-color);
     background: var(--bg-primary);
     color: var(--text-primary);
-    font: 0.85rem/1.6 var(--font-mono);
+    font: var(--fs-small)/1.6 var(--font-mono);
 }
 .image-viewer[open] { display: flex; flex-direction: column; gap: 12px; }
 .image-viewer::backdrop { background: rgb(0 0 0 / 80%); }
@@ -304,7 +314,7 @@ html.image-viewing { overflow: hidden; }
     min-height: 44px;
     min-width: 44px;
     padding: 6px 10px;
-    border: 1px dashed var(--border-color);
+    border: 1px dotted var(--border-color);
     background: transparent;
     color: var(--accent);
     font: inherit;
@@ -324,20 +334,32 @@ html.image-viewing { overflow: hidden; }
     .image-viewer { width: calc(100% - 16px); height: calc(100% - 16px); height: calc(100dvh - 16px); padding: 12px; }
 }
 table { display: block; max-width: 100%; overflow-x: auto; border-collapse: collapse; margin: 1.5em 0; }
-th, td { padding: 8px 12px; border: 1px dashed var(--border-color); text-align: left; }
-.footnotes { margin-top: 32px; padding-top: 16px; border-top: 1px dashed var(--border-color); font-size: 0.9rem; }
+th, td { padding: 8px 12px; border: 1px dotted var(--border-color); text-align: left; }
+.footnotes { margin-top: 32px; padding-top: 16px; border-top: 1px dashed var(--border-color); font-size: var(--fs-small); }
 .footnotes hr { display: none; }
 .footnote-ref, .footnote-backref { display: inline-block; min-width: 24px; padding: 3px; }
 .footnote-backref { white-space: nowrap; font-family: var(--font-mono); }
 
+/* Sidenotes: lettered asides. Inline by default; in the right margin when it exists. */
+.article-prose { counter-reset: sidenote; }
+.sidenote-ref { counter-increment: sidenote; }
+.sidenote-ref::after { content: "[" counter(sidenote, lower-alpha) "]"; margin-left: 0.2em; color: var(--text-secondary); font-size: var(--fs-fine); vertical-align: super; line-height: 0; }
+.sidenote { display: block; margin: 0.6em 0; padding-left: 1em; border-left: 2px dotted var(--border-color); color: var(--text-secondary); font-size: var(--fs-small); line-height: 1.6; }
+.sidenote::before { content: "[" counter(sidenote, lower-alpha) "] "; }
+@media (min-width: 1100px) {
+    .sidenote { float: right; clear: right; width: 270px; margin: 0.2em -302px 1em 0; padding-left: 0; border-left: 0; }
+    /* Wide blocks start below any note still hanging in the margin. */
+    .article-prose > :is(pre, figure, table, .dev-flow, .footnotes) { clear: right; }
+}
+
 /* A real setup diagram, not decorative chrome. */
-.dev-flow { margin: 24px 0 32px; padding: 14px 18px; border: 1px dashed var(--border-color); }
-.dev-flow figcaption { margin-bottom: 10px; color: var(--text-secondary); font: 0.9rem/1.5 var(--font-mono); }
+.dev-flow { margin: 24px 0 32px; padding: 14px 18px; border: 1px dotted var(--border-color); }
+.dev-flow figcaption { margin-bottom: 10px; color: var(--text-secondary); font: var(--fs-small)/1.5 var(--font-mono); }
 .dev-flow ol { list-style: none; padding: 0; margin: 0; }
 .dev-flow li { margin: 0; padding: 8px 0; line-height: 1.5; }
 .dev-flow li + li { border-top: 1px dashed var(--border-color); }
-.dev-flow-label { display: block; margin-bottom: 5px; color: var(--text-secondary); font: 0.8rem/1.5 var(--font-mono); }
-.dev-flow-route { display: grid; grid-template-columns: 9ch 34px 25ch 34px minmax(0, 1fr); align-items: center; gap: 4px 10px; font: 0.9rem/1.5 var(--font-mono); }
+.dev-flow-label { display: block; margin-bottom: 5px; color: var(--text-secondary); font: var(--fs-fine)/1.5 var(--font-mono); }
+.dev-flow-route { display: grid; grid-template-columns: 9ch 34px 25ch 34px minmax(0, 1fr); align-items: center; gap: 4px 10px; font: var(--fs-small)/1.5 var(--font-mono); }
 .dev-flow-route img { width: 34px; height: auto; margin: 0; }
 .dev-flow-route code { padding: 0; background: none; font-size: 1em; overflow-wrap: anywhere; }
 

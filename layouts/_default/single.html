@@ -14,9 +14,9 @@
     {{ end }}
     <p class="article-date">
         <span class="content-kind" data-kind="{{ $kind }}">{{ partial "kind-mark.html" $kind }}[{{ $kind }}]</span>
-        <span aria-hidden="true">·</span>
+        <span aria-hidden="true">|</span>
         <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>
-        {{ if eq $kind "shard" }}<span aria-hidden="true">·</span> {{ .ReadingTime }} min read{{ end }}
+        {{ if eq $kind "shard" }}<span aria-hidden="true">|</span> {{ lang.FormatNumber 0 .WordCount }} words <span aria-hidden="true">|</span> {{ .ReadingTime }} min read{{ end }}
     </p>
     {{ if .Params.migrated }}
     <div class="migrated-notice">

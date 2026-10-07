@@ -1,0 +1,4 @@
+{{- /* A short aside. Sits in the right margin on wide screens and inline, in reading
+       order, everywhere else. Lettered so it never collides with numbered footnotes.
+       Usage: text{{< sidenote >}}the aside{{< /sidenote >}} */ -}}
+<span class="sidenote-ref" aria-hidden="true"></span><span class="sidenote" role="note">{{ .Inner | markdownify }}</span>

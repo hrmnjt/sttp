@@ -401,6 +401,16 @@ class SiteTests(unittest.TestCase):
             self.assertNotIn("[code]", footer[:footer.index("</footer>")])
             self.assertIn("github.com/hrmnjt/dev", " ".join(self.page(output, "builds/dev/index.html").main_text))
 
+    def test_sidenotes_stay_in_reading_order_as_notes(self):
+        page = self.page(self.drafts, "builds/dolor-sit-amet/index.html")
+        notes = [attrs for tag, attrs in page.elements
+                 if tag == "span" and attrs.get("class") == "sidenote"]
+        self.assertEqual(len(notes), 2)
+        self.assertTrue(all(attrs.get("role") == "note" for attrs in notes))
+        self.assertIn("Sample sidenote", " ".join(page.main_text))
+        shard = " ".join(" ".join(self.page(self.release, "2026/02/08/rfd/index.html").main_text).split())
+        self.assertRegex(shard, r"\[shard\] \| 2026-02-08 \| [\d,]+ words \| \d+ min read")
+
     def test_404_points_to_the_catalog_on_the_shared_rail(self):
         page = self.page(self.release, "404.html")
         self.assertIn("/catalog/", [attrs.get("href") for tag, attrs in page.links if tag == "a"])
