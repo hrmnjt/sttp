@@ -99,6 +99,19 @@ together:
 | wal    | Gruvbox orange  | ledger page                   |
 | readme | neutral         | page with a folded corner     |
 
+Three rules hold the look together:
+
+- Square brackets mark text the site adds rather than the author: `[shard]`,
+  `[code]`, `[ext]`, `[return]`, `[migrated]`. Green brackets are links; muted or
+  kind-coloured ones are labels.
+- Dashed rules divide the page; dotted lines box content or run vertically.
+  Nothing is solid.
+- Text is 1rem, `--fs-small`, or `--fs-fine`. No sizes in between.
+
+Use `{{< sidenote >}}…{{< /sidenote >}}` for a short aside: it sits in the right
+margin on wide screens and inline elsewhere, lettered so it never clashes with
+numbered footnotes.
+
 Green is reserved for links. The glyphs in `layouts/partials/kind-mark.html`
 reuse the outlines of the section sketches in `assets/images/doodles/`. The
 sketches themselves stay tan with green accents; only glyphs and labels take a
