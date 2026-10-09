@@ -41,18 +41,48 @@ Then capture a normal preview, or opt into design drafts:
     npm run screenshots
     npm run screenshots -- --drafts
 
-The runner starts its own Hugo server on loopback port 1314, captures 24 PNGs
-at desktop (1440×1000) and phone (390×844) sizes, and shuts everything down.
-It never reuses your existing `hugo server`. If the port is busy:
+The runner starts its own Hugo server on loopback port 1314, shuts everything
+down afterwards, and never reuses your existing `hugo server`. In one pass it:
+
+- measures every page in the sitemap, and the 404 page, at desktop (1440×1000)
+  and phone (390×844) sizes;
+- captures 24 PNGs of the main routes at both sizes;
+- writes each main route's accessibility tree as text (`*.aria.yml`): the page
+  as a screen reader receives it.
+
+If the port is busy:
 
     npm run screenshots -- --port 1320
 
-Files are written to `.artifacts/screenshots/normal/` or `drafts/`, including
-`report.md`, `report.json`, and `server.log`. These and `node_modules/` are
-ignored by Git. Read the report, then share selected PNGs with the coding
-session for visual review. Re-run after edits; no pixel-diff baseline is required.
-The runner fails on page overflow, broken requests/images, browser errors,
-or missing capture regions, while retaining screenshots for inspection.
+Files are written to `.artifacts/screenshots/normal/` or `drafts/`. These and
+`node_modules/` are ignored by Git. Read `report.md` first. Its findings come
+from fixed rules over the measurements, so the same site always gives the same
+report, and a finding found on many pages is listed once with where it occurs:
+
+| finding      | rule                                                        |
+| ------------ | ----------------------------------------------------------- |
+| overflow     | the page scrolls sideways                                   |
+| contrast     | text below 4.5:1 against its background (3:1 if large)      |
+| heading      | not exactly one `h1`, or a level skipped                    |
+| duplicate-id | an `id` used more than once                                 |
+| dead-link    | an in-page link to something hidden or missing              |
+| target       | a control under 24px with another target within 24px        |
+| alt          | an image with no `alt` attribute                            |
+| margin       | two things overlapping in the margin column                 |
+
+Broken requests or images, browser errors, and missing capture regions fail the
+run too. "Worth knowing" lists what the margin column displaced, without failing.
+Each main route also gets its heading outline and tab order. `report.json` has
+every number.
+
+Open a PNG when the question is how something looks; no pixel-diff baseline is
+required. To skip the pictures:
+
+    npm run screenshots -- --text-only
+
+The runner needs to start a browser and listen on a local port. A sandboxed
+coding session may allow neither: run it yourself, or exclude it from the
+sandbox, and let the session read the files.
 
     npm run test:screenshots
     npm run test:images
