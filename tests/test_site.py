@@ -426,6 +426,10 @@ class SiteTests(unittest.TestCase):
             tokens = [attrs["data-kind"] for tag, attrs in self.page(self.release, route).elements
                       if tag == "span" and attrs.get("class") == "content-kind"]
             self.assertEqual(tokens[0], kind, route)
+        # A link declared on one post shows on both: part ii names part i.
+        for route, other in (("2023/12/06/gitorg/index.html", "/2024/02/18/gitmoreorg/"),
+                             ("2024/02/18/gitmoreorg/index.html", "/2023/12/06/gitorg/")):
+            self.assertEqual([row["url"] for row in self.page(self.release, route).see_also], [other])
         # "See also" is one list, newest first, with the kind on each row.
         ivanti = self.page(self.release, "2026/03/06/ivanti-osascript/index.html")
         self.assertEqual([row["kind"] for row in ivanti.see_also], ["[build]", "[shard]"])
@@ -915,6 +919,8 @@ class SiteTests(unittest.TestCase):
                      ".chroma .go { color: var(--gb-fg3); }"):
             self.assertIn(rule, css)
         self.assertNotIn("table { display: block", css)
+        # Body text and one smaller step; a third size has no token to reach for.
+        self.assertEqual(sorted(set(re.findall(r"--fs-[a-z]+", css))), ["--fs-small"])
 
     def test_generated_local_links_and_anchors(self):
         for output in (self.release, self.drafts):

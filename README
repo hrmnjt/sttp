@@ -125,7 +125,7 @@ Four rules hold the look together:
   `-- recent ----`, `-- 2026 ----`, `-- footnotes ----`, `-- see also ----`.
 - Every list of pages is the same ledger row: date, optional `[kind]`, title.
   Indexes break by year.
-- Text is 1rem, `--fs-small`, or `--fs-fine`. No sizes in between.
+- Text is 1rem or `--fs-small`. No sizes in between.
 
 Green is reserved for links.
 
