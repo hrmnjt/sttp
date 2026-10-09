@@ -1,0 +1,7 @@
+{{- /* The page's second-level headings as a list, once there are enough to need one. */ -}}
+{{- $list := "" -}}
+{{- $toc := .TableOfContents -}}
+{{- if ge (len (findRE `<li>` $toc)) 4 -}}
+    {{- $list = $toc | replaceRE `^\s*<nav id="TableOfContents">\s*` "" | replaceRE `\s*</nav>\s*$` "" | safeHTML -}}
+{{- end -}}
+{{- return $list -}}

@@ -1,4 +1,7 @@
-{{- /* A short aside. Sits in the right margin on wide screens and inline, in reading
-       order, everywhere else. Lettered so it never collides with numbered footnotes.
+{{- /* A short aside. Sits in the right margin when the article has room and inline, in
+       reading order, everywhere else. Lettered so it never collides with numbered
+       footnotes. The word joiner keeps the marker on the line it annotates; the hidden
+       parentheses are what feeds, reader modes and screen readers get instead of layout.
        Usage: text{{< sidenote >}}the aside{{< /sidenote >}} */ -}}
-<span class="sidenote-ref" aria-hidden="true"></span><span class="sidenote" role="note">{{ .Inner | markdownify }}</span>
+&#8288;<span class="sidenote-ref" aria-hidden="true"></span><span class="sidenote" role="note"><span class="visually-hidden"> (</span>{{ .Inner | markdownify }}<span class="visually-hidden">)</span></span>
+{{- /* No trailing newline: the sentence carries on. */ -}}

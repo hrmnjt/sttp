@@ -1,4 +1,10 @@
 {{- $html := .Page.Content -}}
+{{- /* Entries printed in full on an index sit one heading level down. */ -}}
+{{- $level := 2 -}}
+{{- with .Prefix }}{{ $level = 3 }}{{ end -}}
+{{- /* Footnotes open under a labelled rule; markers are bracketed like every other site label. */ -}}
+{{- $html = replaceRE `(<div class="footnotes" role="doc-endnotes">)\s*<hr>` (printf `${1}<h%d class="rule-heading">footnotes</h%d>` $level $level) $html -}}
+{{- $html = replaceRE `(<a href="#fn:[^"]+" class="footnote-ref"[^>]*>)([^<]+)(</a>)` "${1}[${2}]${3}" $html -}}
 {{- /* Real link text, with a reference-specific accessible label. */ -}}
 {{- $html = replaceRE `(<a [^>]*class="footnote-backref"[^>]*>)[^<]*(</a>)` "${1}[return]${2}" $html -}}
 {{- $html = replaceRE `(<a href="#fnref:([^"]+)" class="footnote-backref"[^>]*)(>)` `${1} aria-label="Return to reference ${2}"${3}` $html -}}

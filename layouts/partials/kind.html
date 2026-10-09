@@ -1,0 +1,4 @@
+{{- /* The registry entry (data/kinds.toml) for a page's section; anything else is neutral. */ -}}
+{{- $kind := dict "section" .Section "name" (.Section | default "page") -}}
+{{- with where hugo.Data.kinds.kind "section" .Section -}}{{- $kind = index . 0 -}}{{- end -}}
+{{- return $kind -}}

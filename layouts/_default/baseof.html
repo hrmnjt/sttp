@@ -1,4 +1,6 @@
 {{- partial "validate-page.html" . -}}
+{{- $kind := partial "kind.html" . -}}
+{{- $streams := where hugo.Data.kinds.kind "stream" true -}}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,12 +11,14 @@
     {{ $description := partial "description.html" . }}
     <title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} - {{ .Site.Title }}{{ end }}</title>
     <meta name="description" content="{{ $description }}">
+    {{- /* A stream with nothing in it yet stays reachable but out of search results. */ -}}
+    {{ if and .IsSection $kind.stream (not .RegularPages) }}<meta name="robots" content="noindex">{{ end }}
 
     <!-- Open Graph Tags -->
     <meta property="og:title" content="{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }}{{ end }}">
     <meta property="og:description" content="{{ $description }}">
     <meta property="og:url" content="{{ .Permalink }}">
-    <meta property="og:type" content="{{ if and .IsPage (in (slice "shards" "builds" "wal") .Section) }}article{{ else }}website{{ end }}">
+    <meta property="og:type" content="{{ if and .IsPage $kind.stream }}article{{ else }}website{{ end }}">
     <meta property="og:site_name" content="{{ .Site.Title }}">
 
     <!-- Twitter Card Tags -->
@@ -39,12 +43,25 @@
 
     <header>
         <div class="site-identity">
-            <a class="site-brand" href="/"{{ if .IsHome }} aria-current="page"{{ end }}>hrmnjt.dev <span class="protocol-name">/ sttp</span></a>
-            <p class="protocol-expansion">secure thought transfer protocol</p>
+            {{- /* The protocol name used as a protocol: an address whose segments are the way back. */ -}}
+            <nav class="site-address" aria-label="Breadcrumb">
+                <span aria-hidden="true">sttp://</span>
+                <ol>
+                    <li><a href="/"{{ if .IsHome }} aria-current="page"{{ end }}>hrmnjt.dev</a><span aria-hidden="true">/</span></li>
+                    {{- with .FirstSection }}{{ if not .IsHome }}
+                    <li><a href="{{ .RelPermalink }}"{{ if eq . $ }} aria-current="page"{{ end }}>{{ .Title }}</a><span aria-hidden="true">/</span></li>
+                    {{- end }}{{ end }}
+                </ol>
+            </nav>
+            {{ if .IsHome }}<p class="protocol-expansion">secure thought transfer protocol</p>{{ end }}
         </div>
-        <nav aria-label="Primary">
-            <a href="/catalog/"{{ if eq .Section "catalog" }} aria-current="page"{{ end }}>catalog</a>
-            <a href="/index.xml">rss</a>
+        <nav class="site-nav" aria-label="Primary">
+            {{- range $streams }}
+            {{- with site.GetPage (printf "/%s" .section) }}{{ if .RegularPages }}
+            {{ partial "nav-link.html" (dict "Target" . "Page" $) }}
+            {{- end }}{{ end }}
+            {{- end }}
+            {{ with site.GetPage "/catalog" }}{{ partial "nav-link.html" (dict "Target" . "Page" $) }}{{ end }}
         </nav>
     </header>
 
@@ -53,12 +70,8 @@
     </main>
 
     <footer>
-        <nav aria-label="Site sections">
-            {{- range slice "shards" "builds" "wal" "catalog" "readme" }}
-            {{- with site.GetPage (printf "/%s" .) }}{{ if or (ne .Section "wal") .RegularPages }}
-            <a href="{{ .RelPermalink }}"{{ if eq $ . }} aria-current="page"{{ end }}>{{ .Title }}</a>
-            {{- end }}{{ end }}
-            {{- end }}
+        <nav class="site-nav" aria-label="Site">
+            {{ with site.GetPage "/readme" }}{{ partial "nav-link.html" (dict "Target" . "Page" $) }}{{ end }}
             <a href="/index.xml">rss</a>
         </nav>
         <p class="footer-legal"><span>© {{ now.Format "2006" }} {{ site.Params.author }}.</span><span>Code under <a href="https://github.com/hrmnjt/sttp/blob/main/LICENSE">MIT</a>; writing and sketches under <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.</span><span><a href="/readme/#reuse">Reuse terms</a></span></p>

@@ -1,0 +1,4 @@
+{{- /* Marks where you are the way `git branch` does: an asterisk and plain text. */ -}}
+{{- $current := "" -}}
+{{- if eq .Target .Page }}{{ $current = "page" }}{{ else if .Target.IsAncestor .Page }}{{ $current = "true" }}{{ end -}}
+<a href="{{ .Target.RelPermalink }}"{{ with $current }} aria-current="{{ . }}"{{ end }}>{{ with $current }}<span class="nav-mark" aria-hidden="true">*</span>{{ end }}{{ .Target.Title }}</a>

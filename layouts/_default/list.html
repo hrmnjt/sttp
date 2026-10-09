@@ -1,6 +1,11 @@
 {{ define "main" }}
+{{- $kind := partial "kind.html" . -}}
+{{ if $kind.document }}
+{{ partial "article.html" . }}
+{{ else }}
 <section class="section-index" aria-labelledby="{{ .Section }}-title">
-    {{ partial "section-heading.html" (dict "Page" . "Level" 1 "ID" (printf "%s-title" .Section) "Intro" .Content) }}
-    {{ partial "dated-list.html" .RegularPages.ByDate.Reverse }}
+    {{ partial "section-heading.html" (dict "Page" . "ID" (printf "%s-title" .Section) "Intro" .Content) }}
+    {{ partial "ledger.html" (dict "Pages" .RegularPages.ByDate.Reverse "Notes" $kind.lead "Years" true) }}
 </section>
+{{ end }}
 {{ end }}

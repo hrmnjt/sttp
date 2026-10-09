@@ -1,0 +1,55 @@
+# Content kinds, in navigation order. Templates read everything about a kind
+# from here, so a new kind is one entry plus its content/<section>/ directory.
+#
+#   section  content directory and URL section
+#   name     singular label, shown as [name] and used as data-kind
+#   glyph    the mark beside the label: the section's sketch reduced to an outline
+#            and one detail, as a viewBox and a path on the sketch's 96x80 grid
+#   stream   dated entries: gets a header link and a home page directory row
+#   note     one line for the home page directory
+#   schema   schema.org type for an entry's JSON-LD
+#   reading  show word count and reading time under the title
+#   lead     show the description and code link under the title, and in lists
+#   related  entries can be named in related_<section> front-matter lists
+#   inline   the section index prints entries in full
+#   document the section is one page: content/<section>/_index.md, shown as an
+#            article and listed in the catalog under its own date
+#
+# Only shard, build and wal take a colour (--kind-* in main.css). That set is
+# closed: every other kind stays neutral, and a kind without a glyph shows its
+# label alone.
+
+[[kind]]
+section = "shards"
+name = "shard"
+glyph = { box = "13 4 72 72", path = "M16 59 33 40 29 29 47 8 56 25 75 19 70 39 82 51 62 72 46 62 28 70Z M47 8 49 40 75 19 M49 40 16 59" }
+stream = true
+note = "Partitioned thoughts. No global ordering promised."
+schema = "BlogPosting"
+reading = true
+related = true
+
+[[kind]]
+section = "builds"
+name = "build"
+glyph = { box = "11 12 64 64", path = "M15 28 42 16 71 26 44 40Z M15 28 18 58 44 71 44 40 M71 26 69 57 44 71" }
+stream = true
+note = "Things that escaped the scratch buffer."
+schema = "Article"
+lead = true
+related = true
+
+[[kind]]
+section = "wal"
+name = "wal"
+glyph = { box = "16 8 64 64", path = "M20 11Q43 9 73 13L76 68Q47 70 22 67Z M33 25 62 24 M33 38 63 37 M33 51 52 50" }
+stream = true
+note = "Written before the thought is fully committed."
+schema = "BlogPosting"
+inline = true
+
+[[kind]]
+section = "readme"
+name = "readme"
+glyph = { box = "16 8 64 64", path = "M24 11 57 9 73 24 72 69 23 68Z M57 9 58 24 73 24 M34 40 61 39 M34 53 52 52" }
+document = true

@@ -1,0 +1,30 @@
+{{- /* Pages this one names in related_<section> lists, plus pages that name it,
+       newest first. Canonical URLs deduplicate an edge declared at both ends. */ -}}
+{{- $current := . -}}
+{{- $related := where hugo.Data.kinds.kind "related" true -}}
+{{- $sections := slice -}}
+{{- range $related }}{{ $sections = $sections | append .section }}{{ end -}}
+{{- $connected := dict -}}
+{{- range $related -}}
+    {{- range index $current.Params (printf "related_%s" .section) -}}
+        {{- with site.GetPage . -}}
+            {{- if ne .RelPermalink $current.RelPermalink -}}
+                {{- $connected = merge $connected (dict .RelPermalink .) -}}
+            {{- end -}}
+        {{- end -}}
+    {{- end -}}
+{{- end -}}
+{{- $incomingField := printf "related_%s" .Section -}}
+{{- range where site.RegularPages "Section" "in" $sections -}}
+    {{- $candidate := . -}}
+    {{- range index .Params $incomingField -}}
+        {{- with site.GetPage . -}}
+            {{- if and (eq .RelPermalink $current.RelPermalink) (ne $candidate.RelPermalink $current.RelPermalink) -}}
+                {{- $connected = merge $connected (dict $candidate.RelPermalink $candidate) -}}
+            {{- end -}}
+        {{- end -}}
+    {{- end -}}
+{{- end -}}
+{{- $pages := slice -}}
+{{- range $connected }}{{ $pages = $pages | append . }}{{ end -}}
+{{- return (sort $pages "Date" "desc") -}}

@@ -1,0 +1,11 @@
+{{- /* One line under every title: kind, written, revised (if ever), then length. */ -}}
+{{- $kind := partial "kind.html" . -}}
+{{- $written := .Date.Format "2006-01-02" -}}
+{{- $revised := .Lastmod.Format "2006-01-02" -}}
+<p class="article-date">
+    {{ partial "kind-tag.html" . }}
+    <span aria-hidden="true">|</span>
+    <time datetime="{{ $written }}">{{ $written }}</time>
+    {{ if ne $revised $written }}<span aria-hidden="true">|</span> revised <time datetime="{{ $revised }}">{{ $revised }}</time>{{ end }}
+    {{ if $kind.reading }}<span aria-hidden="true">|</span> {{ lang.FormatNumber 0 .WordCount }} words <span aria-hidden="true">|</span> {{ .ReadingTime }} min read{{ end }}
+</p>

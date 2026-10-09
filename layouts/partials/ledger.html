@@ -1,0 +1,34 @@
+{{- /* The one row pattern for every list of pages: date, optional [kind], title.
+       Pages  rows, already in display order
+       Kind   show the [kind] column
+       Notes  show each page's description and code link
+       Years  break the list under a labelled rule for each year */ -}}
+{{- $classes := slice "ledger" -}}
+{{- if .Kind }}{{ $classes = $classes | append "has-kind" }}{{ end -}}
+{{- if .Notes }}{{ $classes = $classes | append "has-notes" }}{{ end -}}
+{{- $open := printf `<ol class="%s" role="list">` (delimit $classes " ") | safeHTML -}}
+{{- $root := . -}}
+{{- $year := "" -}}
+{{- range $index, $page := .Pages -}}
+    {{- $pageYear := $page.Date.Format "2006" -}}
+    {{- if and $root.Years (ne $pageYear $year) -}}
+        {{- if $index }}</ol>{{ end }}
+<h2 class="rule-heading">{{ $pageYear }}</h2>
+{{ $open }}
+        {{- $year = $pageYear -}}
+    {{- else if not $index }}
+{{ $open }}
+    {{- end }}
+    <li>
+        <time datetime="{{ $page.Date.Format "2006-01-02" }}">{{ $page.Date.Format "2006-01-02" }}</time>
+        {{- if $root.Kind }}{{ partial "kind-tag.html" $page }}{{ end }}
+        <a class="row-title" href="{{ $page.RelPermalink }}">{{ $page.Title }}</a>
+        {{- if $root.Notes }}
+        {{- with $page.Params.source }}<a class="row-code" href="{{ . }}" aria-label="Code repository for {{ $page.Title }}">[code]</a>{{ end }}
+        {{- with $page.Description }}<p class="row-note">{{ . }}</p>{{ end }}
+        {{- end }}
+    </li>
+{{- end }}
+{{- if .Pages }}
+</ol>
+{{- end }}

@@ -1,0 +1,3 @@
+{{- /* A kind is always named the same way: its glyph, then its bracketed name. */ -}}
+{{- $kind := partial "kind.html" . -}}
+<span class="content-kind" data-kind="{{ $kind.name }}">{{ partial "kind-mark.html" $kind }}[{{ $kind.name }}]</span>
