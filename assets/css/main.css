@@ -313,6 +313,12 @@ pre code { padding: 0; background: none; font-size: inherit; }
 .code-block { min-width: 0; margin: 1.5em 0; }
 .code-block figcaption { margin-bottom: 8px; color: var(--text-secondary); font: var(--fs-small)/1.6 var(--font-mono); }
 .code-block pre { margin: 0; }
+/* Diagrams are drawn before the build (npm run diagrams). The source folds away under
+   the drawing: it is the text alternative, and the thing to copy. */
+.diagram { margin: 1.5em 0; }
+.diagram img { margin: 0; }
+.diagram-source { color: var(--text-secondary); font-size: var(--fs-small); }
+.diagram-source pre { margin: 0 0 8px; }
 article hr { margin: 1.8em 0; border: 0; border-top: 1px dashed var(--border-color); }
 /* The footnotes open under their own labelled rule; one line there is enough. */
 article hr:has(+ .footnotes) { display: none; }
@@ -404,7 +410,7 @@ sup[id*="fnref:"] { font-size: var(--fs-small); line-height: 0; vertical-align: 
 .toc a { display: block; padding: 3px 0; text-decoration: none; }
 .toc a:hover, .toc a:focus-visible { text-decoration: underline; }
 .toc-inline { margin: 0 0 20px; }
-.toc-inline summary { min-height: 44px; padding: 10px 0; cursor: pointer; }
+.toc-inline summary, .diagram-source summary { min-height: 44px; padding: 10px 0; cursor: pointer; }
 .toc-inline nav { padding: 0 0 8px 2ch; }
 .toc-margin { display: none; }
 

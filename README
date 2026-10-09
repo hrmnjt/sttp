@@ -61,6 +61,32 @@ The image-viewer tests need an installed Chromium browser. They check the deploy
 CSP, keyboard/touch dismissal, actual-size scrolling, focus/position restoration,
 and no-JavaScript fallback.
 
+## Diagrams
+
+Write a diagram as a `mermaid` code fence, with what it shows as its `alt`:
+
+    ```mermaid {alt="How a request moves through review"}
+    flowchart LR
+        draft --> review --> decision
+    ```
+
+Then draw it and commit the result:
+
+    npm run diagrams
+
+Each fence becomes `assets/images/diagrams/<key>.svg`, where the key is a hash of
+the fence's text, and drawings no page uses are removed. Hugo shows the drawing
+with its source folded underneath as the text alternative; a fence that has not
+been drawn yet stays a code block. Cloudflare Pages needs nothing new, because
+the drawings are ordinary committed assets. Colours and type come from the
+`--gb-*` and `--font-mono` tokens in `assets/css/main.css`.
+
+    npm run diagrams -- --check    # which fences lack a drawing; needs no browser
+    npm run diagrams -- --all      # redraw everything, e.g. after a palette change
+    npm run test:diagrams
+
+Drawing needs the same Chromium as the screenshots.
+
 Runner tests require no browser installation; they include a real Hugo server
 smoke check when Hugo is available. `npm run screenshots -- --help` lists the
 options. Playwright's bundled
@@ -78,6 +104,7 @@ Linux host. Browser packages are never part of the deployed site.
 - `layouts/`: Hugo templates, Markdown hooks, and shortcodes.
 - `static/`: favicons and Cloudflare Pages header configuration.
 - `scripts/screenshots.mjs`: optional browser capture runner.
+- `scripts/diagrams.mjs`: draws `mermaid` fences to `assets/images/diagrams/`.
 
 Use explicit titles and content dates, not automatic Git timestamps. A build
 page's date is not the linked shard's date. Keep substantive revisions in
@@ -143,6 +170,8 @@ Writing aids:
 - A Markdown link that leaves the site is tagged `[ext]` by the link render
   hook. Link to other pages with `relref` so they stay internal.
 - `{{< img-optimized src="…" alt="…" caption="…" >}}` takes an optional caption.
+- A `mermaid` fence becomes a drawing once `npm run diagrams` has run; see
+  Diagrams above.
 - Tables scroll inside a focusable wrapper. The site sends no inline styles, so
   column alignment is a class.
 
