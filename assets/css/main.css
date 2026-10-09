@@ -29,9 +29,8 @@
     --kind-shard: var(--gb-purple);
     --kind-build: var(--gb-blue);
     --kind-wal: var(--gb-orange);
-    /* Type: body at 1rem, then two smaller steps and nothing in between. */
+    /* Type: body at 1rem and one smaller step for everything around it. */
     --fs-small: 0.875rem;
-    --fs-fine: 0.8rem;
     --font-mono: ui-monospace, "Cascadia Mono", "Segoe UI Mono", "Liberation Mono", Menlo, Monaco, Consolas, monospace;
     /* Measure: a prose column, then a gutter and a margin column for notes. */
     --measure: 70ch;
@@ -89,7 +88,7 @@ a[rel~="external"]::after {
     content: "[ext]" / " (external link)";
     margin-left: 0.3em;
     color: var(--text-secondary);
-    font-size: var(--fs-fine);
+    font-size: var(--fs-small);
 }
 a:focus-visible, summary:focus-visible, [tabindex="0"]:focus-visible {
     outline: 2px solid var(--accent-hover);
@@ -169,7 +168,7 @@ body > header {
 .protocol-expansion {
     margin: -4px 0 8px;
     color: var(--text-secondary);
-    font-size: var(--fs-fine);
+    font-size: var(--fs-small);
 }
 .site-nav, .utility-links {
     display: flex;
@@ -191,7 +190,7 @@ body > footer {
     padding-top: 12px;
     border-top: 1px dashed var(--border-color);
     color: var(--text-secondary);
-    font: var(--fs-fine)/1.6 var(--font-mono);
+    font: var(--fs-small)/1.6 var(--font-mono);
 }
 body > footer p { margin: 0; }
 .footer-legal { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; }
@@ -254,7 +253,7 @@ body > footer p { margin: 0; }
 .ledger .content-kind { grid-area: kind; font-size: var(--fs-small); }
 /* Row padding belongs to the real link, not a non-clickable surrounding item. */
 .row-title { grid-area: title; display: block; min-height: 44px; padding: 9px 0; text-decoration: none; }
-.row-code { grid-area: code; display: inline-flex; align-items: center; min-width: 44px; min-height: 44px; font-size: var(--fs-fine); text-decoration: none; white-space: nowrap; }
+.row-code { grid-area: code; display: inline-flex; align-items: center; min-width: 44px; min-height: 44px; font-size: var(--fs-small); text-decoration: none; white-space: nowrap; }
 .row-note { grid-area: note; max-width: var(--measure); margin: -6px 0 10px; color: var(--text-secondary); font: var(--fs-small)/1.7 var(--font-mono); }
 .row-title:hover, .row-title:focus-visible, .row-code:hover, .row-code:focus-visible { text-decoration: underline; }
 /* Content kinds: one colour, one glyph, one bracketed name, wherever a kind is named.
@@ -312,7 +311,7 @@ pre code { padding: 0; background: none; font-size: inherit; }
 .chroma :is(.c, .ch, .cm, .c1, .cs) { color: var(--gb-fg4); }
 .chroma .go { color: var(--gb-fg3); }
 .code-block { min-width: 0; margin: 1.5em 0; }
-.code-block figcaption { margin-bottom: 8px; color: var(--text-secondary); font: var(--fs-fine)/1.6 var(--font-mono); }
+.code-block figcaption { margin-bottom: 8px; color: var(--text-secondary); font: var(--fs-small)/1.6 var(--font-mono); }
 .code-block pre { margin: 0; }
 article hr { margin: 1.8em 0; border: 0; border-top: 1px dashed var(--border-color); }
 /* The footnotes open under their own labelled rule; one line there is enough. */
@@ -323,7 +322,7 @@ img { display: block; max-width: 100%; height: auto; margin: 1.5em 0; }
 .image-fullsize { display: block; width: fit-content; max-width: 100%; margin: 1.5em 0; cursor: zoom-in; }
 .article-image { margin: 1.5em 0; }
 .article-image .image-fullsize { margin: 0; }
-.article-image figcaption { margin-top: 8px; color: var(--text-secondary); font: var(--fs-fine)/1.6 var(--font-mono); }
+.article-image figcaption { margin-top: 8px; color: var(--text-secondary); font: var(--fs-small)/1.6 var(--font-mono); }
 .image-fullsize picture { display: block; }
 .image-fullsize img { margin: 0; }
 /* Native top-layer viewer; no layout changes until an image is opened. */
@@ -383,19 +382,19 @@ th, td { padding: 8px 12px; border: 1px dotted var(--border-color); text-align: 
    line with a note is no taller than its neighbours. A short footnote is set twice,
    at the end and as a sidenote, and exactly one of the two is ever shown. */
 .footnotes { margin-top: 32px; font-size: var(--fs-small); }
-sup[id*="fnref:"] { font-size: var(--fs-fine); line-height: 0; vertical-align: baseline; }
+sup[id*="fnref:"] { font-size: var(--fs-small); line-height: 0; vertical-align: baseline; }
 .footnote-ref { padding: 0 2px; text-decoration: none; }
 .footnote-ref:hover, .footnote-ref:focus-visible { text-decoration: underline; }
 .footnote-backref { display: inline-block; min-width: 24px; padding: 3px; white-space: nowrap; font-family: var(--font-mono); }
 .article-prose { counter-reset: sidenote; }
 .sidenote-ref { counter-increment: sidenote; }
-.sidenote-ref::after { content: "[" counter(sidenote, lower-alpha) "]"; margin-left: 0.2em; color: var(--text-secondary); font-size: var(--fs-fine); }
+.sidenote-ref::after { content: "[" counter(sidenote, lower-alpha) "]"; margin-left: 0.2em; color: var(--text-secondary); font-size: var(--fs-small); }
 /* Inline by default: a hanging letter, no rule, so it cannot pass for a quotation. */
 .sidenote { display: block; margin: 0.6em 0; padding-left: 4ch; text-indent: -4ch; color: var(--text-secondary); font-size: var(--fs-small); line-height: 1.6; }
 .sidenote::before { content: "[" counter(sidenote, lower-alpha) "] "; }
 /* A footnote's sidenote keeps its number. Hidden until the article has a margin. */
 .footnote-mark, .sidenote.footnote-aside { display: none; }
-.footnote-mark::after { content: "[" attr(data-n) "]"; margin-left: 0.2em; color: var(--text-secondary); font-size: var(--fs-fine); }
+.footnote-mark::after { content: "[" attr(data-n) "]"; margin-left: 0.2em; color: var(--text-secondary); font-size: var(--fs-small); }
 .footnote-aside::before { content: "[" attr(data-n) "] "; }
 
 /* On this page: the article's second-level headings. Folded away by default. */
@@ -446,7 +445,7 @@ sup[id*="fnref:"] { font-size: var(--fs-fine); line-height: 0; vertical-align: b
 .dev-flow ol { list-style: none; padding: 0; margin: 0; }
 .dev-flow li { margin: 0; padding: 8px 0; line-height: 1.5; }
 .dev-flow li + li { border-top: 1px dashed var(--border-color); }
-.dev-flow-label { display: block; margin-bottom: 5px; color: var(--text-secondary); font: var(--fs-fine)/1.5 var(--font-mono); }
+.dev-flow-label { display: block; margin-bottom: 5px; color: var(--text-secondary); font: var(--fs-small)/1.5 var(--font-mono); }
 .dev-flow-route { display: grid; grid-template-columns: 9ch 34px 25ch 34px minmax(0, 1fr); align-items: center; gap: 4px 10px; font: var(--fs-small)/1.5 var(--font-mono); }
 .dev-flow-route img { width: 34px; height: auto; margin: 0; }
 .dev-flow-route code { padding: 0; background: none; font-size: 1em; overflow-wrap: anywhere; }

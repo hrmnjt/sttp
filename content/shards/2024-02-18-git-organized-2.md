@@ -3,6 +3,7 @@ title = "git organized (part ii)"
 slug = "gitmoreorg"
 date = 2024-02-18
 description = "improving local Git workflow"
+related_shards = ["/shards/2023-12-06-git-organized"]
 +++
 
 Like last year, I was watching FOSDEM'24 this year from home. There were many
