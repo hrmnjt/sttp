@@ -29,15 +29,15 @@ class Page(HTMLParser):
         self.meta = {}
         self.schemas = []
         self.scripts = []
-        self.entries = []    # ledger rows outside "see also", in document order
-        self.see_also = []   # "see also" rows, in document order
+        self.entries = []    # ledger rows outside "backlinks", in document order
+        self.backlink_rows = []  # "backlinks" rows, in document order
         self.backlinks = {}  # the same rows by kind: related-shards, related-builds
         self.navs = {}       # aria-label -> the attributes of each link inside
         self.rules = []      # the text of every labelled rule
         self.main_text = []
         self._main = False
         self._ledger = False
-        self._see_also = False
+        self._in_backlinks = False
         self._row = None
         self._capture = None
         self._nav = None
@@ -60,8 +60,8 @@ class Page(HTMLParser):
             self.navs[self._nav].append(attrs)
         if "rule-heading" in classes:
             self._rule = ""
-        if tag == "section" and "see-also" in classes:
-            self._see_also = True
+        if tag == "section" and "backlinks" in classes:
+            self._in_backlinks = True
         if tag == "main":
             self._main = True
         if tag == "meta":
@@ -92,7 +92,7 @@ class Page(HTMLParser):
             self.rules.append(" ".join(self._rule.split()))
             self._rule = None
         if tag == "section":
-            self._see_also = False
+            self._in_backlinks = False
         if tag == "main":
             self._main = False
         if tag == "script" and self._script is not None:
@@ -103,8 +103,8 @@ class Page(HTMLParser):
             if tag in ("span", "a"):
                 self._capture = None
             if tag == "li" and self._row is not None:
-                if self._see_also:
-                    self.see_also.append(self._row)
+                if self._in_backlinks:
+                    self.backlink_rows.append(self._row)
                     group = "related-%ss" % self._row["kind"].strip("[]")
                     self.backlinks.setdefault(group, []).append(self._row)
                 else:
@@ -296,7 +296,7 @@ class SiteTests(unittest.TestCase):
             self.assertEqual(sum(tag == "figure" and attrs.get("class") == "article-image"
                                  for tag, attrs in harlequin.elements), 2)
 
-    def test_see_also_and_source_share_one_labelled_closing_area(self):
+    def test_backlinks_and_source_share_one_labelled_closing_area(self):
         for output in (self.release, self.drafts):
             routes = ["2026/02/01/dev/index.html", "2026/02/08/rfd/index.html",
                       "builds/dev/index.html", "readme/index.html"]
@@ -314,11 +314,11 @@ class SiteTests(unittest.TestCase):
                 self.assertIn('aria-label="Markdown source"', closing)
                 self.assertIn("[markdown] [history]", page.text())
                 self.assertEqual(page.count("section", "source-trail"), 1)
-                self.assertEqual(bool(page.see_also), "article-see-also" in closing)
-                if page.see_also:
-                    self.assertIn(("h2", {"class": "rule-heading", "id": "article-see-also"}), page.elements)
-                    self.assertLess(closing.index("article-see-also"), closing.index("article-source"))
-                    self.assertLess(page.rules.index("see also"), page.rules.index("source"))
+                self.assertEqual(bool(page.backlink_rows), "article-backlinks" in closing)
+                if page.backlink_rows:
+                    self.assertIn(("h2", {"class": "rule-heading", "id": "article-backlinks"}), page.elements)
+                    self.assertLess(closing.index("article-backlinks"), closing.index("article-source"))
+                    self.assertLess(page.rules.index("backlinks"), page.rules.index("source"))
 
     def test_address_line_is_a_breadcrumb_back_to_the_section(self):
         for output in (self.release, self.drafts):
@@ -429,10 +429,10 @@ class SiteTests(unittest.TestCase):
         # A link declared on one post shows on both: part ii names part i.
         for route, other in (("2023/12/06/gitorg/index.html", "/2024/02/18/gitmoreorg/"),
                              ("2024/02/18/gitmoreorg/index.html", "/2023/12/06/gitorg/")):
-            self.assertEqual([row["url"] for row in self.page(self.release, route).see_also], [other])
-        # "See also" is one list, newest first, with the kind on each row.
+            self.assertEqual([row["url"] for row in self.page(self.release, route).backlink_rows], [other])
+        # Backlinks are one list, newest first, with the kind on each row.
         ivanti = self.page(self.release, "2026/03/06/ivanti-osascript/index.html")
-        self.assertEqual([row["kind"] for row in ivanti.see_also], ["[build]", "[shard]"])
+        self.assertEqual([row["kind"] for row in ivanti.backlink_rows], ["[build]", "[shard]"])
 
     def test_header_links_every_populated_stream_and_marks_where_you_are(self):
         for output, streams in ((self.release, ["/shards/", "/builds/"]),
@@ -586,7 +586,7 @@ class SiteTests(unittest.TestCase):
                 self.assertTrue(all(script.get("type") == "application/ld+json" or script.get("src")
                                     for script in page.scripts))
             shard = (output / "2026/02/01/dev/index.html").read_text()
-            self.assertGreater(shard.index("Markdown source"), shard.index("article-see-also"))
+            self.assertGreater(shard.index("Markdown source"), shard.index("article-backlinks"))
             build = self.page(output, "builds/dev/index.html")
             self.assertIn("https://github.com/hrmnjt/dev", [attrs.get("href") for _, attrs in build.links])
 
@@ -671,7 +671,7 @@ class SiteTests(unittest.TestCase):
             self.assertEqual([entry["date"] for entry in entries],
                              sorted([entry["date"] for entry in entries], reverse=True))
 
-    def test_see_also_supports_many_targets_reciprocity_and_deduplication(self):
+    def test_backlinks_support_many_targets_reciprocity_and_deduplication(self):
         fixture = self.page(self.drafts, "2026/03/03/timeline-fixture/index.html")
         self.assertEqual([entry["url"] for entry in fixture.backlinks["related-builds"]],
                          ["/builds/dev/", "/builds/test-build/"])

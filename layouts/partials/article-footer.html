@@ -2,9 +2,9 @@
        where its source lives. A kind that leads with its code link omits it here. */ -}}
 {{- $kind := partial "kind.html" . -}}
 <footer class="article-meta">
-    {{ if $kind.related }}{{ with partial "see-also.html" . }}
-    <section class="see-also" aria-labelledby="article-see-also">
-        <h2 class="rule-heading" id="article-see-also">see also</h2>
+    {{ if $kind.related }}{{ with partial "backlinks.html" . }}
+    <section class="backlinks" aria-labelledby="article-backlinks">
+        <h2 class="rule-heading" id="article-backlinks">backlinks</h2>
         {{ partial "ledger.html" (dict "Pages" . "Kind" true) }}
     </section>
     {{ end }}{{ end }}
