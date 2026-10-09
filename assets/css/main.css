@@ -380,7 +380,8 @@ th, td { padding: 8px 12px; border: 1px dotted var(--border-color); text-align: 
 
 /* Notes. Footnotes are numbered and collected at the end; sidenotes are lettered and
    sit beside their line. Both markers are bracketed and stay on the baseline, so a
-   line with a note is no taller than its neighbours. */
+   line with a note is no taller than its neighbours. A short footnote is set twice,
+   at the end and as a sidenote, and exactly one of the two is ever shown. */
 .footnotes { margin-top: 32px; font-size: var(--fs-small); }
 sup[id*="fnref:"] { font-size: var(--fs-fine); line-height: 0; vertical-align: baseline; }
 .footnote-ref { padding: 0 2px; text-decoration: none; }
@@ -392,6 +393,10 @@ sup[id*="fnref:"] { font-size: var(--fs-fine); line-height: 0; vertical-align: b
 /* Inline by default: a hanging letter, no rule, so it cannot pass for a quotation. */
 .sidenote { display: block; margin: 0.6em 0; padding-left: 4ch; text-indent: -4ch; color: var(--text-secondary); font-size: var(--fs-small); line-height: 1.6; }
 .sidenote::before { content: "[" counter(sidenote, lower-alpha) "] "; }
+/* A footnote's sidenote keeps its number. Hidden until the article has a margin. */
+.footnote-mark, .sidenote.footnote-aside { display: none; }
+.footnote-mark::after { content: "[" attr(data-n) "]"; margin-left: 0.2em; color: var(--text-secondary); font-size: var(--fs-fine); }
+.footnote-aside::before { content: "[" attr(data-n) "] "; }
 
 /* On this page: the article's second-level headings. Folded away by default. */
 .toc { color: var(--text-secondary); font-size: var(--fs-small); }
@@ -415,6 +420,10 @@ sup[id*="fnref:"] { font-size: var(--fs-fine); line-height: 0; vertical-align: b
         width: var(--margin-col);
         margin: 0.2em calc(-1 * (var(--margin-col) + var(--gutter))) 1em 0;
     }
+    /* Short footnotes move out beside their markers and leave the end list. */
+    sup.in-margin, .footnotes li.in-margin, .footnotes.all-in-margin { display: none; }
+    .footnote-mark { display: inline; }
+    .sidenote.footnote-aside { display: block; }
     .toc-inline { display: none; }
     /* Same column as the notes. The 1rem size keeps `ch` equal to the prose measure. */
     .toc-margin {

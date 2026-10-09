@@ -1,0 +1,32 @@
+{{- /* A footnote that is one paragraph, cited once, is also set as a sidenote beside its
+       marker, so it can hang in the margin column. The stylesheet shows exactly one of
+       the two: the margin copy where the article has a margin, the end list everywhere
+       else. A longer or reused note stays at the end only. Every item carries its
+       number, so the list still counts correctly with some of its items in the margin.
+       Takes and returns the rendered HTML. Note text is spliced in literally, never
+       through a regex replacement, so a `$` in a footnote stays a `$`. */ -}}
+{{- $html := . -}}
+{{- $notes := findRE `(?s)<li id="fn:[^"]+">.*?</li>` $html -}}
+{{- $moved := 0 -}}
+{{- range $notes -}}
+    {{- $n := replaceRE `(?s)^<li id="fn:([^"]+)">.*$` "${1}" . -}}
+    {{- $item := printf `<li id="fn:%s">` $n -}}
+    {{- $body := replaceRE `(?s)^<li id="fn:[^"]+">\s*<p>(.*)</p>\s*</li>$` "${1}" . -}}
+    {{- $oneParagraph := and (ne $body .) (not (findRE `<(p|pre|ul|ol|table|blockquote|figure|div)[\s>]` $body)) -}}
+    {{- $marker := "" -}}
+    {{- with findRE (printf `(?s)<sup id="fnref:\Q%s\E">.*?</sup>` $n) $html }}{{ $marker = index . 0 }}{{ end -}}
+    {{- $citations := len (findRE (printf `href="#fn:\Q%s\E"` $n) $html) -}}
+    {{- if and $oneParagraph $marker (eq $citations 1) -}}
+        {{- $text := replaceRE `(?s)(&#160;|\s)*<a href="#fnref[^"]*" class="footnote-backref".*?</a>` "" $body -}}
+        {{- $aside := printf `<span class="footnote-mark" aria-hidden="true" data-n="%s"></span><span class="sidenote footnote-aside" role="note" data-n="%s"><span class="visually-hidden"> (</span>%s<span class="visually-hidden">)</span></span>` $n $n $text -}}
+        {{- $html = replace $html $marker (print (replace $marker "<sup " `<sup class="in-margin" ` 1) $aside) 1 -}}
+        {{- $html = replace $html $item (printf `<li id="fn:%s" class="in-margin" value="%s">` $n $n) 1 -}}
+        {{- $moved = add $moved 1 -}}
+    {{- else -}}
+        {{- $html = replace $html $item (printf `<li id="fn:%s" value="%s">` $n $n) 1 -}}
+    {{- end -}}
+{{- end -}}
+{{- if and $notes (eq $moved (len $notes)) -}}
+    {{- $html = replace $html `<div class="footnotes" role="doc-endnotes">` `<div class="footnotes all-in-margin" role="doc-endnotes">` 1 -}}
+{{- end -}}
+{{- return $html -}}
