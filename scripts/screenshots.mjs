@@ -37,17 +37,23 @@ export function optionsFromArgs(args) {
     drafts: { type: 'boolean', default: false },
     port: { type: 'string', default: '1314' },
     out: { type: 'string', default: path.join(ROOT, '.artifacts/screenshots') },
+    'text-only': { type: 'boolean', default: false },
     help: { type: 'boolean', short: 'h' },
   } });
   if (!/^\d+$/.test(values.port) || Number(values.port) < 1 || Number(values.port) > 65535) {
     throw new Error('--port must be an integer between 1 and 65535.');
   }
   if (!values.out.trim()) throw new Error('--out must be a directory.');
-  return { ...values, port: Number(values.port), out: path.resolve(values.out) };
+  return { ...values, port: Number(values.port), out: path.resolve(values.out), textOnly: values['text-only'] };
 }
 
 export function screenshotName(route, viewport, shot) {
   return `${route.name}-${viewport.name}${shot.name ? `-${shot.name}` : ''}.png`;
+}
+
+// The page as assistive technology receives it, as text.
+export function treeName(route, viewport) {
+  return `${route.name}-${viewport.name}.aria.yml`;
 }
 
 export async function assertPortFree(port) {
@@ -136,6 +142,185 @@ export function measureOverflow() {
   return { viewportWidth: width, documentWidth, pixels: Math.max(0, documentWidth - width), offenders };
 }
 
+// Runs in the browser. The facts a picture blurs: structure, order, contrast and geometry.
+// It only measures; findings() below decides what counts as wrong.
+export function measurePage() {
+  const shown = element => {
+    if (!element || !element.getClientRects().length) return false;
+    const style = getComputedStyle(element);
+    return style.visibility !== 'hidden' && style.display !== 'none';
+  };
+  // Text kept for screen readers only is not painted, so it has no contrast to measure.
+  const clipped = style => style.clipPath !== 'none' ||
+    (style.position === 'absolute' && parseFloat(style.width) <= 1 && parseFloat(style.height) <= 1);
+  const label = element => (element.getAttribute('aria-label') || element.textContent || element.getAttribute('alt') || '')
+    .replace(/\s+/g, ' ').trim().slice(0, 60) || element.tagName.toLowerCase();
+  const describe = element => element.tagName.toLowerCase() + (element.id ? `#${element.id}` : '') +
+    [...element.classList].map(name => `.${name}`).join('');
+
+  // Structure.
+  // A heading's own words, without the "#" link the site appends to it.
+  const words = heading => [...heading.childNodes].filter(node => !node.classList?.contains('heading-permalink'))
+    .map(node => node.textContent).join('').replace(/\s+/g, ' ').trim().slice(0, 60);
+  const headings = [...document.querySelectorAll('h1, h2, h3, h4, h5, h6')].filter(shown)
+    .map(heading => ({ level: Number(heading.tagName[1]), text: words(heading) }));
+  const ids = [...document.querySelectorAll('[id]')].map(element => element.id);
+  const duplicateIds = [...new Set(ids.filter((id, index) => ids.indexOf(id) !== index))];
+  const landmarks = [...document.querySelectorAll('body > header, nav, main, [role="region"], body > footer')].filter(shown)
+    .map(element => ({ kind: element.getAttribute('role') || element.tagName.toLowerCase(), label: element.getAttribute('aria-label') || '' }));
+  const withoutAlt = [...document.querySelectorAll('img:not([alt])')].filter(shown).map(image => image.currentSrc || image.src);
+
+  // Keyboard: what Tab reaches, in the order it reaches it.
+  const focusable = [...document.querySelectorAll('a[href], button, summary, input, select, textarea, [tabindex]')]
+    .filter(element => shown(element) && element.tabIndex >= 0 && !element.disabled);
+  const tabStops = [...focusable.filter(element => element.tabIndex > 0).sort((a, b) => a.tabIndex - b.tabIndex),
+    ...focusable.filter(element => element.tabIndex === 0)].map(label);
+
+  // Target size (WCAG 2.5.8). Smaller than 24px is fine inside a sentence, or when a 24px
+  // circle on the target touches no other target and no other small target's circle.
+  const targets = focusable.map(element => ({ element, rect: element.getBoundingClientRect() }));
+  const small = targets.filter(({ rect }) => rect.width < 24 || rect.height < 24);
+  const inSentence = element => {
+    const display = getComputedStyle(element).display;
+    if (display === 'inline') return true;
+    return display.startsWith('inline') && [...element.parentElement.childNodes].some(node => node.nodeType === 3 && node.textContent.trim());
+  };
+  const centre = rect => ({ x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 });
+  const reach = (point, rect) => Math.hypot(Math.max(rect.left - point.x, 0, point.x - rect.right), Math.max(rect.top - point.y, 0, point.y - rect.bottom));
+  const crowded = target => {
+    const middle = centre(target.rect);
+    return targets.some(other => {
+      if (other.element === target.element || target.element.contains(other.element) || other.element.contains(target.element)) return false;
+      if (small.includes(other)) { const there = centre(other.rect); return Math.hypot(middle.x - there.x, middle.y - there.y) < 24; }
+      return reach(middle, other.rect) < 12;
+    });
+  };
+  const smallTargets = small.filter(target => !inSentence(target.element) && crowded(target)).map(({ element, rect }) =>
+    ({ name: label(element), where: describe(element), width: Math.round(rect.width), height: Math.round(rect.height) }));
+
+  // In-page links that lead to something hidden or missing.
+  const deadFragments = [...new Set([...document.querySelectorAll('a[href^="#"]')].filter(shown).map(link => link.getAttribute('href'))
+    .filter(href => href.length > 1 && !shown(document.getElementById(decodeURIComponent(href.slice(1))))))];
+
+  // Contrast of every painted run of text against the first opaque background behind it.
+  const parse = colour => { const parts = colour.match(/[\d.]+/g).map(Number); return { r: parts[0], g: parts[1], b: parts[2], a: parts[3] ?? 1 }; };
+  const luminance = ({ r, g, b }) => [r, g, b].map(value => { value /= 255; return value <= 0.03928 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4; })
+    .reduce((sum, value, index) => sum + value * [0.2126, 0.7152, 0.0722][index], 0);
+  const hex = colour => '#' + [colour.r, colour.g, colour.b].map(value => Math.round(value).toString(16).padStart(2, '0')).join('');
+  const behind = element => {
+    for (let current = element; current; current = current.parentElement) {
+      const colour = parse(getComputedStyle(current).backgroundColor);
+      if (colour.a > 0.99) return colour;
+    }
+    return { r: 255, g: 255, b: 255, a: 1 }; // The browser's own canvas.
+  };
+  const pairs = new Map();
+  const paint = (element, style, text, pseudo) => {
+    const sample = text.replace(/\s+/g, ' ').trim();
+    if (!sample) return;
+    const colour = parse(style.color), background = behind(element);
+    const size = parseFloat(style.fontSize), bold = Number(style.fontWeight) >= 700;
+    const key = `${hex(colour)} ${hex(background)} ${size} ${bold}`;
+    if (pairs.has(key)) return;
+    const [lighter, darker] = [luminance(colour), luminance(background)].sort((a, b) => b - a);
+    pairs.set(key, { ratio: Math.round((lighter + 0.05) / (darker + 0.05) * 100) / 100,
+      required: size >= 24 || (bold && size >= 18.66) ? 3 : 4.5, colour: hex(colour), background: hex(background),
+      size, bold, sample: (pseudo ? `${pseudo} ` : '') + sample.slice(0, 40), where: describe(element) });
+  };
+  for (const element of document.querySelectorAll('body *')) {
+    if (element.closest('svg, script, style, [hidden]') || !shown(element)) continue;
+    const style = getComputedStyle(element);
+    if (clipped(style)) continue;
+    for (const node of element.childNodes) if (node.nodeType === 3) paint(element, style, node.textContent, '');
+    for (const pseudo of ['::before', '::after']) {
+      const generated = getComputedStyle(element, pseudo);
+      if (!generated.content || ['none', 'normal', '""'].includes(generated.content) || generated.display === 'none' || clipped(generated)) continue;
+      paint(element, generated, generated.content.replace(/["\\]/g, ''), pseudo);
+    }
+  }
+  const contrast = [...pairs.values()].sort((a, b) => a.ratio - b.ratio);
+
+  // The margin column: what hangs there, whether anything collides, and what it displaces.
+  const top = element => Math.round(element.getBoundingClientRect().top + scrollY);
+  const hanging = [...document.querySelectorAll('.toc-margin, .sidenote')].filter(element => shown(element) && getComputedStyle(element).float !== 'none');
+  const naming = element => element.classList.contains('toc-margin') ? 'on this page'
+    : element.classList.contains('footnote-aside') ? `footnote ${element.dataset.n}` : `sidenote "${label(element).slice(0, 24)}"`;
+  const items = hanging.map(element => {
+    const marker = element.classList.contains('sidenote') ? element.previousElementSibling : null;
+    return { name: naming(element), top: top(element), height: Math.round(element.getBoundingClientRect().height),
+      below: marker && shown(marker) ? top(element) - top(marker) : 0 };
+  });
+  const overlaps = [];
+  hanging.forEach((first, index) => hanging.slice(index + 1).forEach(second => {
+    const a = first.getBoundingClientRect(), b = second.getBoundingClientRect();
+    if (a.left < b.right - 1 && b.left < a.right - 1 && a.top < b.bottom - 1 && b.top < a.bottom - 1) overlaps.push([naming(first), naming(second)]);
+  }));
+  // How far wide blocks sit below where they would without anything in the margin.
+  const wide = [...document.querySelectorAll('.article-prose > :is(pre, figure, .table-scroll, .dev-flow, .footnotes)')].filter(shown);
+  const withMargin = wide.map(top);
+  const hide = document.createElement('style');
+  hide.textContent = '.toc-margin, .sidenote { display: none !important; }';
+  document.head.append(hide);
+  const pushed = wide.map((element, index) => ({ block: describe(element), by: withMargin[index] - top(element) })).filter(entry => entry.by > 1);
+  hide.remove();
+
+  const count = selector => [...document.querySelectorAll(selector)].filter(shown).length;
+  return {
+    title: document.title, lang: document.documentElement.lang, height: document.documentElement.scrollHeight,
+    headings, landmarks, tabStops, duplicateIds, deadFragments, smallTargets, withoutAlt, contrast,
+    margin: { items, overlaps, pushed },
+    notes: { margin: count('.footnote-aside'), end: count('.footnotes li'), sidenotes: count('.sidenote:not(.footnote-aside)') },
+  };
+}
+
+// Fixed rules over the measurements: the same page always gives the same findings.
+export function findings(measured) {
+  const found = [];
+  const add = (type, message) => found.push({ type, message });
+  for (const pair of measured.contrast.filter(pair => pair.ratio < pair.required)) {
+    add('contrast', `${pair.ratio}:1 for ${pair.colour} on ${pair.background} at ${pair.size}px${pair.bold ? ' bold' : ''}; needs ${pair.required}:1 ("${pair.sample}" in ${pair.where})`);
+  }
+  const first = measured.headings.filter(heading => heading.level === 1).length;
+  if (first !== 1) add('heading', `expected one h1, found ${first}`);
+  measured.headings.reduce((previous, heading) => {
+    if (previous && heading.level > previous.level + 1) add('heading', `"${heading.text}" (h${heading.level}) follows "${previous.text}" (h${previous.level}), skipping a level`);
+    return heading;
+  }, null);
+  for (const id of measured.duplicateIds) add('duplicate-id', `id "${id}" is used more than once`);
+  for (const href of measured.deadFragments) add('dead-link', `${href} leads to nothing visible on the page`);
+  for (const target of measured.smallTargets) add('target', `"${target.name}" (${target.where}) is ${target.width}x${target.height}px with another target within 24px`);
+  for (const source of measured.withoutAlt) add('alt', `image has no alt attribute: ${source}`);
+  for (const [one, other] of measured.margin.overlaps) add('margin', `${one} overlaps ${other} in the margin`);
+  return found;
+}
+
+// Worth knowing, not wrong: how the margin column rearranged the page.
+export function remarks(measured) {
+  return [
+    ...measured.margin.items.filter(item => item.below > 60).map(item => `${item.name} sits ${item.below}px below its marker`),
+    ...measured.margin.pushed.map(entry => `${entry.block} starts ${entry.by}px lower to clear the margin`),
+  ];
+}
+
+// Every page the site publishes, from its own sitemap, plus the 404 page it leaves out.
+export async function sitemapPaths(baseURL, fetcher = fetch) {
+  const response = await fetcher(new URL('sitemap.xml', baseURL), { signal: AbortSignal.timeout(TIMEOUT) });
+  if (!response.ok) throw new Error(`sitemap.xml answered ${response.status}`);
+  const paths = [...(await response.text()).matchAll(/<loc>([^<]+)<\/loc>/g)].map(match => new URL(match[1]).pathname);
+  if (!paths.length) throw new Error('sitemap.xml lists no pages');
+  return [...new Set([...paths, '/404.html'])].sort();
+}
+
+function watch(page, issue) {
+  page.setDefaultTimeout(TIMEOUT);
+  page.on('pageerror', error => issue('pageerror', error.message));
+  page.on('console', message => { if (message.type() === 'error') issue('console', message.text()); });
+  page.on('requestfailed', request => issue('requestfailed', `${request.url()}: ${request.failure()?.errorText}`));
+  page.on('response', response => {
+    if (response.status() >= 400) issue('http', `${response.status()} ${response.url()}`);
+  });
+}
+
 async function readyImages(page) {
   return page.evaluate(async () => {
     let timer;
@@ -154,17 +339,11 @@ async function readyImages(page) {
   });
 }
 
-export async function captureRoute(context, route, viewport, baseURL, output, signal) {
+export async function captureRoute(context, route, viewport, baseURL, output, signal, { images = true } = {}) {
   const capture = { route: route.route, viewport: viewport.name, screenshots: [], issues: [] };
   const page = await context.newPage();
   const issue = (type, message) => capture.issues.push({ type, message });
-  page.setDefaultTimeout(TIMEOUT);
-  page.on('pageerror', error => issue('pageerror', error.message));
-  page.on('console', message => { if (message.type() === 'error') issue('console', message.text()); });
-  page.on('requestfailed', request => issue('requestfailed', `${request.url()}: ${request.failure()?.errorText}`));
-  page.on('response', response => {
-    if (response.status() >= 400) issue('http', `${response.status()} ${response.url()}`);
-  });
+  watch(page, issue);
   try {
     signal?.throwIfAborted();
     const response = await page.goto(new URL(route.route, baseURL).href, { waitUntil: 'networkidle', timeout: TIMEOUT });
@@ -172,7 +351,12 @@ export async function captureRoute(context, route, viewport, baseURL, output, si
     for (const image of await readyImages(page)) issue('image', `Image did not decode: ${image}`);
     capture.overflow = await page.evaluate(measureOverflow);
     if (capture.overflow.pixels > 1) issue('overflow', `${capture.overflow.pixels}px horizontal page overflow.`);
-    for (const shot of route.shots) {
+    try {
+      const file = treeName(route, viewport);
+      await writeFile(path.join(output, file), `${await page.locator('body').ariaSnapshot()}\n`);
+      capture.tree = file;
+    } catch (error) { issue('tree', error.message); }
+    for (const shot of images ? route.shots : []) {
       signal?.throwIfAborted();
       try {
         if (shot.selector) {
@@ -193,6 +377,41 @@ export async function captureRoute(context, route, viewport, baseURL, output, si
   return capture;
 }
 
+// One page, measured: no pictures, so it can afford to visit every page there is.
+export async function measureRoute(context, route, viewport, baseURL, signal) {
+  const result = { route, viewport: viewport.name, issues: [], remarks: [] };
+  const page = await context.newPage();
+  const issue = (type, message) => result.issues.push({ type, message });
+  watch(page, issue);
+  try {
+    signal?.throwIfAborted();
+    const response = await page.goto(new URL(route, baseURL).href, { waitUntil: 'networkidle', timeout: TIMEOUT });
+    result.status = response?.status();
+    for (const image of await readyImages(page)) issue('image', `Image did not decode: ${image}`);
+    result.overflow = await page.evaluate(measureOverflow);
+    if (result.overflow.pixels > 1) issue('overflow', `${result.overflow.pixels}px horizontal page overflow.`);
+    result.measured = await page.evaluate(measurePage);
+    result.issues.push(...findings(result.measured));
+    result.remarks = remarks(result.measured);
+  } catch (error) { issue('measure', error.message); }
+  finally { await page.close(); }
+  return result;
+}
+
+// The same finding on forty pages is one line with forty addresses.
+export function groupFindings(pages, field = 'issues') {
+  const groups = new Map();
+  for (const page of pages) for (const entry of page[field]) {
+    const finding = typeof entry === 'string' ? { type: 'remark', message: entry } : entry;
+    const key = `${finding.type}\n${finding.message}`;
+    if (!groups.has(key)) groups.set(key, { ...finding, pages: new Map() });
+    const where = groups.get(key).pages;
+    where.set(page.route, [...(where.get(page.route) || []), page.viewport]);
+  }
+  return [...groups.values()].map(group => ({ type: group.type, message: group.message,
+    pages: [...group.pages].map(([route, viewports]) => ({ route, viewports })) }));
+}
+
 async function launchChromium() {
   const { chromium } = await import('playwright');
   try {
@@ -207,30 +426,68 @@ async function launchChromium() {
 function markdownReport(report) {
   const lines = ['# sttp screenshot report', '', `Mode: **${report.mode}** · ${report.passed ? 'PASS' : 'FAIL'}`,
     `Chromium: ${report.chromium || 'not started'} · ${report.platform}`, '',
-    'See `report.json` for viewport settings, overflow measurements, and request errors.', ''];
+    'Read the findings and measurements before opening an image. They are exact, and the same site',
+    'always gives the same ones; the pictures are for judging how it looks. `report.json` has every number.', ''];
   if (report.fatal) lines.push('## Runner error', '', '```text', report.fatal, '```', '');
+  for (const note of report.notes) lines.push(`> ${note}`, '');
+  const places = pages => pages.slice(0, 6).map(page => `${page.route} (${page.viewports.join(', ')})`).join('; ') +
+    (pages.length > 6 ? `; and ${pages.length - 6} more` : '');
+  const flat = text => text.replaceAll('\n', ' ');
+  if (report.pages.length || report.findings.length) {
+    lines.push('## Findings', '');
+    if (!report.findings.length) lines.push(`None on ${new Set(report.pages.map(page => page.route)).size} page(s) at ${report.viewports.length} size(s).`);
+    for (const finding of report.findings) lines.push(`- **${finding.type}:** ${flat(finding.message)}`, `  - ${places(finding.pages)}`);
+    lines.push('');
+  }
+  if (report.remarks.length) {
+    lines.push('## Worth knowing', '');
+    for (const remark of report.remarks) lines.push(`- ${flat(remark.message)}`, `  - ${places(remark.pages)}`);
+    lines.push('');
+  }
+  if (report.pages.length) {
+    lines.push('## Measured pages', '',
+      '| page | size | overflow | lowest contrast | headings | tab stops | notes in margin / at end | findings |',
+      '| --- | --- | --- | --- | --- | --- | --- | --- |');
+    for (const page of report.pages) {
+      const measured = page.measured;
+      lines.push(`| ${page.route} | ${page.viewport} | ${page.overflow ? `${page.overflow.pixels}px` : '?'} | ` +
+        `${measured?.contrast[0] ? `${measured.contrast[0].ratio}:1` : '-'} | ${measured ? measured.headings.length : '?'} | ` +
+        `${measured ? measured.tabStops.length : '?'} | ${measured ? `${measured.notes.margin + measured.notes.sidenotes} / ${measured.notes.end}` : '?'} | ` +
+        `${page.issues.length || ''} |`);
+    }
+    lines.push('');
+  }
+  const some = (list, limit) => list.slice(0, limit).join(' > ') + (list.length > limit ? ` > … (${list.length} in all)` : '');
   for (const capture of report.captures) {
     lines.push(`## ${capture.route} — ${capture.viewport}`, '');
-    for (const issue of capture.issues) lines.push(`- **${issue.type}:** ${issue.message.replaceAll('\n', ' ')}`);
+    for (const issue of capture.issues) lines.push(`- **${issue.type}:** ${flat(issue.message)}`);
+    const measured = report.pages.find(page => page.route === capture.route && page.viewport === capture.viewport)?.measured;
+    if (measured) {
+      lines.push(`- outline: ${some(measured.headings.map(heading => `h${heading.level} ${heading.text}`), 12)}`,
+        `- tab order: ${some(measured.tabStops, 12)}`);
+    }
+    if (capture.tree) lines.push(`- accessibility tree: [${capture.tree}](${capture.tree})`);
     for (const shot of capture.screenshots) lines.push('', `![${shot.file}](${shot.file})`, '');
+    if (!capture.screenshots.length) lines.push('');
   }
   return lines.join('\n');
 }
 
 export async function runScreenshots(options, {
   startServer = startPreview, launchBrowser = launchChromium, routes = ROUTES,
-  viewports = VIEWPORTS, log = console.log, signal,
+  viewports = VIEWPORTS, listPages = sitemapPaths, log = console.log, signal,
 } = {}) {
   const mode = options.drafts ? 'drafts' : 'normal';
   const output = path.join(options.out, mode);
   await mkdir(output, { recursive: true });
   // Clear only this runner's known files, never recursively delete an output directory.
   const files = ['report.json', 'report.md', 'server.log', ...routes.flatMap(route =>
-    viewports.flatMap(viewport => route.shots.map(shot => screenshotName(route, viewport, shot))))];
+    viewports.flatMap(viewport => [treeName(route, viewport), ...route.shots.map(shot => screenshotName(route, viewport, shot))]))];
   for (const file of files) await unlink(path.join(output, file)).catch(error => { if (error.code !== 'ENOENT') throw error; });
   const report = { mode, createdAt: new Date().toISOString(), platform: `${process.platform}/${process.arch}`,
     node: process.version, viewports, settings: { deviceScaleFactor: 1, locale: 'en-US', timezoneId: 'UTC',
-      colorScheme: 'dark', reducedMotion: 'reduce' }, captures: [], passed: false };
+      colorScheme: 'dark', reducedMotion: 'reduce' }, captures: [], pages: [], findings: [], remarks: [], notes: [],
+    passed: false };
   let server;
   let browser;
   const abort = () => { void browser?.close().catch(() => {}); void server?.stop().catch(() => {}); };
@@ -242,6 +499,13 @@ export async function runScreenshots(options, {
     signal?.throwIfAborted();
     browser = await launchBrowser();
     report.chromium = browser.version();
+    // Pictures cover a chosen few routes; measurements cover every page the site lists.
+    let pages;
+    try { pages = await listPages(server.baseURL); }
+    catch (error) {
+      pages = routes.map(route => route.route);
+      report.notes.push(`Only the captured routes were measured, because the sitemap could not be read: ${error.message}`);
+    }
     for (const viewport of viewports) {
       signal?.throwIfAborted();
       const { name, width, height, ...emulation } = viewport;
@@ -250,13 +514,25 @@ export async function runScreenshots(options, {
       try {
         for (const route of routes) {
           signal?.throwIfAborted();
-          const capture = await captureRoute(context, route, viewport, server.baseURL, output, signal);
+          const capture = await captureRoute(context, route, viewport, server.baseURL, output, signal, { images: !options.textOnly });
           report.captures.push(capture);
           log(`${capture.issues.length ? 'FAIL' : 'OK'} ${route.route} ${name}: ${capture.screenshots.length} screenshot(s)`);
         }
+        let flagged = 0;
+        for (const route of pages) {
+          signal?.throwIfAborted();
+          const measured = await measureRoute(context, route, viewport, server.baseURL, signal);
+          report.pages.push(measured);
+          if (!measured.issues.length) continue;
+          flagged++;
+          log(`FAIL ${route} ${name}: ${[...new Set(measured.issues.map(issue => issue.type))].join(', ')}`);
+        }
+        log(`${flagged ? 'FAIL' : 'OK'} measured ${pages.length} page(s) at ${name}: ${flagged} with findings`);
       } finally { await context.close(); }
     }
-    report.passed = report.captures.every(capture => capture.issues.length === 0);
+    report.findings = groupFindings(report.pages);
+    report.remarks = groupFindings(report.pages, 'remarks');
+    report.passed = [...report.captures, ...report.pages].every(visit => visit.issues.length === 0);
   } catch (error) { report.fatal = error.message; }
   finally {
     signal?.removeEventListener('abort', abort);
@@ -274,7 +550,7 @@ export async function runScreenshots(options, {
 async function main() {
   const options = optionsFromArgs(process.argv.slice(2));
   if (options.help) {
-    console.log('Usage: npm run screenshots -- [--drafts] [--port 1314] [--out .artifacts/screenshots]\n\nStarts a dedicated Hugo preview; writes desktop/phone PNGs and reports under normal/ or drafts/.\nRequires Hugo, Node 20+, and Chromium installed with: npx playwright install chromium');
+    console.log('Usage: npm run screenshots -- [--drafts] [--text-only] [--port 1314] [--out .artifacts/screenshots]\n\nStarts a dedicated Hugo preview. Measures every page in the sitemap at desktop and phone sizes,\nand writes PNGs and accessibility trees for the main routes, under normal/ or drafts/.\nRead report.md first: findings come from fixed rules, so they repeat exactly.\n  --text-only  measure and write the report and trees, but no PNGs\nRequires Hugo, Node 20+, and Chromium installed with: npx playwright install chromium');
     return;
   }
   const controller = new AbortController();
