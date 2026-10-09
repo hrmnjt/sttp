@@ -166,6 +166,13 @@ class SiteTests(unittest.TestCase):
         with (cls.source / "content/builds/test-build.md").open("a") as fixture:
             fixture.write('\n{{< img-optimized src="duckdb-query.png" alt="Captioned fixture" '
                           'caption="A *captioned* fixture" >}}\n')
+        # Every footnote shape: short and cited once, two paragraphs, and cited twice.
+        (cls.source / "content/shards/test-notes.md").write_text(
+            '+++\ntitle = "note shapes"\ndate = 2026-01-15\ndraft = true\n+++\n\n'
+            'One[^a] two[^b] three[^c] and again[^c].\n\n'
+            '[^a]: Short, cited once, costs $1 and keeps `$HOME`.\n'
+            '[^b]: First paragraph.\n\n    Second paragraph.\n'
+            '[^c]: Cited twice.\n')
         # An index rendering image-bearing WAL entries also needs the viewer.
         with (cls.source / "content/wal/test-first.md").open("a") as fixture:
             fixture.write('\n{{< img-optimized src="duckdb-query.png" alt="WAL image fixture" >}}\n')
@@ -753,11 +760,13 @@ class SiteTests(unittest.TestCase):
             harlequin = self.page(output, "2024/12/02/readdatawithharlequin/index.html")
             shard = [attrs for tag, attrs in harlequin.links
                      if tag == "a" and attrs.get("href") == "/2024/10/05/readdatawithduck/"]
-            self.assertEqual(len(shard), 1)
-            self.assertNotIn("rel", shard[0])
+            # Its footnotes are set twice (margin copy and end list), so each link is too.
+            self.assertEqual(len(shard), 2)
+            self.assertTrue(all("rel" not in attrs for attrs in shard))
             marked = [attrs["href"] for tag, attrs in harlequin.links
                       if tag == "a" and attrs.get("rel") == "external"]
-            self.assertEqual(len(marked), 2)
+            self.assertEqual(len(marked), 4)
+            self.assertEqual(len(set(marked)), 2)
             # The home introduction follows the same rule as an article.
             home = [attrs["href"] for tag, attrs in self.page(output, "index.html").links
                     if tag == "a" and attrs.get("rel") == "external"]
@@ -774,14 +783,63 @@ class SiteTests(unittest.TestCase):
                 self.assertIn(number, page.text())
             self.assertIn("footnotes", page.rules)
             notes = next(index for index, (tag, attrs) in enumerate(page.elements)
-                         if tag == "div" and attrs.get("class") == "footnotes")
+                         if tag == "div" and "footnotes" in attrs.get("class", "").split())
             self.assertEqual(page.elements[notes + 1], ("h2", {"class": "rule-heading"}))
             # The reference keeps its number as link text for the return label.
             self.assertIn('aria-label="Return to reference 1"', (output / route).read_text())
 
+    def test_short_footnotes_are_also_set_as_sidenotes_beside_their_markers(self):
+        for output in (self.release, self.drafts):
+            route = "2024/12/02/readdatawithharlequin/index.html"
+            page = self.page(output, route)
+            html = (output / route).read_text()
+            asides = [attrs for tag, attrs in page.elements
+                      if tag == "span" and attrs.get("class") == "sidenote footnote-aside"]
+            marks = [attrs for tag, attrs in page.elements
+                     if tag == "span" and attrs.get("class") == "footnote-mark"]
+            # One margin copy per footnote, numbered like its marker and read as a note.
+            self.assertEqual([attrs["data-n"] for attrs in asides], ["1", "2", "3"])
+            self.assertEqual([attrs["data-n"] for attrs in marks], ["1", "2", "3"])
+            self.assertTrue(all(attrs["role"] == "note" for attrs in asides))
+            self.assertTrue(all(attrs["aria-hidden"] == "true" for attrs in marks))
+            # The linked marker and the end list remain for layouts without a margin,
+            # tagged so the stylesheet can show exactly one of the two.
+            self.assertEqual(sum(tag == "sup" and attrs.get("class") == "in-margin"
+                                 for tag, attrs in page.elements), 3)
+            items = [attrs for tag, attrs in page.elements
+                     if tag == "li" and attrs.get("id", "").startswith("fn:")]
+            self.assertEqual([(attrs["value"], attrs.get("class")) for attrs in items],
+                             [("1", "in-margin"), ("2", "in-margin"), ("3", "in-margin")])
+            self.assertEqual(page.count("div", "all-in-margin"), 1)
+            self.assertEqual(html.count("[return]"), 3)  # only in the end list
+            self.assertIn("&#8288;<sup class=in-margin id=fnref:1>", html)
+            # Sidenotes proper keep their letters: the footnote copies do not count as them.
+            self.assertFalse(page.count("span", "sidenote-ref"))
+        shapes = self.page(self.drafts, "2026/01/15/note-shapes/index.html")
+        html = (self.drafts / "2026/01/15/note-shapes/index.html").read_text()
+        asides = [attrs["data-n"] for tag, attrs in shapes.elements
+                  if tag == "span" and attrs.get("class") == "sidenote footnote-aside"]
+        # Two paragraphs, or cited twice: an end note only, and the list keeps its numbers.
+        self.assertEqual(asides, ["1"])
+        items = [(attrs["value"], attrs.get("class")) for tag, attrs in shapes.elements
+                 if tag == "li" and attrs.get("id", "").startswith("fn:")]
+        self.assertEqual(items, [("1", "in-margin"), ("2", None), ("3", None)])
+        self.assertEqual(shapes.count("div", "all-in-margin"), 0)
+        # Note text is spliced in literally: a dollar sign is not a regex group.
+        self.assertEqual(html.count("costs $1 and keeps <code>$HOME</code>"), 2)
+        # Entries printed in full on an index have no margin to hang a note in.
+        wal = (self.drafts / "wal/index.html").read_text()
+        self.assertIn("footnote-ref", wal)
+        self.assertNotIn("footnote-aside", wal)
+        self.assertIn("footnote-aside", (self.drafts / "wal/test-first/index.html").read_text())
+        css = (ROOT / "assets/css/main.css").read_text()
+        self.assertIn(".footnote-mark, .sidenote.footnote-aside { display: none; }", css)
+        self.assertIn("sup.in-margin, .footnotes li.in-margin, .footnotes.all-in-margin { display: none; }", css)
+
     def test_sidenotes_read_as_parentheses_without_the_stylesheet(self):
         page = self.page(self.drafts, "builds/dolor-sit-amet/index.html")
-        self.assertEqual(page.count("span", "visually-hidden"), 4)
+        # Two sidenotes and the sample's one footnote, each wrapped in hidden parentheses.
+        self.assertEqual(page.count("span", "visually-hidden"), 6)
         item = next(item for item in ET.parse(self.drafts / "index.xml").findall("./channel/item")
                     if item.findtext("link").endswith("/builds/dolor-sit-amet/"))
         feed = " ".join(unescape(re.sub(r"<[^>]+>", "", item.findtext("description"))).split())

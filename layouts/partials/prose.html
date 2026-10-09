@@ -8,6 +8,11 @@
 {{- /* Real link text, with a reference-specific accessible label. */ -}}
 {{- $html = replaceRE `(<a [^>]*class="footnote-backref"[^>]*>)[^<]*(</a>)` "${1}[return]${2}" $html -}}
 {{- $html = replaceRE `(<a href="#fnref:([^"]+)" class="footnote-backref"[^>]*)(>)` `${1} aria-label="Return to reference ${2}"${3}` $html -}}
+{{- /* A word joiner keeps each marker on the line it annotates. */ -}}
+{{- $html = replace $html `<sup id="fnref` `&#8288;<sup id="fnref` -}}
+{{- /* Articles have a margin column to hang short footnotes in; entries printed in
+       full on an index do not. */ -}}
+{{- if not .Prefix }}{{ $html = partial "footnote-asides.html" $html }}{{ end -}}
 {{- with .Prefix -}}
     {{- /* Inline WAL entries must not share heading/footnote IDs. */ -}}
     {{- $prefix := . -}}

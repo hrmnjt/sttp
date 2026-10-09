@@ -134,6 +134,10 @@ Writing aids:
 - `{{< sidenote >}}…{{< /sidenote >}}` is a short aside, lettered so it never
   clashes with numbered footnotes. It sits in the margin column when the article
   is wide enough for one and inline elsewhere. Keep it to one paragraph.
+- A Markdown footnote that is one paragraph, cited once, hangs in the same
+  margin column beside its `[1]`. Without a margin (phones, print, feeds) it is
+  an ordinary footnote under `-- footnotes ----` with a `[return]` link. Longer
+  or reused footnotes always stay at the end.
 - A page with four or more `##` headings lists them "on this page", in the same
   margin column or folded under the title.
 - A Markdown link that leaves the site is tagged `[ext]` by the link render
