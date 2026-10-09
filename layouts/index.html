@@ -3,25 +3,29 @@
     <h1 id="intro-title">{{ .Params.intro_title | default "Hi, I'm Harman." | markdownify }}</h1>
     {{ .Content }}
 </section>
-{{ with .Site.GetPage "/shards" }}
-<section class="home-section" aria-labelledby="home-shards">
-    {{ partial "section-heading.html" (dict "Page" . "Level" 2 "ID" "home-shards" "Linked" true "Note" "Partitioned thoughts. No global ordering promised.") }}
-    {{ partial "dated-list.html" (first 3 .RegularPages.ByDate.Reverse) }}
-    <p class="archive-link"><a href="{{ .RelPermalink }}">all shards →</a></p>
+{{- /* The head of the catalog: dated entries only, whatever their kind. */ -}}
+{{ with first 8 (where (partial "timeline-pages.html" .) "Kind" "page") }}
+<section class="home-section" aria-labelledby="home-recent">
+    <h2 class="rule-heading" id="home-recent">recent</h2>
+    {{ partial "ledger.html" (dict "Pages" . "Kind" true) }}
+    <p class="archive-link"><a href="/catalog/">full catalog →</a></p>
 </section>
 {{ end }}
-{{ with .Site.GetPage "/builds" }}{{ if .RegularPages }}
-<section class="home-section home-builds" aria-labelledby="home-builds">
-    {{ partial "section-heading.html" (dict "Page" . "Level" 2 "ID" "home-builds" "Linked" true "Note" "Things that escaped the scratch buffer.") }}
-    {{ partial "build-list.html" (first 3 .RegularPages.ByDate.Reverse) }}
-    {{ if gt (len .RegularPages) 3 }}<p class="archive-link"><a href="{{ .RelPermalink }}">all builds →</a></p>{{ end }}
+<section class="home-section" aria-labelledby="home-sections">
+    <h2 class="rule-heading" id="home-sections">sections</h2>
+    <ul class="section-directory" role="list">
+        {{ range where hugo.Data.kinds.kind "stream" true }}
+        {{ $kind := . }}
+        {{ with site.GetPage (printf "/%s" .section) }}{{ if .RegularPages }}
+        <li>
+            {{ partial "sketch.html" .Section }}
+            <div>
+                <p class="section-name"><a href="{{ .RelPermalink }}">{{ .Title }}</a></p>
+                <p class="section-note">{{ $kind.note }}</p>
+            </div>
+        </li>
+        {{ end }}{{ end }}
+        {{ end }}
+    </ul>
 </section>
-{{ end }}{{ end }}
-{{ with .Site.GetPage "/wal" }}{{ if .RegularPages }}
-<section class="home-section" aria-labelledby="home-wal">
-    {{ partial "section-heading.html" (dict "Page" . "Level" 2 "ID" "home-wal" "Linked" true "Note" "Written before the thought is fully committed.") }}
-    {{ partial "dated-list.html" (first 3 .RegularPages.ByDate.Reverse) }}
-    <p class="archive-link"><a href="{{ .RelPermalink }}">full log →</a></p>
-</section>
-{{ end }}{{ end }}
 {{ end }}

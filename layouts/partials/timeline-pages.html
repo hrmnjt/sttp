@@ -1,7 +1,10 @@
-{{- /* Only real content, not home/section directory scaffolding. */ -}}
+{{- /* Only real content, not home/section directory scaffolding: every dated entry,
+       plus each single-document kind (the readme) under its own date. */ -}}
 {{- $pages := site.RegularPages -}}
-{{- with site.GetPage "/readme" -}}
-    {{- $pages = $pages | append . -}}
+{{- range where hugo.Data.kinds.kind "document" true -}}
+    {{- with site.GetPage (printf "/%s" .section) -}}
+        {{- $pages = $pages | append . -}}
+    {{- end -}}
 {{- end -}}
 {{- range $pages -}}
     {{- if not .Params.date -}}

@@ -1,15 +1,6 @@
 {{ define "main" }}
 <section class="section-index" aria-labelledby="catalog-title">
-    {{ partial "section-heading.html" (dict "Page" . "Level" 1 "ID" "catalog-title" "Intro" .Content) }}
-    <ol class="catalog-timeline" aria-label="All content, newest first">
-        {{ range partial "timeline-pages.html" . }}
-        {{ $kind := partial "content-kind.html" . }}
-        <li>
-            <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>
-            <span class="content-kind" data-kind="{{ $kind }}">{{ partial "kind-mark.html" $kind }}[{{ $kind }}]</span>
-            <a href="{{ .RelPermalink }}">{{ .Title }}</a>
-        </li>
-        {{ end }}
-    </ol>
+    {{ partial "section-heading.html" (dict "Page" . "ID" "catalog-title" "Intro" .Content) }}
+    {{ partial "ledger.html" (dict "Pages" (partial "timeline-pages.html" .) "Kind" true "Years" true) }}
 </section>
 {{ end }}

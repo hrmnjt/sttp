@@ -1,19 +1,21 @@
 /* sttp: system monospace, comfortable reading, a few pencil marks. */
 :root {
     color-scheme: dark;
-    /* Gruvbox dark, by its own names. Nothing below uses a colour from outside it. */
+    /* Gruvbox dark, by its own names. Nothing on screen uses a colour from outside it. */
     --gb-bg0-hard: #1d2021;
     --gb-bg0: #282828;
     --gb-bg1: #3c3836;
     --gb-bg3: #665c54;
     --gb-fg1: #ebdbb2;
     --gb-fg3: #bdae93;
+    --gb-fg4: #a89984;
     --gb-green: #b8bb26;
+    --gb-green-dim: #98971a;
     --gb-yellow: #fabd2f;
     --gb-blue: #83a598;
     --gb-purple: #d3869b;
     --gb-orange: #fe8019;
-    /* Roles. Green is for links only; each content kind takes one bright accent. */
+    /* Roles. Green is for links only, and dims once a link has been read. */
     --bg-primary: var(--gb-bg0);
     --text-primary: var(--gb-fg1);
     --text-secondary: var(--gb-fg3);
@@ -21,7 +23,9 @@
     --code-bg: var(--gb-bg1);
     --pre-bg: var(--gb-bg0-hard);
     --accent: var(--gb-green);
+    --accent-visited: var(--gb-green-dim);
     --accent-hover: var(--gb-yellow);
+    /* Three kinds take a colour and the set is closed; any other kind stays neutral. */
     --kind-shard: var(--gb-purple);
     --kind-build: var(--gb-blue);
     --kind-wal: var(--gb-orange);
@@ -29,30 +33,39 @@
     --fs-small: 0.875rem;
     --fs-fine: 0.8rem;
     --font-mono: ui-monospace, "Cascadia Mono", "Segoe UI Mono", "Liberation Mono", Menlo, Monaco, Consolas, monospace;
+    /* Measure: a prose column, then a gutter and a margin column for notes. */
+    --measure: 70ch;
+    --gutter: 2rem;
+    --margin-col: 17rem;
+    --page-pad: 3.5rem;
 }
 
+/* Sizes and breakpoints are in rem/em so the page follows the reader's font size.
+   The frame is the measure plus its margin column, whatever width the system's
+   monospace happens to be: about 1100px in most, a little more in SF Mono. */
 *, *::before, *::after { box-sizing: border-box; }
 body {
-    max-width: 1100px;
+    max-width: calc(var(--measure) + var(--gutter) + var(--margin-col) + 2 * var(--page-pad) + 0.5rem);
     margin: 0 auto;
-    padding: 24px;
+    padding: 1.5rem;
     background: var(--bg-primary);
     color: var(--text-primary);
     font: 1rem/1.75 var(--font-mono);
+    overflow-wrap: break-word;
 }
 /* Lines: dashed rules divide the page; dotted lines box content or run vertically.
    Nothing is solid except focus outlines. */
 /* Stable site furniture: every page shares one frame and one left rail. */
 main { min-width: 0; }
-article { max-width: 70ch; }
+/* The skip link lands here. It is a place, not a control, so it takes no ring. */
+main:focus { outline: none; }
+article { max-width: var(--measure); }
 /* Shared left rail; prose stays readable while technical material has room. */
-article.article-wide { max-width: none; }
-/* Echo listing titles once, more quietly than the navigation headings. */
+article.article-wide { max-width: none; container: article / inline-size; }
 .article-wide > h1 { padding-bottom: 8px; border-bottom: 1px dashed var(--border-color); }
-.article-wide > p,
-.article-wide > .migrated-notice,
+.article-wide > :is(p, .migrated-notice, .article-lead, .toc-inline),
 .article-wide .article-prose > :is(p, ul, ol, dl, blockquote),
-.article-wide .footnotes > ol { max-width: 70ch; }
+.article-wide .footnotes > ol { max-width: var(--measure); }
 h1, h2, h3, p, ul, ol { margin-top: 0; }
 h1, h2, h3 {
     font-family: var(--font-mono);
@@ -64,11 +77,21 @@ h2 { font-size: 1.15rem; }
 h3 { font-size: 1rem; }
 p { margin-bottom: 1.2em; }
 a { color: var(--accent); text-underline-offset: 0.2em; }
+/* Links you have followed dim, so the ledger shows what is left to read. In-page
+   anchors do not count. Kept at low specificity so hover and labels still win. */
+:where(main a:not([href^="#"])):visited { color: var(--accent-visited); }
 a:hover { color: var(--accent-hover); }
 /* Square brackets mark text the site adds ([shard], [code], [ext], [return]).
-   Green ones are links; muted or kind-coloured ones are labels. */
-.article-prose a[href^="http"]:not(.dev-flow a)::after { content: "[ext]"; margin-left: 0.3em; color: var(--text-secondary); font-size: var(--fs-fine); }
-a:focus-visible, [tabindex]:focus-visible {
+   Green ones are links; muted or kind-coloured ones are labels. The link hook sets
+   rel="external"; the second declaration gives the tag a spoken form. */
+a[rel~="external"]::after {
+    content: "[ext]";
+    content: "[ext]" / " (external link)";
+    margin-left: 0.3em;
+    color: var(--text-secondary);
+    font-size: var(--fs-fine);
+}
+a:focus-visible, summary:focus-visible, [tabindex="0"]:focus-visible {
     outline: 2px solid var(--accent-hover);
     outline-offset: 4px;
 }
@@ -91,49 +114,78 @@ a:focus-visible, [tabindex]:focus-visible {
     background: var(--accent);
 }
 .skip-to-content:focus { top: 8px; }
+/* Read aloud, not shown. Struck-through text says so, since most screen readers
+   pass over <del> in silence. */
+.visually-hidden, del::before, del::after {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+del::before { content: " [struck out: "; }
+del::after { content: "] "; }
 
-/* A protocol name, not a terminal emulator. */
+/* A labelled rule: `-- label ------`. The dashes are borders, so only the label is read. */
+.rule-heading {
+    display: flex;
+    align-items: center;
+    gap: 1ch;
+    margin: 1.6em 0 0.2em;
+    color: var(--text-secondary);
+    font-size: var(--fs-small);
+    font-weight: 400;
+    line-height: 1.6;
+}
+.rule-heading::before, .rule-heading::after { content: ""; border-top: 1px dashed var(--border-color); }
+.rule-heading::before { flex: 0 0 2ch; }
+.rule-heading::after { flex: 1; }
+
+/* The protocol name used as a protocol: an address, not a terminal emulator. */
 body > header {
     display: flex;
     align-items: baseline;
     justify-content: space-between;
     flex-wrap: wrap;
-    gap: 12px 24px;
+    gap: 0 24px;
     margin-bottom: 32px;
-    padding-bottom: 20px;
+    padding-bottom: 12px;
     border-bottom: 1px dashed var(--border-color);
     font-family: var(--font-mono);
 }
-.site-brand {
-    display: inline-flex;
+.site-address {
+    display: flex;
+    flex-wrap: wrap;
     align-items: center;
-    min-height: 44px;
-    color: var(--text-primary);
-    font-size: 1.15rem;
+    color: var(--text-secondary);
     font-weight: 700;
-    text-decoration: none;
-    white-space: pre;
 }
-.protocol-name { color: var(--accent); }
+.site-address ol { display: flex; flex-wrap: wrap; margin: 0; padding: 0; list-style: none; }
+.site-address li { display: flex; align-items: center; }
+.site-address a { display: inline-flex; align-items: center; min-height: 44px; text-decoration: none; }
+.site-address a:hover, .site-address a:focus-visible { text-decoration: underline; }
+.site-address a[aria-current] { color: var(--text-primary); }
 .protocol-expansion {
-    margin: 0;
+    margin: -4px 0 8px;
     color: var(--text-secondary);
     font-size: var(--fs-fine);
-    overflow-wrap: anywhere;
 }
-body > header nav, body > footer nav, .utility-links {
+.site-nav, .utility-links {
     display: flex;
     flex-wrap: wrap;
     gap: 0 18px;
     font: var(--fs-small)/1.6 var(--font-mono);
 }
-body > header nav a, body > footer nav a, .utility-links a {
+.site-nav a, .utility-links a {
     display: inline-flex;
     align-items: center;
     min-height: 44px;
     padding: 6px 0;
 }
-nav a[aria-current="page"] { color: var(--text-primary); }
+/* Where you are, the way `git branch` marks it: an asterisk and plain text. */
+.site-nav a[aria-current] { color: var(--text-primary); }
+.nav-mark { margin-right: 1ch; }
 body > footer {
     margin-top: 48px;
     padding-top: 12px;
@@ -146,91 +198,75 @@ body > footer p { margin: 0; }
 .footer-legal > span { min-width: 0; }
 .footer-legal a { display: inline-block; min-height: 24px; padding: 2px 0; }
 
-/* One column; the names do the organising. */
-.home-intro { margin-bottom: 36px; }
+/* Home: an introduction, the head of the ledger, then where everything is filed. */
 .home-intro h1 { font-size: clamp(1.5rem, 3vw, 1.75rem); }
-.home-intro p { max-width: 70ch; font-family: var(--font-mono); font-size: 1rem; }
-.home-section { position: relative; isolation: isolate; margin-top: 32px; }
+.home-intro p { max-width: var(--measure); }
+.home-section { margin-top: 28px; }
+.home-section > .rule-heading { margin-top: 0; }
+.section-directory {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
+    gap: 12px 32px;
+    margin: 12px 0 0;
+    padding: 0;
+    list-style: none;
+}
+.section-directory li { display: flex; align-items: center; gap: 16px; min-width: 0; }
+.section-directory img { flex: none; width: 72px; height: auto; margin: 0; pointer-events: none; }
+.section-name { margin: 0; }
+.section-name a { display: inline-flex; align-items: center; min-height: 44px; font-weight: 700; text-decoration: none; }
+.section-name a:hover, .section-name a:focus-visible { text-decoration: underline; }
+.section-note { color: var(--text-secondary); }
+.section-directory .section-note { margin: -6px 0 0; font: var(--fs-small)/1.7 var(--font-mono); }
+.archive-link { margin: 4px 0 0; font: var(--fs-small)/1.7 var(--font-mono); }
+.archive-link a { display: inline-flex; align-items: center; min-width: 44px; min-height: 44px; padding: 6px 0; }
+
+/* Section indexes: title and introduction beside the section's sketch, clear of the list. */
 .section-heading {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
     gap: 16px;
-    margin-bottom: 8px;
+    margin-bottom: 24px;
 }
-.section-copy { min-width: 0; }
-.section-heading h1, .section-heading h2 { margin: 0; }
-.section-heading img { flex: none; width: 40px; height: auto; margin: 0; }
-/* Index marks stay in flow beside the title and introduction, clear of lists. */
-.section-index .section-heading { align-items: flex-start; gap: 16px; margin-bottom: 24px; }
-.section-index .section-copy { flex: 1; }
-.section-index .section-heading h1 { padding-bottom: 4px; border-bottom: 1px dashed var(--border-color); }
-.section-index .section-heading img { width: 136px; pointer-events: none; }
-.section-index .section-intro { max-width: 70ch; margin-top: 12px; }
-.section-index .section-intro > :last-child { margin-bottom: 0; }
-/* Modest marks share a right rail and sit behind the content, not above it. */
-.home-section .section-heading { position: relative; align-items: flex-start; }
-.home-section .section-copy { flex: 1; padding-right: 136px; }
-.home-section .section-heading h2 { font-size: clamp(1.3rem, 2.5vw, 1.5rem); }
-.home-section .section-heading h2 a { display: block; min-height: 44px; padding-bottom: 4px; border-bottom: 1px dashed var(--border-color); text-decoration: none; }
-.home-section .section-heading img { position: absolute; top: -12px; right: 0; z-index: -1; width: 120px; pointer-events: none; }
-.home-section .dated-list { padding-right: 144px; }
-/* Centre the build mark on the header band; keep the card grid regular. */
-.home-builds .section-heading img { top: 50%; transform: translateY(-50%); }
-.section-note { color: var(--text-secondary); }
-.section-copy > .section-note { margin: 4px 0 0; font: var(--fs-small)/1.7 var(--font-mono); }
-.archive-link, .back-link { font: var(--fs-small)/1.7 var(--font-mono); }
-.archive-link { margin: 10px 0 0; }
-.archive-link a, .back-link a { display: inline-flex; align-items: center; min-width: 44px; min-height: 44px; padding: 6px 0; }
+.section-copy { flex: 1; min-width: 0; }
+.section-heading h1 { margin: 0; padding-bottom: 4px; border-bottom: 1px dashed var(--border-color); }
+.section-heading img { flex: none; width: 136px; height: auto; margin: 0; pointer-events: none; }
+.section-intro { max-width: var(--measure); margin-top: 12px; }
+.section-intro > :last-child { margin-bottom: 0; }
+.section-heading + .rule-heading { margin-top: 0; }
 
-.dated-list, .build-list, .catalog-timeline, .wal-log {
-    list-style: none;
-    padding: 0;
-    margin: 20px 0;
-}
-.dated-list, .build-list, .catalog-timeline { font: 1rem/1.7 var(--font-mono); }
-.dated-list li { display: grid; grid-template-columns: 10ch minmax(0, 1fr); align-items: baseline; gap: 18px; }
-/* Row padding belongs to the real link, not a non-clickable surrounding item. */
-.dated-list li > a, .catalog-timeline li > a { display: block; min-height: 44px; padding: 9px 0; }
-.dated-list time, .catalog-timeline time { color: var(--text-secondary); font-size: var(--fs-small); }
-.dated-list a, .build-list a, .catalog-timeline a { overflow-wrap: anywhere; text-decoration: none; }
-.dated-list a:hover, .build-list a:hover, .catalog-timeline a:hover,
-.dated-list a:focus-visible, .build-list a:focus-visible, .catalog-timeline a:focus-visible { text-decoration: underline; }
-/* Repo-like cards for builds; the other streams stay simple rows. */
-.build-list {
+/* The ledger: one row pattern for every list of pages. Date, optional [kind], title;
+   a list with notes adds the description and a [code] link. */
+.ledger { margin: 0 0 12px; padding: 0; list-style: none; }
+.ledger li {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 16px;
-}
-.build-card {
-    min-width: 0;
-    padding: 12px 16px 16px;
-    border: 1px dotted var(--border-color);
-    background: var(--bg-primary);
-}
-.build-card:only-child { grid-column: 1 / -1; }
-.build-card-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
-.build-card-heading a { display: inline-flex; align-items: center; min-width: 44px; min-height: 44px; padding: 6px 0; }
-.build-name { min-width: 0; font-weight: 700; }
-.build-code { flex: none; white-space: nowrap; font-size: var(--fs-fine); }
-.build-card-description { margin: 4px 0 0; color: var(--text-secondary); font: var(--fs-small)/1.7 var(--font-mono); overflow-wrap: anywhere; }
-.catalog-timeline li {
-    display: grid;
-    grid-template-columns: 10ch 13ch minmax(0, 1fr);
+    grid-template: "date title" auto / 10ch minmax(0, 1fr);
+    column-gap: 2ch;
     align-items: baseline;
-    gap: 18px;
+    margin: 0;
 }
+/* Room for the glyph, then [readme], the longest tag: 8 characters at the small
+   size, which is 7ch at this one. */
+.ledger.has-kind li { grid-template: "date kind title" auto / 10ch calc(1.75rem + 7ch) minmax(0, 1fr); }
+.ledger.has-notes li { grid-template: "date title code" auto ". note note" auto / 10ch minmax(0, 1fr) auto; }
+.ledger time { grid-area: date; color: var(--text-secondary); font-size: var(--fs-small); }
+.ledger .content-kind { grid-area: kind; font-size: var(--fs-small); }
+/* Row padding belongs to the real link, not a non-clickable surrounding item. */
+.row-title { grid-area: title; display: block; min-height: 44px; padding: 9px 0; text-decoration: none; }
+.row-code { grid-area: code; display: inline-flex; align-items: center; min-width: 44px; min-height: 44px; font-size: var(--fs-fine); text-decoration: none; white-space: nowrap; }
+.row-note { grid-area: note; max-width: var(--measure); margin: -6px 0 10px; color: var(--text-secondary); font: var(--fs-small)/1.7 var(--font-mono); }
+.row-title:hover, .row-title:focus-visible, .row-code:hover, .row-code:focus-visible { text-decoration: underline; }
 /* Content kinds: one colour, one glyph, one bracketed name, wherever a kind is named.
    Only label text sets the baseline; the glyph cannot lift the label above it. */
 [data-kind="shard"] { --kind: var(--kind-shard); }
 [data-kind="build"] { --kind: var(--kind-build); }
 [data-kind="wal"] { --kind: var(--kind-wal); }
-.content-kind { position: relative; padding-left: 28px; color: var(--kind, var(--text-secondary)); white-space: nowrap; }
-.catalog-timeline .content-kind { font-size: var(--fs-small); }
-.kind-mark { position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 20px; height: 20px; pointer-events: none; }
+.content-kind { position: relative; padding-left: 1.75rem; color: var(--kind, var(--text-secondary)); white-space: nowrap; }
+.kind-mark { position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 1.25rem; height: 1.25rem; pointer-events: none; }
 
 /* Short log entries are readable here, not hidden behind excerpts. */
-.wal-log { border-left: 1px dotted var(--border-color); padding-left: 22px; }
+.wal-log { margin: 20px 0; padding: 0 0 0 22px; border-left: 1px dotted var(--border-color); list-style: none; }
 .wal-log > li { position: relative; margin: 0 0 32px; }
 .wal-log > li::before {
     content: "";
@@ -247,28 +283,23 @@ body > footer p { margin: 0; }
 .wal-log h2 > a { display: inline-flex; align-items: center; min-width: 44px; min-height: 44px; padding: 6px 0; }
 .wal-log article > :last-child { margin-bottom: 0; }
 
-/* Content, followed by its source trail. */
+/* Content, then what it connects to and where its source lives. */
 article h2 { margin: 2em 0 0.7em; }
 article h3 { margin: 1.7em 0 0.6em; }
 article ul, article ol { padding-left: 1.5em; margin-bottom: 1.4em; }
 article li { margin-bottom: 0.4em; }
+article .rule-heading { margin: 1.6em 0 0.2em; }
+article .ledger { margin: 0 0 12px; padding: 0; }
+article .ledger li { margin: 0; }
 .article-date { display: block; margin-bottom: 24px; color: var(--text-secondary); font: var(--fs-small)/1.7 var(--font-mono); }
 .article-date span[aria-hidden] { margin-inline: 0.3em; }
 .wal-log .article-date { margin: 0 0 12px; }
-.utility-links { margin-bottom: 20px; }
-.build-links { margin: -12px 0 4px; }
-.build-links .repo { color: var(--text-secondary); margin-left: 1ch; }
-.article-meta { margin-top: 32px; padding-top: 16px; border-top: 1px dashed var(--border-color); }
-.article-meta .backlinks { margin-top: 0; }
-.article-meta .backlinks > h2 { margin-top: 0; }
-.article-meta .source-trail { margin: 12px 0 0; }
-.article-meta > .source-trail:first-child { margin-top: 0; }
-.source-link { display: inline-flex; align-items: center; gap: 0.5ch; }
-.backlinks { margin-top: 32px; }
-.backlinks h2 { font-size: 1rem; }
-.backlinks .backlink-group h3 { width: fit-content; margin: 16px 0 4px; font-size: var(--fs-small); }
-.backlinks .dated-list { margin: 0; padding: 0; }
-.backlinks .dated-list li { margin: 0; }
+.utility-links { margin: 0 0 20px; }
+.article-lead { margin: -12px 0 20px; }
+.article-lead > * { margin: 0; }
+.article-lead .repo { margin-left: 1ch; color: var(--text-secondary); }
+.article-meta { margin-top: 32px; }
+.source-trail .utility-links { margin: 0; }
 .migrated-notice { margin: 24px 0; padding: 12px 16px; border: 1px dotted var(--text-secondary); background: var(--code-bg); color: var(--text-secondary); font-size: var(--fs-small); }
 
 code, pre, .highlight { font-family: var(--font-mono); }
@@ -276,16 +307,23 @@ code { padding: 0.1em 0.25em; background: var(--code-bg); font-size: 0.9em; }
 pre { padding: 16px; margin: 1.5em 0; overflow-x: auto; background: var(--pre-bg); border: 1px dotted var(--border-color); font-size: var(--fs-small); line-height: 1.6; }
 pre.chroma { background: var(--pre-bg); }
 pre code { padding: 0; background: none; font-size: inherit; }
+/* chroma.css is generated. These two colours fall short of 4.5:1 on the code
+   background, so comments and console output move to the next Gruvbox greys. */
+.chroma :is(.c, .ch, .cm, .c1, .cs) { color: var(--gb-fg4); }
+.chroma .go { color: var(--gb-fg3); }
 .code-block { min-width: 0; margin: 1.5em 0; }
 .code-block figcaption { margin-bottom: 8px; color: var(--text-secondary); font: var(--fs-fine)/1.6 var(--font-mono); }
 .code-block pre { margin: 0; }
 article hr { margin: 1.8em 0; border: 0; border-top: 1px dashed var(--border-color); }
+/* The footnotes open under their own labelled rule; one line there is enough. */
+article hr:has(+ .footnotes) { display: none; }
 blockquote { margin: 1.5em 0; padding: 0.2em 0 0.2em 1.25em; border-left: 2px dotted var(--border-color); color: var(--text-secondary); }
 blockquote > :last-child { margin-bottom: 0; }
 img { display: block; max-width: 100%; height: auto; margin: 1.5em 0; }
 .image-fullsize { display: block; width: fit-content; max-width: 100%; margin: 1.5em 0; cursor: zoom-in; }
 .article-image { margin: 1.5em 0; }
 .article-image .image-fullsize { margin: 0; }
+.article-image figcaption { margin-top: 8px; color: var(--text-secondary); font: var(--fs-fine)/1.6 var(--font-mono); }
 .image-fullsize picture { display: block; }
 .image-fullsize img { margin: 0; }
 /* Native top-layer viewer; no layout changes until an image is opened. */
@@ -330,26 +368,67 @@ html.image-viewing { overflow: hidden; }
 .image-viewer.is-zoomed .image-viewer-canvas { display: block; }
 .image-viewer.is-zoomed img { max-width: none; max-height: none; }
 .image-viewer-original { flex: none; }
-@media (max-width: 560px) {
+@media (max-width: 35em) {
     .image-viewer { width: calc(100% - 16px); height: calc(100% - 16px); height: calc(100dvh - 16px); padding: 12px; }
 }
-table { display: block; max-width: 100%; overflow-x: auto; border-collapse: collapse; margin: 1.5em 0; }
+/* The wrapper scrolls and takes focus; the table stays a table. */
+.table-scroll { max-width: 100%; margin: 1.5em 0; overflow-x: auto; }
+table { border-collapse: collapse; }
 th, td { padding: 8px 12px; border: 1px dotted var(--border-color); text-align: left; }
-.footnotes { margin-top: 32px; padding-top: 16px; border-top: 1px dashed var(--border-color); font-size: var(--fs-small); }
-.footnotes hr { display: none; }
-.footnote-ref, .footnote-backref { display: inline-block; min-width: 24px; padding: 3px; }
-.footnote-backref { white-space: nowrap; font-family: var(--font-mono); }
+:is(th, td).align-center { text-align: center; }
+:is(th, td).align-right { text-align: right; }
 
-/* Sidenotes: lettered asides. Inline by default; in the right margin when it exists. */
+/* Notes. Footnotes are numbered and collected at the end; sidenotes are lettered and
+   sit beside their line. Both markers are bracketed and stay on the baseline, so a
+   line with a note is no taller than its neighbours. */
+.footnotes { margin-top: 32px; font-size: var(--fs-small); }
+sup[id*="fnref:"] { font-size: var(--fs-fine); line-height: 0; vertical-align: baseline; }
+.footnote-ref { padding: 0 2px; text-decoration: none; }
+.footnote-ref:hover, .footnote-ref:focus-visible { text-decoration: underline; }
+.footnote-backref { display: inline-block; min-width: 24px; padding: 3px; white-space: nowrap; font-family: var(--font-mono); }
 .article-prose { counter-reset: sidenote; }
 .sidenote-ref { counter-increment: sidenote; }
-.sidenote-ref::after { content: "[" counter(sidenote, lower-alpha) "]"; margin-left: 0.2em; color: var(--text-secondary); font-size: var(--fs-fine); vertical-align: super; line-height: 0; }
-.sidenote { display: block; margin: 0.6em 0; padding-left: 1em; border-left: 2px dotted var(--border-color); color: var(--text-secondary); font-size: var(--fs-small); line-height: 1.6; }
+.sidenote-ref::after { content: "[" counter(sidenote, lower-alpha) "]"; margin-left: 0.2em; color: var(--text-secondary); font-size: var(--fs-fine); }
+/* Inline by default: a hanging letter, no rule, so it cannot pass for a quotation. */
+.sidenote { display: block; margin: 0.6em 0; padding-left: 4ch; text-indent: -4ch; color: var(--text-secondary); font-size: var(--fs-small); line-height: 1.6; }
 .sidenote::before { content: "[" counter(sidenote, lower-alpha) "] "; }
-@media (min-width: 1100px) {
-    .sidenote { float: right; clear: right; width: 270px; margin: 0.2em -302px 1em 0; padding-left: 0; border-left: 0; }
-    /* Wide blocks start below any note still hanging in the margin. */
-    .article-prose > :is(pre, figure, table, .dev-flow, .footnotes) { clear: right; }
+
+/* On this page: the article's second-level headings. Folded away by default. */
+.toc { color: var(--text-secondary); font-size: var(--fs-small); }
+.toc ul { margin: 0; padding: 0; list-style: none; }
+.toc li { margin: 0; }
+.toc a { display: block; padding: 3px 0; text-decoration: none; }
+.toc a:hover, .toc a:focus-visible { text-decoration: underline; }
+.toc-inline { margin: 0 0 20px; }
+.toc-inline summary { min-height: 44px; padding: 10px 0; cursor: pointer; }
+.toc-inline nav { padding: 0 0 8px 2ch; }
+.toc-margin { display: none; }
+
+/* The margin column. An article wide enough for prose, gutter and margin hangs its
+   notes and its "on this page" list out to the right. Asked of the article itself,
+   in font-relative units, so a larger reading size falls back to inline instead of
+   pushing the page sideways. */
+@container article (min-width: calc(70ch + 2rem + 17rem)) {
+    .sidenote {
+        float: right;
+        clear: right;
+        width: var(--margin-col);
+        margin: 0.2em calc(-1 * (var(--margin-col) + var(--gutter))) 1em 0;
+    }
+    .toc-inline { display: none; }
+    /* Same column as the notes. The 1rem size keeps `ch` equal to the prose measure. */
+    .toc-margin {
+        display: block;
+        float: right;
+        clear: right;
+        width: var(--margin-col);
+        margin: 0.3em calc(100% - var(--measure) - var(--gutter) - var(--margin-col)) 1.5em 0;
+        font-size: 1rem;
+    }
+    .toc-margin > * { font-size: var(--fs-small); }
+    .toc-margin .rule-heading { margin: 0 0 4px; }
+    /* Wide blocks start below anything still hanging in the margin. */
+    .article-prose > :is(pre, figure, .table-scroll, .dev-flow, .footnotes) { clear: right; }
 }
 
 /* A real setup diagram, not decorative chrome. */
@@ -363,28 +442,52 @@ th, td { padding: 8px 12px; border: 1px dotted var(--border-color); text-align: 
 .dev-flow-route img { width: 34px; height: auto; margin: 0; }
 .dev-flow-route code { padding: 0; background: none; font-size: 1em; overflow-wrap: anywhere; }
 
-@media (min-width: 768px) { body { padding: 40px 56px; } }
-@media (max-width: 640px) {
-    .section-index .section-heading { display: grid; grid-template-columns: minmax(0, 1fr) 72px; align-items: center; gap: 12px 16px; }
-    .section-index .section-copy { display: contents; }
-    .section-index .section-copy > h1 { grid-column: 1; grid-row: 1; }
-    .section-index .section-heading img { grid-column: 2; grid-row: 1; width: 72px; }
-    .section-index .section-intro { grid-column: 1 / -1; grid-row: 2; margin-top: 0; }
-    .home-section .section-heading { align-items: center; }
-    .home-section .section-copy { padding-right: 0; }
-    .home-section .section-heading img { position: static; transform: none; width: 64px; }
-    .home-section .dated-list { padding-right: 0; }
-    .build-list { grid-template-columns: 1fr; }
-    .home-section > .dated-list { margin-bottom: 8px; }
-    .home-section .archive-link { margin-top: 8px; }
+@media (min-width: 48em) { body { padding: 2.5rem var(--page-pad); } }
+@media (max-width: 40em) {
+    .section-heading { display: grid; grid-template-columns: minmax(0, 1fr) 72px; align-items: center; gap: 12px 16px; }
+    .section-copy { display: contents; }
+    .section-copy > h1 { grid-column: 1; grid-row: 1; }
+    .section-heading img { grid-column: 2; grid-row: 1; width: 72px; }
+    .section-intro { grid-column: 1 / -1; grid-row: 2; margin-top: 0; }
+    .section-directory img { width: 56px; }
 }
-@media (max-width: 560px) {
+@media (max-width: 35em) {
     body { line-height: 1.65; }
     article p { margin-bottom: 1em; }
-    .dated-list li { grid-template-columns: minmax(0, 1fr); gap: 0; padding: 4px 0; }
-    .catalog-timeline li { grid-template-columns: 10ch minmax(0, 1fr); gap: 2px 12px; padding: 4px 0; }
-    .catalog-timeline li > a { grid-column: 1 / -1; }
+    /* Rows stack: the date (and kind) above, the title on a line of its own. */
+    .ledger li { grid-template: "date" auto "title" auto / minmax(0, 1fr); padding: 4px 0; }
+    .ledger.has-kind li { grid-template: "date kind" auto "title title" auto / 10ch minmax(0, 1fr); }
+    .ledger.has-notes li { grid-template: "date date" auto "title code" auto "note note" auto / minmax(0, 1fr) auto; }
     .dev-flow { padding: 12px 14px; }
     .dev-flow-route { grid-template-columns: minmax(0, 1fr); gap: 2px; }
     .dev-flow-route img { display: none; }
+}
+
+/* Paper. Browsers drop backgrounds when printing, so the roles move to ink on white
+   (the one place a colour comes from outside Gruvbox) and navigation gives way to
+   the address each external link points to. */
+@media print {
+    :root {
+        color-scheme: light;
+        --bg-primary: #fff;
+        --text-primary: #000;
+        --text-secondary: #333;
+        --border-color: #777;
+        --code-bg: transparent;
+        --pre-bg: transparent;
+        --accent: #000;
+        --accent-visited: #000;
+        --accent-hover: #000;
+        --kind-shard: #000;
+        --kind-build: #000;
+        --kind-wal: #000;
+    }
+    body { max-width: none; padding: 0; font-size: 11pt; }
+    .skip-to-content, .site-nav, .toc, .archive-link, .heading-permalink, .footnote-backref,
+    .section-heading img, .section-directory img, .dev-flow-route img { display: none; }
+    a[rel~="external"]::after { content: " <" attr(href) ">"; }
+    pre { overflow: visible; white-space: pre-wrap; }
+    .chroma, .chroma * { background: none !important; color: #000 !important; }
+    h1, h2, h3 { break-after: avoid; }
+    pre, figure, table, .ledger li { break-inside: avoid; }
 }

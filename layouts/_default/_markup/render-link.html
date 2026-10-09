@@ -1,0 +1,6 @@
+{{- /* Mark links that leave the site so the stylesheet can tag them [ext]. Comparing
+       hosts keeps an absolute link to this site internal. */ -}}
+{{- $url := urls.Parse .Destination -}}
+{{- $external := and (in (slice "http" "https") $url.Scheme) (ne $url.Host (urls.Parse site.BaseURL).Host) -}}
+<a href="{{ .Destination | safeURL }}"{{ with .Title }} title="{{ . }}"{{ end }}{{ if $external }} rel="external"{{ end }}>{{ .Text }}</a>
+{{- /* No trailing newline: a link sits inside a sentence. */ -}}

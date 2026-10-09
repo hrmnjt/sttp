@@ -6,10 +6,13 @@ import os
 from pathlib import Path
 import shutil
 import subprocess
+import re
 import tempfile
+import tomllib
 import unittest
 from urllib.parse import unquote, urlsplit
 import xml.etree.ElementTree as ET
+from html import unescape
 from html.parser import HTMLParser
 
 
@@ -26,39 +29,39 @@ class Page(HTMLParser):
         self.meta = {}
         self.schemas = []
         self.scripts = []
-        self.entries = []
-        self.backlinks = {}
-        self._backlink_group = None
-        self._backlink_item = None
-        self._backlink_link = False
+        self.entries = []    # ledger rows outside "see also", in document order
+        self.see_also = []   # "see also" rows, in document order
+        self.backlinks = {}  # the same rows by kind: related-shards, related-builds
+        self.navs = {}       # aria-label -> the attributes of each link inside
+        self.rules = []      # the text of every labelled rule
         self.main_text = []
         self._main = False
-        self._catalog = False
-        self._entry = None
+        self._ledger = False
+        self._see_also = False
+        self._row = None
         self._capture = None
+        self._nav = None
+        self._rule = None
         self._script = None
         self.feed(path.read_text())
 
     def handle_starttag(self, tag, attrs):
         attrs = dict(attrs)
+        classes = attrs.get("class", "").split()
         self.elements.append((tag, attrs))
         if "id" in attrs:
             self.ids.append(attrs["id"])
         for attribute in ("aria-labelledby", "aria-describedby"):
             self.aria_refs.extend(attrs.get(attribute, "").split())
-        if tag == "section" and attrs.get("class") == "backlink-group":
-            self._backlink_group = attrs["aria-labelledby"].replace("post-backlinks-", "related-")
-            self.backlinks[self._backlink_group] = []
-        if self._backlink_group:
-            if tag == "li":
-                self._backlink_item = {"date": "", "url": "", "title": ""}
-                self.backlinks[self._backlink_group].append(self._backlink_item)
-            if self._backlink_item is not None:
-                if tag == "time":
-                    self._backlink_item["date"] = attrs["datetime"]
-                if tag == "a":
-                    self._backlink_item["url"] = attrs["href"]
-                    self._backlink_link = True
+        if tag == "nav":
+            self._nav = attrs.get("aria-label")
+            self.navs.setdefault(self._nav, [])
+        if tag == "a" and self._nav in self.navs:
+            self.navs[self._nav].append(attrs)
+        if "rule-heading" in classes:
+            self._rule = ""
+        if tag == "section" and "see-also" in classes:
+            self._see_also = True
         if tag == "main":
             self._main = True
         if tag == "meta":
@@ -68,51 +71,63 @@ class Page(HTMLParser):
         if tag == "script":
             self.scripts.append(attrs)
             self._script = ""
-        if tag == "ol" and attrs.get("class") == "catalog-timeline":
-            self._catalog = True
-        if self._catalog:
+        if tag == "ol" and "ledger" in classes:
+            self._ledger = True
+        if self._ledger:
             if tag == "li":
-                self._entry = {"date": "", "kind": "", "title": "", "url": ""}
-            if self._entry is not None:
+                self._row = {"date": "", "kind": "", "title": "", "url": ""}
+            if self._row is not None:
                 if tag == "time":
-                    self._entry["date"] = attrs["datetime"]
-                if tag == "span":
+                    self._row["date"] = attrs["datetime"]
+                if tag == "span" and "content-kind" in classes:
                     self._capture = "kind"
-                if tag == "a":
-                    self._entry["url"] = attrs["href"]
+                if tag == "a" and "row-title" in classes:
+                    self._row["url"] = attrs["href"]
                     self._capture = "title"
 
     def handle_endtag(self, tag):
+        if tag == "nav":
+            self._nav = None
+        if self._rule is not None and tag in ("h2", "h3", "p"):
+            self.rules.append(" ".join(self._rule.split()))
+            self._rule = None
         if tag == "section":
-            self._backlink_group = None
-        if tag == "li":
-            self._backlink_item = None
-        if tag == "a":
-            self._backlink_link = False
+            self._see_also = False
         if tag == "main":
             self._main = False
         if tag == "script" and self._script is not None:
             if self.scripts[-1].get("type") == "application/ld+json":
                 self.schemas.append(json.loads(self._script))
             self._script = None
-        if self._catalog:
+        if self._ledger:
             if tag in ("span", "a"):
                 self._capture = None
-            if tag == "li":
-                self.entries.append(self._entry)
-                self._entry = None
+            if tag == "li" and self._row is not None:
+                if self._see_also:
+                    self.see_also.append(self._row)
+                    group = "related-%ss" % self._row["kind"].strip("[]")
+                    self.backlinks.setdefault(group, []).append(self._row)
+                else:
+                    self.entries.append(self._row)
+                self._row = None
             if tag == "ol":
-                self._catalog = False
+                self._ledger = False
 
     def handle_data(self, text):
-        if self._backlink_item is not None and self._backlink_link:
-            self._backlink_item["title"] += text
+        if self._rule is not None:
+            self._rule += text
         if self._main:
             self.main_text.append(text)
         if self._script is not None:
             self._script += text
-        if self._entry is not None and self._capture:
-            self._entry[self._capture] += text
+        if self._row is not None and self._capture:
+            self._row[self._capture] += text
+
+    def count(self, tag, cls):
+        return sum(t == tag and cls in attrs.get("class", "").split() for t, attrs in self.elements)
+
+    def text(self):
+        return " ".join(" ".join(self.main_text).split())
 
 
 class SiteTests(unittest.TestCase):
@@ -122,7 +137,7 @@ class SiteTests(unittest.TestCase):
         cls.addClassCleanup(cls.tmp.cleanup)
         cls.source = Path(cls.tmp.name) / "source"
         cls.source.mkdir()
-        for directory in ("assets", "content", "layouts", "static"):
+        for directory in ("assets", "content", "data", "layouts", "static"):
             shutil.copytree(ROOT / directory, cls.source / directory)
         shutil.copy(ROOT / "hugo.toml", cls.source / "hugo.toml")
         # Interleave all stream types, with repeated headings and footnotes in WAL.
@@ -148,6 +163,9 @@ class SiteTests(unittest.TestCase):
                 '\n```python\nprint("fixture")\n```\n\n```\nliteral <tag> & text\n```\n'
 
             )
+        with (cls.source / "content/builds/test-build.md").open("a") as fixture:
+            fixture.write('\n{{< img-optimized src="duckdb-query.png" alt="Captioned fixture" '
+                          'caption="A *captioned* fixture" >}}\n')
         # An index rendering image-bearing WAL entries also needs the viewer.
         with (cls.source / "content/wal/test-first.md").open("a") as fixture:
             fixture.write('\n{{< img-optimized src="duckdb-query.png" alt="WAL image fixture" >}}\n')
@@ -271,43 +289,52 @@ class SiteTests(unittest.TestCase):
             self.assertEqual(sum(tag == "figure" and attrs.get("class") == "article-image"
                                  for tag, attrs in harlequin.elements), 2)
 
-    def test_backlinks_and_source_links_share_one_closing_area(self):
+    def test_see_also_and_source_share_one_labelled_closing_area(self):
         for output in (self.release, self.drafts):
-            routes = [("2026/02/01/dev/index.html", "Shard source"),
-                      ("2026/02/08/rfd/index.html", "Shard source"),
-                      ("builds/dev/index.html", "Build source"),
-                      ("readme/index.html", "Readme source")]
+            routes = ["2026/02/01/dev/index.html", "2026/02/08/rfd/index.html",
+                      "builds/dev/index.html", "readme/index.html"]
             if output == self.drafts:
-                routes.append(("wal/test-first/index.html", "WAL entry source"))
-            for route, label in routes:
+                routes.append("wal/test-first/index.html")
+            for route in routes:
                 page = self.page(output, route)
-                self.assertEqual(sum(tag == "footer" and attrs.get("class") == "article-meta"
-                                     for tag, attrs in page.elements), 1)
+                self.assertEqual(page.count("footer", "article-meta"), 1)
                 html = (output / route).read_text()
                 start = html.index('article-meta')
-                end = html.index('</footer>', start)
-                self.assertIn(f'aria-label="{label}"', html[start:end])
-                self.assertIn("view [markdown]", " ".join(" ".join(page.main_text).split()))
-                if page.backlinks:
-                    self.assertIn('post-backlinks', html[start:end])
-                self.assertEqual(sum(tag == "nav" and "source-trail" in
-                                     attrs.get("class", "").split()
-                                     for tag, attrs in page.elements), 1)
+                closing = html[start:html.index('</footer>', start)]
+                # Labelled rules are real headings, so the closing area is navigable.
+                self.assertIn(("h2", {"class": "rule-heading", "id": "article-source"}), page.elements)
+                self.assertIn("article-source", closing)
+                self.assertIn('aria-label="Markdown source"', closing)
+                self.assertIn("[markdown] [history]", page.text())
+                self.assertEqual(page.count("section", "source-trail"), 1)
+                self.assertEqual(bool(page.see_also), "article-see-also" in closing)
+                if page.see_also:
+                    self.assertIn(("h2", {"class": "rule-heading", "id": "article-see-also"}), page.elements)
+                    self.assertLess(closing.index("article-see-also"), closing.index("article-source"))
+                    self.assertLess(page.rules.index("see also"), page.rules.index("source"))
 
-    def test_articles_link_back_to_their_section_indexes(self):
+    def test_address_line_is_a_breadcrumb_back_to_the_section(self):
         for output in (self.release, self.drafts):
-            routes = [("2026/02/08/rfd/index.html", "/shards/", "← shards"),
-                      ("builds/dev/index.html", "/builds/", "← builds"),
-                      ("readme/index.html", "/", "← home")]
+            routes = [("index.html", ["/"], "/"),
+                      ("2026/02/08/rfd/index.html", ["/", "/shards/"], None),
+                      ("builds/dev/index.html", ["/", "/builds/"], None),
+                      ("shards/index.html", ["/", "/shards/"], "/shards/"),
+                      ("catalog/index.html", ["/", "/catalog/"], "/catalog/"),
+                      ("readme/index.html", ["/", "/readme/"], "/readme/"),
+                      ("404.html", ["/"], None)]
             if output == self.drafts:
-                routes.append(("wal/test-first/index.html", "/wal/", "← wal"))
-            for route, href, text in routes:
+                routes.append(("wal/test-first/index.html", ["/", "/wal/"], None))
+            for route, crumbs, current in routes:
                 page = self.page(output, route)
-                self.assertEqual(sum(tag == "p" and attrs.get("class") == "back-link"
-                                     for tag, attrs in page.elements), 1)
-                self.assertIn(href, [attrs.get("href") for tag, attrs in page.links
-                                    if tag == "a"])
-                self.assertIn(text, " ".join(page.main_text))
+                trail = page.navs["Breadcrumb"]
+                self.assertEqual([link["href"] for link in trail], crumbs, route)
+                self.assertEqual([link["href"] for link in trail if link.get("aria-current") == "page"],
+                                 [current] if current else [], route)
+                # The scheme is decoration; the address replaces the old back-link row.
+                self.assertIn('<span aria-hidden=true>sttp://</span>', (output / route).read_text())
+                self.assertEqual(page.count("p", "back-link"), 0)
+                # The joke is explained once, on the home page.
+                self.assertEqual(page.count("p", "protocol-expansion"), int(route == "index.html"))
 
     def test_home_profile_keeps_authored_strikethrough_history(self):
         for output in (self.release, self.drafts):
@@ -352,6 +379,13 @@ class SiteTests(unittest.TestCase):
                 self.assertEqual(set(tokens), {"shard", "build", "wal", "readme"})
 
     def test_kind_marks_are_decorative_and_take_their_label_colour(self):
+        registry = tomllib.loads((ROOT / "data/kinds.toml").read_text())["kind"]
+        names = {kind["name"] for kind in registry}
+        self.assertEqual(names, {"shard", "build", "wal", "readme"})
+        for kind in registry:
+            self.assertEqual(bool(kind.get("stream")), "note" in kind, kind["section"])
+            # Each kind carries its own glyph: a viewBox and a path.
+            self.assertEqual(set(kind["glyph"]), {"box", "path"}, kind["section"])
         for output in (self.release, self.drafts):
             page = self.page(output, "catalog/index.html")
             marks = [attrs for tag, attrs in page.elements
@@ -361,45 +395,65 @@ class SiteTests(unittest.TestCase):
             for mark in marks:
                 self.assertEqual(mark["aria-hidden"], "true")
                 self.assertEqual(mark["stroke"], "currentColor")
+            self.assertEqual({mark["viewbox"] for mark in marks},
+                             {kind["glyph"]["box"] for kind in registry
+                              if f'[{kind["name"]}]' in {entry["kind"] for entry in page.entries}})
             self.assertFalse([s for s in page.scripts if s.get("src")])
-        # Kinds name a Gruvbox palette entry; sketches keep the shared green accent.
+            for path, other in self.pages[output].items():
+                tags = [attrs["data-kind"] for tag, attrs in other.elements
+                        if tag == "span" and attrs.get("class") == "content-kind"]
+                self.assertTrue(set(tags) <= names, str(path))
+                # Glyph and label always travel together.
+                self.assertEqual(other.count("svg", "kind-mark"), len(tags), str(path))
+        # The coloured set is closed at three Gruvbox entries; sketches keep the green accent.
         css = (ROOT / "assets/css/main.css").read_text()
+        self.assertEqual(sorted(set(re.findall(r"--kind-[a-z]+(?=:)", css))),
+                         ["--kind-build", "--kind-shard", "--kind-wal"])
         for token in ("--kind-shard", "--kind-build", "--kind-wal"):
             self.assertRegex(css.split(f"{token}: ")[1].split(";")[0], r"^var\(--gb-[a-z]+\)$")
-        for sketch in ("shard", "builds", "wal", "catalog"):
+        for sketch in ("shards", "builds", "wal", "catalog"):
             self.assertIn("#b8bb26", (ROOT / f"assets/images/doodles/{sketch}.svg").read_text())
-        # Every article names its own kind in its date line.
+        # Every article names its own kind first, in its date line.
         for route, kind in (("2026/02/08/rfd/index.html", "shard"), ("builds/dev/index.html", "build"),
                             ("readme/index.html", "readme")):
             tokens = [attrs["data-kind"] for tag, attrs in self.page(self.release, route).elements
                       if tag == "span" and attrs.get("class") == "content-kind"]
-            self.assertEqual(tokens, [kind], route)
+            self.assertEqual(tokens[0], kind, route)
+        # "See also" is one list, newest first, with the kind on each row.
         ivanti = self.page(self.release, "2026/03/06/ivanti-osascript/index.html")
-        groups = [attrs.get("data-kind") for tag, attrs in ivanti.elements
-                  if tag == "h3" and attrs.get("class") == "content-kind"]
-        self.assertEqual(groups, ["shard", "build"])
+        self.assertEqual([row["kind"] for row in ivanti.see_also], ["[build]", "[shard]"])
 
-    def test_footer_links_every_populated_section(self):
-        for output, sections in (
-                (self.release, ["/shards/", "/builds/", "/catalog/", "/readme/", "/index.xml"]),
-                (self.drafts, ["/shards/", "/builds/", "/wal/", "/catalog/", "/readme/", "/index.xml"])):
-            for route in ("404.html", "builds/index.html"):
-                elements = self.page(output, route).elements
-                start = max(i for i, (tag, attrs) in enumerate(elements)
-                            if tag == "nav" and attrs.get("aria-label") == "Site sections")
-                links = [attrs for tag, attrs in elements[start:]
-                         if tag == "a" and attrs.get("href") in sections]
-                self.assertEqual([attrs["href"] for attrs in links], sections)
-                current = [attrs["href"] for attrs in links if attrs.get("aria-current") == "page"]
-                self.assertEqual(current, ["/builds/"] if route.startswith("builds") else [])
+    def test_header_links_every_populated_stream_and_marks_where_you_are(self):
+        for output, streams in ((self.release, ["/shards/", "/builds/"]),
+                                (self.drafts, ["/shards/", "/builds/", "/wal/"])):
+            for route, current in (("404.html", None), ("index.html", None),
+                                   ("builds/index.html", ("/builds/", "page")),
+                                   ("builds/dev/index.html", ("/builds/", "true")),
+                                   ("2026/02/08/rfd/index.html", ("/shards/", "true")),
+                                   ("catalog/index.html", ("/catalog/", "page"))):
+                page = self.page(output, route)
+                primary = page.navs["Primary"]
+                self.assertEqual([link["href"] for link in primary], streams + ["/catalog/"], route)
+                marked = [(link["href"], link["aria-current"]) for link in primary if "aria-current" in link]
+                self.assertEqual(marked, [current] if current else [], route)
+                # One asterisk beside the current entry, hidden from assistive technology.
+                marks = [attrs for tag, attrs in page.elements
+                         if tag == "span" and attrs.get("class") == "nav-mark"]
+                expected = len(marked) + int(route == "readme/index.html")
+                self.assertEqual(len(marks), expected, route)
+                self.assertTrue(all(mark.get("aria-hidden") == "true" for mark in marks))
+                self.assertEqual([link["href"] for link in page.navs["Site"]], ["/readme/", "/index.xml"])
 
     def test_builds_lead_with_their_code_link(self):
         for output in (self.release, self.drafts):
             build = (output / "builds/dev/index.html").read_text()
-            self.assertLess(build.index("Build code"), build.index("article-prose"))
+            self.assertLess(build.index("article-lead"), build.index("article-prose"))
             footer = build[build.index("article-meta"):]
             self.assertNotIn("[code]", footer[:footer.index("</footer>")])
-            self.assertIn("github.com/hrmnjt/dev", " ".join(self.page(output, "builds/dev/index.html").main_text))
+            self.assertIn("github.com/hrmnjt/dev", self.page(output, "builds/dev/index.html").text())
+            # A shard with a repository keeps its link with the rest of its source.
+            shard = (output / "2026/02/01/dev/index.html").read_text()
+            self.assertNotIn("article-lead", shard)
 
     def test_sidenotes_stay_in_reading_order_as_notes(self):
         page = self.page(self.drafts, "builds/dolor-sit-amet/index.html")
@@ -415,6 +469,9 @@ class SiteTests(unittest.TestCase):
         page = self.page(self.release, "404.html")
         self.assertIn("/catalog/", [attrs.get("href") for tag, attrs in page.links if tag == "a"])
         self.assertNotIn("all shards", " ".join(page.main_text))
+        # A database-flavoured error, then the same thing in plain words.
+        self.assertIn("ERROR: relation does not exist HINT:", page.text())
+        self.assertIn("Nothing lives at this address.", page.text())
 
     def test_footer_keeps_licensing_caveat_separate_from_navigation(self):
         for output in (self.release, self.drafts):
@@ -429,16 +486,25 @@ class SiteTests(unittest.TestCase):
                 self.assertEqual(licences, ["https://creativecommons.org/licenses/by/4.0/"])
                 self.assertNotIn("under review", (ROOT / "content/readme/_index.md").read_text())
 
-    def test_home_previews_only_the_three_newest_shards(self):
-        for output in (self.release, self.drafts):
-            index = self.page(output, "shards/index.html")
-            archive_urls = [attrs["href"] for tag, attrs in index.links
-                            if tag == "a" and attrs.get("href", "").startswith("/")
-                            and attrs["href"].split("/")[1].isdigit()]
-            home_urls = [attrs["href"] for tag, attrs in self.page(output, "index.html").links
-                         if tag == "a" and attrs.get("href", "") in archive_urls]
-            self.assertEqual(home_urls, archive_urls[:3])
-            self.assertGreater(len(archive_urls), 3)
+    def test_home_leads_with_the_head_of_the_catalog_then_a_directory(self):
+        for output, streams in ((self.release, 2), (self.drafts, 3)):
+            home = self.page(output, "index.html")
+            dated = [entry for entry in self.page(output, "catalog/index.html").entries
+                     if entry["url"] != "/readme/"]
+            self.assertGreater(len(dated), 8)
+            self.assertEqual(home.entries, dated[:8])
+            self.assertEqual(home.rules, ["recent", "sections"])
+            self.assertIn("/catalog/", [attrs.get("href") for tag, attrs in home.links if tag == "a"])
+            # One directory row per populated stream: its sketch, its name and its one line.
+            directories = [attrs for tag, attrs in home.elements
+                           if tag == "ul" and attrs.get("class") == "section-directory"]
+            self.assertEqual([attrs.get("role") for attrs in directories], ["list"])
+            sketches = [attrs for tag, attrs in home.links if tag == "img" and "/doodles/" in attrs["src"]]
+            self.assertEqual(len(sketches), streams)
+            self.assertTrue(all(not attrs["alt"] and attrs["aria-hidden"] == "true" for attrs in sketches))
+            self.assertIn("sections shards Partitioned thoughts. No global ordering promised. "
+                          "builds Things that escaped the scratch buffer.", home.text())
+            self.assertNotRegex(home.text(), r"\d+ rows?\b")
 
     def test_build_layout_samples_are_preview_only(self):
         for slug in ("lorem-ipsum", "dolor-sit-amet"):
@@ -455,35 +521,32 @@ class SiteTests(unittest.TestCase):
                 self.assertEqual("https://hrmnjt.dev" + route in
                                  [item.findtext("link") for item in items], present)
 
-    def test_build_cards_keep_page_and_repository_links_distinct(self):
+    def test_build_rows_keep_page_and_repository_links_distinct(self):
         for output in (self.release, self.drafts):
-            for directory in ("index.html", "builds/index.html"):
-                page = self.page(output, directory)
-                lists = [attrs for tag, attrs in page.elements
-                         if tag == "ul" and attrs.get("class") == "build-list"]
-                self.assertEqual(len(lists), 1)
-                self.assertEqual(lists[0].get("role"), "list")
-                cards = [attrs for tag, attrs in page.elements
-                         if tag == "li" and attrs.get("class") == "build-card"]
-                names = [attrs for tag, attrs in page.links
-                         if tag == "a" and attrs.get("class") == "build-name"]
-                sources = [attrs for tag, attrs in page.links
-                           if tag == "a" and attrs.get("class") == "build-code"]
-                self.assertEqual(len(cards), len(names))
-                self.assertIn("/builds/dev/", [attrs["href"] for attrs in names])
-                self.assertIn("https://github.com/hrmnjt/dev", [attrs["href"] for attrs in sources])
-                self.assertTrue(all(attrs.get("aria-label", "").startswith("Code repository for ")
-                                    for attrs in sources))
-                for attrs in names:
-                    self.assertTrue(attrs["href"].startswith("/builds/"))
-                if output == self.release:
-                    self.assertEqual(len(cards), 1)
-                elif directory == "index.html":
-                    self.assertEqual(len(cards), 3)
-                else:
-                    # The fixture deliberately has no repository URL: no invented code link.
-                    self.assertEqual(len(cards), 4)
-                    self.assertEqual(len(sources), 3)
+            page = self.page(output, "builds/index.html")
+            lists = [attrs for tag, attrs in page.elements
+                     if tag == "ol" and "ledger" in attrs.get("class", "").split()]
+            self.assertTrue(lists)
+            for attrs in lists:
+                self.assertEqual(attrs.get("role"), "list")
+                self.assertIn("has-notes", attrs["class"].split())
+            names = [attrs for tag, attrs in page.links if tag == "a" and attrs.get("class") == "row-title"]
+            sources = [attrs for tag, attrs in page.links if tag == "a" and attrs.get("class") == "row-code"]
+            self.assertEqual(len(names), len(page.entries))
+            self.assertIn("/builds/dev/", [attrs["href"] for attrs in names])
+            self.assertIn("https://github.com/hrmnjt/dev", [attrs["href"] for attrs in sources])
+            self.assertTrue(all(attrs.get("aria-label", "").startswith("Code repository for ")
+                                for attrs in sources))
+            for attrs in names:
+                self.assertTrue(attrs["href"].startswith("/builds/"))
+            self.assertIn("My Mac setup, dotfiles, and bootstrap workflow.", page.text())
+            self.assertFalse(page.count("li", "build-card"))
+            if output == self.release:
+                self.assertEqual(len(names), 1)
+            else:
+                # The fixture deliberately has no repository URL: no invented code link.
+                self.assertEqual(len(names), 4)
+                self.assertEqual(len(sources), 3)
 
     def test_wal_shows_full_entries_and_unique_anchor_targets(self):
         path = self.drafts / "wal/index.html"
@@ -500,6 +563,9 @@ class SiteTests(unittest.TestCase):
             self.assertIn(attrs["href"][1:], page.ids)
             self.assertIn("Return to reference", attrs["aria-label"])
         self.assertIn("[return]", text)
+        # Inside an entry printed in full, the footnotes rule sits a level below its title.
+        self.assertEqual(sum(tag == "h3" and attrs.get("class") == "rule-heading"
+                             for tag, attrs in page.elements), 2)
 
     def test_metadata_and_source_trail(self):
         for output in (self.release, self.drafts):
@@ -509,7 +575,7 @@ class SiteTests(unittest.TestCase):
                 self.assertTrue(all(script.get("type") == "application/ld+json" or script.get("src")
                                     for script in page.scripts))
             shard = (output / "2026/02/01/dev/index.html").read_text()
-            self.assertGreater(shard.index("Markdown source"), shard.index("backlinks"))
+            self.assertGreater(shard.index("Markdown source"), shard.index("article-see-also"))
             build = self.page(output, "builds/dev/index.html")
             self.assertIn("https://github.com/hrmnjt/dev", [attrs.get("href") for _, attrs in build.links])
 
@@ -552,6 +618,8 @@ class SiteTests(unittest.TestCase):
         self.assertEqual(len([s for s in wal.scripts if s.get("src")]), 1)
         headers = (ROOT / "static/_headers").read_text()
         self.assertIn("script-src 'self';", headers)
+        self.assertIn("style-src 'self';", headers)
+        self.assertNotIn("unsafe-inline", headers)
         self.assertNotIn("script-src 'self' 'unsafe-inline'", headers)
         self.assertIn("/js/*", headers)
 
@@ -564,17 +632,17 @@ class SiteTests(unittest.TestCase):
             self.assertEqual(headings["appendix"], "h2")
             self.assertEqual(headings["rfd-template"], "h3")
 
-    def test_source_labels_keep_view_outside_the_bracketed_links(self):
+    def test_source_links_are_bracketed_under_a_source_rule(self):
         for output in (self.release, self.drafts):
             shard = self.page(output, "2026/02/01/dev/index.html")
-            text = " ".join(" ".join(shard.main_text).split())
-            for label in ("[code]", "view [markdown]", "view [history]"):
-                self.assertIn(label, text)
-            self.assertEqual(sum(tag == "span" and attrs.get("class") == "source-link"
-                                 for tag, attrs in shard.elements), 2)
-            self.assertNotIn("↗", text)
+            self.assertIn("source [code] [markdown] [history]", shard.text())
+            self.assertNotIn("view [", shard.text())
+            self.assertNotIn("↗", shard.text())
+            labels = [attrs.get("aria-label") for tag, attrs in shard.links
+                      if tag == "a" and attrs.get("aria-label") in ("Markdown source", "Git history")]
+            self.assertEqual(labels, ["Markdown source", "Git history"])
 
-    def test_build_collects_all_shard_backlinks_in_original_date_order(self):
+    def test_build_collects_every_related_shard_in_original_date_order(self):
         for output in (self.release, self.drafts):
             build = self.page(output, "builds/dev/index.html")
             entries = build.backlinks["related-shards"]
@@ -592,7 +660,7 @@ class SiteTests(unittest.TestCase):
             self.assertEqual([entry["date"] for entry in entries],
                              sorted([entry["date"] for entry in entries], reverse=True))
 
-    def test_backlinks_support_many_targets_reciprocity_and_deduplication(self):
+    def test_see_also_supports_many_targets_reciprocity_and_deduplication(self):
         fixture = self.page(self.drafts, "2026/03/03/timeline-fixture/index.html")
         self.assertEqual([entry["url"] for entry in fixture.backlinks["related-builds"]],
                          ["/builds/dev/", "/builds/test-build/"])
@@ -619,6 +687,176 @@ class SiteTests(unittest.TestCase):
                     self.assertEqual(len(urls), len(set(urls)))
                     dates = [entry["date"] for entry in entries]
                     self.assertEqual(dates, sorted(dates, reverse=True))
+
+    def test_ledgers_break_by_year_without_counting_rows(self):
+        for output in (self.release, self.drafts):
+            for route in ("catalog/index.html", "shards/index.html"):
+                page = self.page(output, route)
+                years = [entry["date"][:4] for entry in page.entries]
+                # One labelled rule per year, in the order the rows arrive.
+                self.assertEqual(page.rules, list(dict.fromkeys(years)), route)
+                self.assertEqual(page.rules, sorted(page.rules, reverse=True), route)
+                # The list speaks for itself; nothing on the site counts rows.
+                self.assertNotRegex(page.text(), r"\d+ rows?\b")
+                self.assertEqual(page.count("p", "row-count"), 0)
+                lists = [attrs for tag, attrs in page.elements
+                         if tag == "ol" and "ledger" in attrs.get("class", "").split()]
+                self.assertEqual(len(lists), len(page.rules))
+                self.assertTrue(all(attrs.get("role") == "list" for attrs in lists))
+                self.assertEqual(all("has-kind" in attrs["class"].split() for attrs in lists),
+                                 route.startswith("catalog"))
+
+    def test_long_articles_list_their_sections_and_short_ones_do_not(self):
+        for output in (self.release, self.drafts):
+            rfd = self.page(output, "2026/02/08/rfd/index.html")
+            # One copy folded under the title, one for the margin; CSS shows exactly one.
+            self.assertEqual(rfd.count("details", "toc-inline"), 1)
+            self.assertEqual(rfd.count("nav", "toc-margin"), 1)
+            targets = [link["href"] for link in rfd.navs["On this page"]]
+            self.assertEqual(len(targets), 18)
+            self.assertEqual(targets[:9], targets[9:])
+            self.assertEqual(targets[0], "#summary")
+            for target in targets:
+                self.assertIn(target[1:], rfd.ids)
+            second_level = [attrs["id"] for tag, attrs in rfd.elements
+                            if tag == "h2" and "id" in attrs and attrs.get("class") != "rule-heading"]
+            self.assertEqual([target[1:] for target in targets[:9]], second_level)
+            for route in ("2026/03/06/ivanti-osascript/index.html", "readme/index.html", "builds/dev/index.html"):
+                self.assertNotIn("On this page", self.page(output, route).navs, route)
+
+    def test_tables_scroll_inside_a_focusable_wrapper_without_inline_styles(self):
+        for output in (self.release, self.drafts):
+            rfd = self.page(output, "2026/02/08/rfd/index.html")
+            wrappers = [attrs for tag, attrs in rfd.elements
+                        if tag == "div" and attrs.get("class") == "table-scroll"]
+            self.assertEqual(len(wrappers), sum(tag == "table" for tag, _ in rfd.elements))
+            self.assertEqual([attrs["aria-label"] for attrs in wrappers], ["Table 1", "Table 2"])
+            for attrs in wrappers:
+                self.assertEqual((attrs["role"], attrs["tabindex"]), ("region", "0"))
+            headers = [attrs for tag, attrs in rfd.elements if tag == "th"]
+            self.assertTrue(headers)
+            self.assertTrue(all(attrs.get("scope") == "col" for attrs in headers))
+            # The policy in static/_headers allows no inline styles, so nothing may emit one.
+            for path, page in self.pages[output].items():
+                self.assertFalse([tag for tag, attrs in page.elements if "style" in attrs or tag == "style"],
+                                 str(path))
+
+    def test_only_links_that_leave_the_site_are_marked_external(self):
+        for output in (self.release, self.drafts):
+            for path, page in self.pages[output].items():
+                for tag, attrs in page.links:
+                    if tag == "a" and attrs.get("rel") == "external":
+                        url = urlsplit(attrs["href"])
+                        self.assertIn(url.scheme, ("http", "https"), str(path))
+                        self.assertNotEqual(url.netloc, "hrmnjt.dev", str(path))
+            # A link to another shard stays internal and relative.
+            harlequin = self.page(output, "2024/12/02/readdatawithharlequin/index.html")
+            shard = [attrs for tag, attrs in harlequin.links
+                     if tag == "a" and attrs.get("href") == "/2024/10/05/readdatawithduck/"]
+            self.assertEqual(len(shard), 1)
+            self.assertNotIn("rel", shard[0])
+            marked = [attrs["href"] for tag, attrs in harlequin.links
+                      if tag == "a" and attrs.get("rel") == "external"]
+            self.assertEqual(len(marked), 2)
+            # The home introduction follows the same rule as an article.
+            home = [attrs["href"] for tag, attrs in self.page(output, "index.html").links
+                    if tag == "a" and attrs.get("rel") == "external"]
+            self.assertEqual(len(home), 3)
+        css = (ROOT / "assets/css/main.css").read_text()
+        self.assertIn('a[rel~="external"]::after', css)
+        self.assertNotIn('a[href^="http"]', css)
+
+    def test_footnotes_are_bracketed_and_open_under_one_labelled_rule(self):
+        for output in (self.release, self.drafts):
+            route = "2024/12/02/readdatawithharlequin/index.html"
+            page = self.page(output, route)
+            for number in ("[1]", "[2]", "[3]"):
+                self.assertIn(number, page.text())
+            self.assertIn("footnotes", page.rules)
+            notes = next(index for index, (tag, attrs) in enumerate(page.elements)
+                         if tag == "div" and attrs.get("class") == "footnotes")
+            self.assertEqual(page.elements[notes + 1], ("h2", {"class": "rule-heading"}))
+            # The reference keeps its number as link text for the return label.
+            self.assertIn('aria-label="Return to reference 1"', (output / route).read_text())
+
+    def test_sidenotes_read_as_parentheses_without_the_stylesheet(self):
+        page = self.page(self.drafts, "builds/dolor-sit-amet/index.html")
+        self.assertEqual(page.count("span", "visually-hidden"), 4)
+        item = next(item for item in ET.parse(self.drafts / "index.xml").findall("./channel/item")
+                    if item.findtext("link").endswith("/builds/dolor-sit-amet/"))
+        feed = " ".join(unescape(re.sub(r"<[^>]+>", "", item.findtext("description"))).split())
+        self.assertIn("aliquet.\u2060 (Sample sidenote:", feed)
+        self.assertIn("annotates.) Morbi leo", feed)
+
+    def test_revised_dates_show_only_where_a_page_was_revised(self):
+        self.assertIn("[readme] | 2026-09-26 | revised 2026-10-06",
+                      self.page(self.release, "readme/index.html").text())
+        self.assertIn("[shard] | 2026-03-03 | revised 2026-09-26 |",
+                      self.page(self.drafts, "2026/03/03/timeline-fixture/index.html").text())
+        self.assertNotIn("revised", self.page(self.release, "2026/02/08/rfd/index.html").text())
+
+    def test_image_captions_are_optional_and_rendered_as_markdown(self):
+        html = (self.drafts / "builds/test-build/index.html").read_text()
+        self.assertEqual(html.count("<figcaption>A <em>captioned</em> fixture</figcaption>"), 1)
+        harlequin = self.page(self.release, "2024/12/02/readdatawithharlequin/index.html")
+        self.assertFalse(any(tag == "figcaption" for tag, _ in harlequin.elements))
+
+    def test_an_empty_stream_is_unlisted_until_it_has_an_entry(self):
+        self.assertEqual(self.page(self.release, "wal/index.html").meta.get("robots"), "noindex")
+        self.assertNotIn("robots", self.page(self.drafts, "wal/index.html").meta)
+        for output, listed in ((self.release, False), (self.drafts, True)):
+            locations = [node.text for node in ET.parse(output / "sitemap.xml").iter()
+                         if node.tag.endswith("loc")]
+            self.assertEqual("https://hrmnjt.dev/wal/" in locations, listed)
+            self.assertIn("https://hrmnjt.dev/shards/", locations)
+            self.assertIn("https://hrmnjt.dev/2026/02/08/rfd/", locations)
+            self.assertEqual(len(locations), len(set(locations)))
+
+    def test_a_new_kind_is_one_registry_entry(self):
+        registry = self.source / "data/kinds.toml"
+        section = self.source / "content/notes"
+        original = registry.read_text()
+        try:
+            registry.write_text(original + '\n[[kind]]\nsection = "notes"\nname = "note"\nstream = true\n'
+                                'note = "Fixture stream."\nschema = "Article"\n')
+            section.mkdir()
+            (section / "_index.md").write_text('+++\ntitle = "notes"\n+++\n\nA fixture stream.\n')
+            (section / "first.md").write_text('+++\ntitle = "note fixture"\ndate = 2026-03-07\n+++\n\nBody.\n')
+            output = Path(self.tmp.name) / "registry"
+            result = self.build(output)
+            self.assertEqual(result.returncode, 0, result.stdout)
+            home = Page(output / "index.html")
+            self.assertIn("/notes/", [link["href"] for link in home.navs["Primary"]])
+            self.assertIn("notes Fixture stream.", home.text())
+            self.assertIn({"date": "2026-03-07", "kind": "[note]", "title": "note fixture",
+                           "url": "/notes/first/"}, home.entries)
+            entry = Page(output / "notes/first/index.html")
+            self.assertEqual([link["href"] for link in entry.navs["Breadcrumb"]], ["/", "/notes/"])
+            self.assertIn("[note] | 2026-03-07", entry.text())
+            # A kind registered without a glyph shows its label alone.
+            self.assertFalse(entry.count("svg", "kind-mark"))
+            self.assertEqual(entry.schemas[0]["@type"], "Article")
+            self.assertEqual(entry.meta["og:type"], "article")
+            index = Page(output / "notes/index.html")
+            self.assertEqual([row["url"] for row in index.entries], ["/notes/first/"])
+        finally:
+            registry.write_text(original)
+            shutil.rmtree(section, ignore_errors=True)
+
+    def test_stylesheet_follows_the_reader_not_the_screen(self):
+        css = (ROOT / "assets/css/main.css").read_text()
+        # Breakpoints and the frame scale with the reader's font size.
+        self.assertFalse(re.findall(r"@media[^{]*\d+px", css))
+        self.assertIn("max-width: calc(var(--measure) + var(--gutter) + var(--margin-col) + 2 * var(--page-pad) + 0.5rem);", css)
+        # The margin column is asked of the article, so notes never push the page sideways.
+        self.assertIn("@container article (min-width: calc(70ch + 2rem + 17rem))", css)
+        self.assertNotIn("@media (min-width: 1100px)", css)
+        # Reading aids that are easy to lose in a restyle.
+        for rule in ("@media print", "main:focus { outline: none; }", 'del::before { content: " [struck out: "; }',
+                     ":visited { color: var(--accent-visited); }", "overflow-wrap: break-word;",
+                     ".chroma .go { color: var(--gb-fg3); }"):
+            self.assertIn(rule, css)
+        self.assertNotIn("table { display: block", css)
 
     def test_generated_local_links_and_anchors(self):
         for output in (self.release, self.drafts):

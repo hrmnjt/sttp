@@ -8,7 +8,8 @@
     src  - Image filename (required) - without /img/ prefix
     alt  - Alt text (required)
     title - Optional title attribute
-    
+    caption - Optional caption shown under the image (Markdown)
+
   Features:
     - Automatically converts PNG/JPEG to WebP
     - Fingerprints output based on content (cache busting)
@@ -21,6 +22,7 @@
 {{- $src := .Get "src" -}}
 {{- $alt := .Get "alt" -}}
 {{- $title := .Get "title" -}}
+{{- $caption := .Get "caption" -}}
 
 {{- if not $src -}}
   {{- errorf "img-optimized shortcode: 'src' parameter is required" -}}
@@ -50,4 +52,7 @@
   <img src="{{ $fallback.RelPermalink }}" alt="{{ $alt }}"{{ if $title }} title="{{ $title }}"{{ end }} width="{{ $image.Width }}" height="{{ $image.Height }}" loading="lazy" decoding="async">
 </picture>
 </a>
+{{- with $caption }}
+<figcaption>{{ . | markdownify }}</figcaption>
+{{- end }}
 </figure>

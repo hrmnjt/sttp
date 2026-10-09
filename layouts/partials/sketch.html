@@ -1,0 +1,5 @@
+{{- /* A section's pencil sketch, if it has one: assets/images/doodles/<section>.svg. */ -}}
+{{- with resources.Get (printf "images/doodles/%s.svg" .) -}}
+{{- $sketch := . | resources.Fingerprint "sha256" -}}
+<img src="{{ $sketch.RelPermalink }}" alt="" width="96" height="80" aria-hidden="true">
+{{- end -}}

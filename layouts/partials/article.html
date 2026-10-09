@@ -1,0 +1,37 @@
+{{- /* One article shape for every kind. The header's address line is the way back. */ -}}
+{{- $kind := partial "kind.html" . -}}
+{{- $toc := partial "toc.html" . -}}
+<article class="article-wide">
+    <h1>{{ .Title }}</h1>
+    {{ partial "meta-line.html" . }}
+    {{ if $kind.lead }}
+    {{- /* A build's code is part of what it is, so its link leads rather than trails. */ -}}
+    <div class="article-lead">
+        {{ with .Description }}<p class="section-note">{{ . }}</p>{{ end }}
+        {{ with .Params.source }}<p class="utility-links"><a href="{{ . }}">[code]<span class="repo">{{ . | replaceRE `^https?://` "" | strings.TrimSuffix "/" }}</span></a></p>{{ end }}
+    </div>
+    {{ end }}
+    {{ if .Params.migrated }}
+    <div class="migrated-notice">
+        [migrated] this post has been migrated over from an older version of this site;
+        my thinking has evolved now and I don't agree with my former self on
+        this narrative or approach.
+    </div>
+    {{ end }}
+    {{ with $toc }}
+    <details class="toc toc-inline">
+        <summary>on this page</summary>
+        <nav aria-label="On this page">{{ . }}</nav>
+    </details>
+    {{ end }}
+    <div class="article-prose">
+        {{ with $toc }}
+        <nav class="toc toc-margin" aria-label="On this page">
+            <p class="rule-heading" aria-hidden="true">on this page</p>
+            {{ . }}
+        </nav>
+        {{ end }}
+        {{ partial "prose.html" (dict "Page" .) }}
+    </div>
+    {{ partial "article-footer.html" . }}
+</article>

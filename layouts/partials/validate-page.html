@@ -1,6 +1,10 @@
 {{- if .File -}}
+    {{- $kind := partial "kind.html" . -}}
+    {{- $related := where hugo.Data.kinds.kind "related" true -}}
+    {{- $sections := slice -}}
+    {{- range $related }}{{ $sections = $sections | append .section }}{{ end -}}
     {{- if not .Params.title -}}{{- errorf "content page %q needs an explicit title" .File.Path -}}{{- end -}}
-    {{- if or .IsPage (eq .Section "readme") -}}
+    {{- if or .IsPage $kind.document -}}
         {{- if not .Params.date -}}{{- errorf "content page %q needs an explicit date" .File.Path -}}{{- end -}}
     {{- end -}}
     {{- range slice "writeup" "related" "related_build" -}}
@@ -8,14 +12,16 @@
             {{- errorf "content page %q uses legacy relationship %q; use related_shards/related_builds lists" $.File.Path . -}}
         {{- end -}}
     {{- end -}}
-    {{- range $field, $section := dict "related_shards" "shards" "related_builds" "builds" -}}
+    {{- range $related -}}
+        {{- $field := printf "related_%s" .section -}}
+        {{- $section := .section -}}
         {{- if isset $.Params $field -}}
             {{- $references := index $.Params $field -}}
             {{- if not (reflect.IsSlice $references) -}}
                 {{- errorf "content page %q: %s must be a list of content paths" $.File.Path $field -}}
             {{- else -}}
-                {{- if not (in (slice "shards" "builds") $.Section) -}}
-                    {{- errorf "content page %q: backlinks are supported on shards and builds" $.File.Path -}}
+                {{- if not (in $sections $.Section) -}}
+                    {{- errorf "content page %q: related pages are supported on %s" $.File.Path (delimit $sections " and ") -}}
                 {{- end -}}
                 {{- range $references -}}
                     {{- if ne (printf "%T" .) "string" -}}
