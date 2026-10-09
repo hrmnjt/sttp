@@ -178,8 +178,6 @@ class SiteTests(unittest.TestCase):
         cls.flow_key = hashlib.sha256(cls.flow.encode()).hexdigest()[:16]
         drawings = cls.source / "assets/images/diagrams"
         drawings.mkdir(parents=True, exist_ok=True)
-        for stale in drawings.glob("*.svg"):
-            stale.unlink()  # The fixture decides what is drawn, not the checkout.
         (drawings / f"{cls.flow_key}.svg").write_text(
             '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 48"><rect width="120" height="48"/></svg>\n')
         (cls.source / "content/shards/test-diagrams.md").write_text(
@@ -642,8 +640,22 @@ class SiteTests(unittest.TestCase):
         self.assertEqual(len([s for s in wal.scripts if s.get("src")]), 1)
         headers = (ROOT / "static/_headers").read_text()
         self.assertIn("script-src 'self';", headers)
-        self.assertIn("style-src 'self';", headers)
-        self.assertNotIn("unsafe-inline", headers)
+        # Pages allow no inline styles. Only drawings do, and they may do nothing else.
+        rules, path = {}, None
+        for line in headers.splitlines():
+            if line.startswith("/"):
+                path = line.strip()
+                rules[path] = ""
+            elif line.startswith("  ") and path:
+                rules[path] += line + "\n"
+            else:
+                path = None
+        self.assertIn("style-src 'self';", rules["/*"])
+        self.assertNotIn("unsafe-inline", rules["/*"])
+        self.assertEqual(rules["/images/diagrams/*"],
+                         "  ! Content-Security-Policy\n"
+                         "  Content-Security-Policy: default-src 'none'; style-src 'unsafe-inline'\n")
+        self.assertEqual(headers.count("unsafe-inline"), 1)
         self.assertNotIn("script-src 'self' 'unsafe-inline'", headers)
         self.assertIn("/js/*", headers)
 
@@ -896,6 +908,24 @@ class SiteTests(unittest.TestCase):
         self.assertFalse([tag for tag, attrs in page.elements if "style" in attrs])
         css = (ROOT / "assets/css/main.css").read_text()
         self.assertIn(".toc-inline summary, .diagram-source summary", css)
+
+    def test_every_published_mermaid_fence_has_been_drawn(self):
+        for path in self.pages[self.release]:
+            self.assertNotIn("<figcaption>mermaid</figcaption>", path.read_text(),
+                             f"{path.relative_to(self.release)}: run `npm run diagrams` and commit the drawing")
+        rfd = self.page(self.release, "2026/02/08/rfd/index.html")
+        self.assertEqual(rfd.count("figure", "diagram"), 1)
+        image = next(attrs for tag, attrs in rfd.links if tag == "img")
+        self.assertTrue(image["alt"].startswith("Flowchart of the RFD process"))
+        self.assertRegex(image["src"], r"^/images/diagrams/[0-9a-f]{16}\.[0-9a-f]{64}\.svg$")
+        self.assertTrue((self.release / image["src"].lstrip("/")).is_file())
+        self.assertGreater(int(image["height"]), int(image["width"]))  # a top-down flowchart
+        # A committed drawing is static: text, shapes and its own stylesheet.
+        for drawing in (ROOT / "assets/images/diagrams").glob("*.svg"):
+            svg = drawing.read_text()
+            self.assertTrue(svg.startswith("<svg"), drawing.name)
+            for forbidden in ("<script", "<foreignObject", 'href="http', "javascript:"):
+                self.assertNotIn(forbidden, svg, drawing.name)
 
     def test_image_captions_are_optional_and_rendered_as_markdown(self):
         html = (self.drafts / "builds/test-build/index.html").read_text()

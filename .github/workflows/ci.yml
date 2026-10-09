@@ -41,8 +41,10 @@ jobs:
           npm ci --ignore-scripts
           npm run test:screenshots
 
-      - name: Check diagram script (no browser required)
-        run: npm run test:diagrams
+      - name: Check diagrams (no browser required)
+        run: |
+          npm run test:diagrams
+          npm run diagrams -- --check
 
       - name: Check local links
         uses: lycheeverse/lychee-action@v2.9.0

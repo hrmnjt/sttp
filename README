@@ -77,7 +77,7 @@ Then draw it and commit the result:
 Each fence becomes `assets/images/diagrams/<key>.svg`, where the key is a hash of
 the fence's text, and drawings no page uses are removed. Hugo shows the drawing
 with its source folded underneath as the text alternative; a fence that has not
-been drawn yet stays a code block. Cloudflare Pages needs nothing new, because
+been drawn yet stays a code block, and CI fails until it is drawn. Cloudflare Pages needs nothing new, because
 the drawings are ordinary committed assets. Colours and type come from the
 `--gb-*` and `--font-mono` tokens in `assets/css/main.css`.
 
