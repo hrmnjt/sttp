@@ -173,6 +173,19 @@ class SiteTests(unittest.TestCase):
             '[^a]: Short, cited once, costs $1 and keeps `$HOME`.\n'
             '[^b]: First paragraph.\n\n    Second paragraph.\n'
             '[^c]: Cited twice.\n')
+        # One fence with its drawing in place, as `npm run diagrams` would leave it, and one without.
+        cls.flow = "flowchart LR\n    A --> B"
+        cls.flow_key = hashlib.sha256(cls.flow.encode()).hexdigest()[:16]
+        drawings = cls.source / "assets/images/diagrams"
+        drawings.mkdir(parents=True, exist_ok=True)
+        for stale in drawings.glob("*.svg"):
+            stale.unlink()  # The fixture decides what is drawn, not the checkout.
+        (drawings / f"{cls.flow_key}.svg").write_text(
+            '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 48"><rect width="120" height="48"/></svg>\n')
+        (cls.source / "content/shards/test-diagrams.md").write_text(
+            '+++\ntitle = "diagram shapes"\ndate = 2026-01-16\ndraft = true\n+++\n\n'
+            f'```mermaid {{alt="A leads to B"}}\n{cls.flow}\n```\n\n'
+            '```mermaid\ngraph TD\n    not --> drawn\n```\n')
         # An index rendering image-bearing WAL entries also needs the viewer.
         with (cls.source / "content/wal/test-first.md").open("a") as fixture:
             fixture.write('\n{{< img-optimized src="duckdb-query.png" alt="WAL image fixture" >}}\n')
@@ -856,6 +869,33 @@ class SiteTests(unittest.TestCase):
         self.assertIn("[shard] | 2026-03-03 | revised 2026-09-26 |",
                       self.page(self.drafts, "2026/03/03/timeline-fixture/index.html").text())
         self.assertNotIn("revised", self.page(self.release, "2026/02/08/rfd/index.html").text())
+
+    def test_a_drawn_mermaid_fence_is_an_image_with_its_source_underneath(self):
+        route = "2026/01/16/diagram-shapes/index.html"
+        page = self.page(self.drafts, route)
+        html = (self.drafts / route).read_text()
+        self.assertEqual(page.count("figure", "diagram"), 1)
+        images = [attrs for tag, attrs in page.links if tag == "img"]
+        self.assertEqual(len(images), 1)
+        image = images[0]
+        # The same key scripts/diagrams.mjs gives the file (tests/diagrams.test.mjs pins it).
+        self.assertEqual(self.flow_key, "d493232efc3c3445")
+        self.assertRegex(image["src"], rf"^/images/diagrams/{self.flow_key}\.[0-9a-f]{{64}}\.svg$")
+        self.assertTrue((self.drafts / image["src"].lstrip("/")).is_file())
+        self.assertEqual((image["alt"], image["width"], image["height"]), ("A leads to B", "120", "48"))
+        self.assertEqual((image["loading"], image["decoding"]), ("lazy", "async"))
+        # The source stays on the page as the text alternative, folded away.
+        self.assertEqual(page.count("details", "diagram-source"), 1)
+        self.assertIn("<summary>diagram source</summary>", html)
+        self.assertIn("diagram source flowchart LR A --> B", page.text())
+        # A fence nobody has drawn yet is still a captioned code block.
+        self.assertIn("mermaid graph TD not --> drawn", page.text())
+        self.assertEqual(page.count("figure", "code-block"), 1)
+        # A drawing is an image: no script, no inline style, no viewer.
+        self.assertFalse([script for script in page.scripts if script.get("src")])
+        self.assertFalse([tag for tag, attrs in page.elements if "style" in attrs])
+        css = (ROOT / "assets/css/main.css").read_text()
+        self.assertIn(".toc-inline summary, .diagram-source summary", css)
 
     def test_image_captions_are_optional_and_rendered_as_markdown(self):
         html = (self.drafts / "builds/test-build/index.html").read_text()

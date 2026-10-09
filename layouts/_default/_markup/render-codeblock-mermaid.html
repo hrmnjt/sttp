@@ -1,0 +1,28 @@
+{{- /* A mermaid fence is drawn ahead of the build by `npm run diagrams`, which writes
+       assets/images/diagrams/<key>.svg, where the key is the first 16 hex digits of the
+       SHA-256 of the fence's text (trailing whitespace removed). scripts/diagrams.mjs
+       computes the same key. With the drawing present the fence becomes that image, and
+       its source folds away underneath as the text alternative. Until it is drawn, the
+       fence stays an ordinary code block.
+       Usage: ```mermaid {alt="What the diagram shows"} */ -}}
+{{- $source := strings.TrimRight " \t\r\n" .Inner -}}
+{{- $key := substr (sha256 $source) 0 16 -}}
+{{- $code := transform.Highlight $source "mermaid" -}}
+{{- with resources.Get (printf "images/diagrams/%s.svg" $key) -}}
+{{- $drawing := . | resources.Fingerprint "sha256" -}}
+{{- $size := slice -}}
+{{- with findRE `viewBox="[^"]+"` .Content 1 }}{{ $size = last 2 (split (replaceRE `^viewBox="([^"]+)"$` "${1}" (index . 0)) " ") }}{{ end -}}
+<figure class="diagram">
+    <img src="{{ $drawing.RelPermalink }}" alt="{{ $.Attributes.alt | default "Diagram. Its source follows." }}"
+        {{- if eq (len $size) 2 }} width="{{ math.Round (float (index $size 0)) }}" height="{{ math.Round (float (index $size 1)) }}"{{ end }} loading="lazy" decoding="async">
+    <details class="diagram-source">
+        <summary>diagram source</summary>
+        {{ $code }}
+    </details>
+</figure>
+{{- else -}}
+<figure class="code-block">
+    <figcaption>mermaid</figcaption>
+    {{ $code }}
+</figure>
+{{- end -}}
