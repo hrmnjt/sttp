@@ -13,6 +13,7 @@
     "test:diagrams": "node --test tests/diagrams.test.mjs"
   },
   "devDependencies": {
+    "mermaid": "^12.1.0",
     "playwright": "1.63.0"
   }
 }
