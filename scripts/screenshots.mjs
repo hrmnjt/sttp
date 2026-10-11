@@ -260,7 +260,7 @@ export function measurePage() {
   }));
   // The gaps that open above wide blocks so they clear what hangs in the margin. Only
   // hanging items are taken away to measure: a note set inline is part of the text.
-  const wide = [...document.querySelectorAll('.article-prose > :is(pre, figure, .table-scroll, .dev-flow, .footnotes)')].filter(shown);
+  const wide = [...document.querySelectorAll('.article-prose > :is(pre, figure, .table-scroll, .footnotes)')].filter(shown);
   const withMargin = wide.map(top);
   for (const element of hanging) element.style.setProperty('display', 'none', 'important');
   const shifts = wide.map((element, index) => withMargin[index] - top(element));
