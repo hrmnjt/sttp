@@ -45,7 +45,7 @@
 {{- /* Fingerprint the original-format fallback too; /images/* is cached immutably. */ -}}
 {{- $fallback := $image | resources.Fingerprint "sha256" -}}
 
-<figure class="article-image">
+<figure class="article-image{{ if gt $image.Width 700 }} wide{{ end }}">
 <a class="image-fullsize" href="{{ $fallback.RelPermalink }}" aria-label="View full-size image: {{ $alt }}">
 <picture>
   <source srcset="{{ $webp.RelPermalink }}" type="image/webp">

@@ -1,7 +1,9 @@
 {{- /* One article shape for every kind. The header's address line is the way back. */ -}}
 {{- $kind := partial "kind.html" . -}}
 {{- $toc := partial "toc.html" . -}}
-<article class="article-wide">
+{{- $prose := partial "prose.html" (dict "Page" .) -}}
+{{- /* A page with sidenotes, or footnotes set as sidenotes, gives its margin to them. */ -}}
+<article class="article-wide"{{ if findRE `class="sidenote` $prose 1 }} data-margin="notes"{{ end }}>
     <h1>{{ .Title }}</h1>
     {{ partial "meta-line.html" . }}
     {{ if $kind.lead }}
@@ -31,7 +33,7 @@
             {{ . }}
         </nav>
         {{ end }}
-        {{ partial "prose.html" (dict "Page" .) }}
+        {{ $prose }}
     </div>
     {{ partial "article-footer.html" . }}
 </article>
