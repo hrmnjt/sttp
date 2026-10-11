@@ -373,8 +373,8 @@ test('real Hugo preview serves a normal build and releases its port on shutdown'
   t.after(() => preview.stop());
   const home = await fetch(preview.baseURL).then(response => response.text());
   assert.match(home, /secure thought transfer protocol/);
-  assert.doesNotMatch(home, /sample: next step|livereload\.js/);
-  const missing = await fetch(new URL('/wal/2026-01-03-next-step/', preview.baseURL));
+  assert.doesNotMatch(home, /livereload\.js/);
+  const missing = await fetch(new URL('/no-such-page/', preview.baseURL));
   assert.equal(missing.status, 404);
   await preview.stop();
   await assertPortFree(port);

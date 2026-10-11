@@ -183,6 +183,13 @@ class SiteTests(unittest.TestCase):
             '[^a]: Short, cited once, costs $1 and keeps `$HOME`.\n'
             '[^b]: First paragraph.\n\n    Second paragraph.\n'
             '[^c]: Cited twice.\n')
+        # Two sidenotes and a footnote: the shortcode, its lettering and what a feed reader gets.
+        (cls.source / "content/shards/test-sidenotes.md").write_text(
+            '+++\ntitle = "sidenote shapes"\ndate = 2026-01-17\ndraft = true\n+++\n\n'
+            'Before the note.{{< sidenote >}}An aside with a [link](/readme/) beside its line.{{< /sidenote >}}'
+            ' After it[^1].\n\n'
+            'A second paragraph.{{< sidenote >}}A second aside.{{< /sidenote >}}\n\n'
+            '[^1]: A footnote.\n')
         # One fence with its drawing in place, as `npm run diagrams` would leave it, and one without.
         cls.flow = "flowchart LR\n    A --> B"
         cls.flow_key = hashlib.sha256(cls.flow.encode()).hexdigest()[:16]
@@ -266,7 +273,7 @@ class SiteTests(unittest.TestCase):
     def test_drafts_do_not_leak_into_release(self):
         release = "".join(p.read_text() for p in self.release.rglob("*.html"))
         release += (self.release / "index.xml").read_text()
-        for title in ("sample: earlier note", "sample: check-in", "sample: a decision", "sample: next step"):
+        for title in ("note shapes", "sidenote shapes", "diagram shapes"):
             self.assertNotIn(title, release)
         for title, _, _ in self.fixtures.values():
             self.assertNotIn(title.strip('"'), release)
@@ -496,12 +503,12 @@ class SiteTests(unittest.TestCase):
             self.assertNotIn("article-lead", shard)
 
     def test_sidenotes_stay_in_reading_order_as_notes(self):
-        page = self.page(self.drafts, "builds/dolor-sit-amet/index.html")
+        page = self.page(self.drafts, "2026/01/17/sidenote-shapes/index.html")
         notes = [attrs for tag, attrs in page.elements
                  if tag == "span" and attrs.get("class") == "sidenote"]
         self.assertEqual(len(notes), 2)
         self.assertTrue(all(attrs.get("role") == "note" for attrs in notes))
-        self.assertIn("Sample sidenote", " ".join(page.main_text))
+        self.assertIn("An aside with a", " ".join(page.main_text))
         shard = " ".join(" ".join(self.page(self.release, "2026/02/08/rfd/index.html").main_text).split())
         self.assertRegex(shard, r"\[shard\] \| 2026-02-08 \| [\d,]+ words \| \d+ min read")
 
@@ -547,21 +554,6 @@ class SiteTests(unittest.TestCase):
             self.assertIn(f'sections shards {notes["shards"]} builds {notes["builds"]}', home.text())
             self.assertNotRegex(home.text(), r"\d+ rows?\b")
 
-    def test_build_layout_samples_are_preview_only(self):
-        for slug in ("lorem-ipsum", "dolor-sit-amet"):
-            route = f"/builds/{slug}/"
-            self.assertFalse((self.release / route.lstrip("/")).exists())
-            self.assertTrue((self.drafts / route.lstrip("/") / "index.html").exists())
-            for directory in ("index.html", "builds/index.html", "catalog/index.html"):
-                for output, present in ((self.release, False), (self.drafts, True)):
-                    urls = [attrs.get("href") for tag, attrs in self.page(output, directory).links
-                            if tag == "a"]
-                    self.assertEqual(route in urls, present, f"{directory}: {route}")
-            for output, present in ((self.release, False), (self.drafts, True)):
-                items = ET.parse(output / "index.xml").findall("./channel/item")
-                self.assertEqual("https://hrmnjt.dev" + route in
-                                 [item.findtext("link") for item in items], present)
-
     def test_build_rows_keep_page_and_repository_links_distinct(self):
         for output in (self.release, self.drafts):
             page = self.page(output, "builds/index.html")
@@ -586,8 +578,8 @@ class SiteTests(unittest.TestCase):
                 self.assertEqual(len(names), 1)
             else:
                 # The fixture deliberately has no repository URL: no invented code link.
-                self.assertEqual(len(names), 4)
-                self.assertEqual(len(sources), 3)
+                self.assertEqual(len(names), 2)
+                self.assertEqual(len(sources), 1)
 
     def test_wal_shows_full_entries_and_unique_anchor_targets(self):
         path = self.drafts / "wal/index.html"
@@ -885,14 +877,13 @@ class SiteTests(unittest.TestCase):
         self.assertIn("sup.in-margin, .footnotes li.in-margin, .footnotes.all-in-margin { display: none; }", css)
 
     def test_sidenotes_read_as_parentheses_without_the_stylesheet(self):
-        page = self.page(self.drafts, "builds/dolor-sit-amet/index.html")
-        # Two sidenotes and the sample's one footnote, each wrapped in hidden parentheses.
+        page = self.page(self.drafts, "2026/01/17/sidenote-shapes/index.html")
+        # Two sidenotes and the fixture's one footnote, each wrapped in hidden parentheses.
         self.assertEqual(page.count("span", "visually-hidden"), 6)
         item = next(item for item in ET.parse(self.drafts / "index.xml").findall("./channel/item")
-                    if item.findtext("link").endswith("/builds/dolor-sit-amet/"))
+                    if item.findtext("link").endswith("/2026/01/17/sidenote-shapes/"))
         feed = " ".join(unescape(re.sub(r"<[^>]+>", "", item.findtext("description"))).split())
-        self.assertIn("aliquet.\u2060 (Sample sidenote:", feed)
-        self.assertIn("annotates.) Morbi leo", feed)
+        self.assertIn("Before the note.\u2060 (An aside with a link beside its line.) After it", feed)
 
     def test_revised_dates_show_only_where_a_page_was_revised(self):
         readme = front_matter("content/readme/_index.md")
@@ -1042,7 +1033,7 @@ class SiteTests(unittest.TestCase):
             self.assertEqual(classes(self.page(output, "2026/02/08/rfd/index.html"), "code-block"), ["code-block wide"])
             gitorg = classes(self.page(output, "2023/12/06/gitorg/index.html"), "code-block")
             self.assertEqual((gitorg.count("code-block"), gitorg.count("code-block wide")), (7, 2))
-        self.assertEqual(margins(self.page(self.drafts, "builds/dolor-sit-amet/index.html")), ["notes"])
+        self.assertEqual(margins(self.page(self.drafts, "2026/01/17/sidenote-shapes/index.html")), ["notes"])
         css = (ROOT / "assets/css/main.css").read_text()
         self.assertIn('[data-margin="notes"] .article-prose > :is(pre, figure, .table-scroll):not(.wide) '
                       '{ clear: none; max-width: var(--measure); }', css)

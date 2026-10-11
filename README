@@ -14,7 +14,7 @@ downloaded fonts. Optional screenshot tooling needs Node 20+ and Chromium.
 
     hugo server
 
-To see design-only draft WAL entries:
+To include pages marked `draft = true`:
 
     hugo server --buildDrafts
 
@@ -36,7 +36,7 @@ On your Mac (or supported Ubuntu host), install the development-only tooling:
     npm ci
     npx playwright install chromium
 
-Then capture a normal preview, or opt into design drafts:
+Then capture a normal preview, or include drafts:
 
     npm run screenshots
     npm run screenshots -- --drafts
@@ -136,10 +136,9 @@ Linux host. Browser packages are never part of the deployed site.
 - `scripts/screenshots.mjs`: optional browser capture runner.
 - `scripts/diagrams.mjs`: draws `mermaid` fences to `assets/images/diagrams/`.
 
-Use explicit titles and content dates, not automatic Git timestamps. A build
-page's date is not the linked shard's date. Keep substantive revisions in
-`lastmod`; catalog chronology uses the original `date`. Review draft samples
-and personal copy before publishing.
+Use explicit titles and content dates, not automatic Git timestamps. Keep
+substantive revisions in `lastmod`; catalog chronology uses the original
+`date`. Review personal copy before publishing.
 
 ## Design notes
 
