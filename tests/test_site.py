@@ -997,7 +997,10 @@ class SiteTests(unittest.TestCase):
         # Reading aids that are easy to lose in a restyle.
         for rule in ("@media print", "main:focus { outline: none; }", 'del::before { content: " [struck out: "; }',
                      ":visited { color: var(--accent-visited); }", "overflow-wrap: break-word;",
-                     ".chroma .go { color: var(--gb-fg3); }"):
+                     ".chroma .go { color: var(--gb-fg3); }",
+                     # A strike quieter than the letters under it, and no bright link inside one.
+                     "del { color: var(--text-secondary); text-decoration-color: var(--gb-bg4); text-decoration-thickness: 1px; }",
+                     "del a:any-link { color: inherit; text-decoration-thickness: 1px; }"):
             self.assertIn(rule, css)
         self.assertNotIn("table { display: block", css)
         # Body text and one smaller step; a third size has no token to reach for.
