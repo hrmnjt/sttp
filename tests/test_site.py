@@ -999,7 +999,7 @@ class SiteTests(unittest.TestCase):
                      ":visited { color: var(--accent-visited); }", "overflow-wrap: break-word;",
                      ".chroma .go { color: var(--gb-fg3); }",
                      # A strike quieter than the letters under it, and no bright link inside one.
-                     "del { color: var(--text-secondary); text-decoration-color: var(--gb-bg4); text-decoration-thickness: 1px; }",
+                     "del { color: var(--text-secondary); text-decoration-color: var(--gb-fg4); text-decoration-thickness: 1px; }",
                      "del a:any-link { color: inherit; text-decoration-thickness: 1px; }"):
             self.assertIn(rule, css)
         self.assertNotIn("table { display: block", css)

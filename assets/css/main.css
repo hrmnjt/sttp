@@ -6,7 +6,6 @@
     --gb-bg0: #282828;
     --gb-bg1: #3c3836;
     --gb-bg3: #665c54;
-    --gb-bg4: #7c6f64;
     --gb-fg1: #ebdbb2;
     --gb-fg3: #bdae93;
     --gb-fg4: #a89984;
@@ -126,9 +125,9 @@ a:focus-visible, summary:focus-visible, [tabindex="0"]:focus-visible {
 }
 del::before { content: " [struck out: "; }
 del::after { content: "] "; }
-/* Struck-out text recedes: dimmer letters under a hairline that is quieter still, so
-   the words read through it. A link inside dims with it and keeps its underline. */
-del { color: var(--text-secondary); text-decoration-color: var(--gb-bg4); text-decoration-thickness: 1px; }
+/* Struck-out text recedes: dimmer letters under a hairline one step quieter, so the
+   words read through it. A link inside dims with it and keeps its underline. */
+del { color: var(--text-secondary); text-decoration-color: var(--gb-fg4); text-decoration-thickness: 1px; }
 del a:any-link { color: inherit; text-decoration-thickness: 1px; }
 del a:any-link:hover { color: var(--accent-hover); }
 
