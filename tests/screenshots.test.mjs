@@ -267,6 +267,9 @@ test('the same finding on many pages is reported once, with where', () => {
     { type: 'heading', message: 'expected one h1, found 0', pages: [{ route: '/catalog/', viewports: ['phone'] }] },
   ]);
   assert.deepEqual(groupFindings(pages, 'remarks'), [{ type: 'remark', message: 'moved', pages: [{ route: '/', viewports: ['desktop'] }] }]);
+  // Two identical findings on one page at one size are still one place.
+  const twice = [{ route: '/', viewport: 'desktop', issues: [issue, issue], remarks: [] }];
+  assert.deepEqual(groupFindings(twice)[0].pages, [{ route: '/', viewports: ['desktop'] }]);
 });
 
 test('the sitemap decides which pages are measured', async () => {
