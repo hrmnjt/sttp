@@ -153,7 +153,10 @@ export function measurePage() {
   // Text kept for screen readers only is not painted, so it has no contrast to measure.
   const clipped = style => style.clipPath !== 'none' ||
     (style.position === 'absolute' && parseFloat(style.width) <= 1 && parseFloat(style.height) <= 1);
-  const label = element => (element.getAttribute('aria-label') || element.textContent || element.getAttribute('alt') || '')
+  // An element's words as assistive technology reads them: decoration marked hidden is left out.
+  const said = node => node.nodeType === 3 ? node.textContent
+    : node.nodeType !== 1 || node.getAttribute('aria-hidden') === 'true' ? '' : [...node.childNodes].map(said).join('');
+  const label = element => (element.getAttribute('aria-label') || said(element) || element.getAttribute('alt') || '')
     .replace(/\s+/g, ' ').trim().slice(0, 60) || element.tagName.toLowerCase();
   const describe = element => element.tagName.toLowerCase() + (element.id ? `#${element.id}` : '') +
     [...element.classList].map(name => `.${name}`).join('');
@@ -161,7 +164,7 @@ export function measurePage() {
   // Structure.
   // A heading's own words, without the "#" link the site appends to it.
   const words = heading => [...heading.childNodes].filter(node => !node.classList?.contains('heading-permalink'))
-    .map(node => node.textContent).join('').replace(/\s+/g, ' ').trim().slice(0, 60);
+    .map(said).join('').replace(/\s+/g, ' ').trim().slice(0, 60);
   const headings = [...document.querySelectorAll('h1, h2, h3, h4, h5, h6')].filter(shown)
     .map(heading => ({ level: Number(heading.tagName[1]), text: words(heading) }));
   const ids = [...document.querySelectorAll('[id]')].map(element => element.id);
@@ -255,14 +258,14 @@ export function measurePage() {
     const a = first.getBoundingClientRect(), b = second.getBoundingClientRect();
     if (a.left < b.right - 1 && b.left < a.right - 1 && a.top < b.bottom - 1 && b.top < a.bottom - 1) overlaps.push([naming(first), naming(second)]);
   }));
-  // How far wide blocks sit below where they would without anything in the margin.
+  // The gaps that open above wide blocks so they clear what hangs in the margin. Only
+  // hanging items are taken away to measure: a note set inline is part of the text.
   const wide = [...document.querySelectorAll('.article-prose > :is(pre, figure, .table-scroll, .dev-flow, .footnotes)')].filter(shown);
   const withMargin = wide.map(top);
-  const hide = document.createElement('style');
-  hide.textContent = '.toc-margin, .sidenote { display: none !important; }';
-  document.head.append(hide);
-  const pushed = wide.map((element, index) => ({ block: describe(element), by: withMargin[index] - top(element) })).filter(entry => entry.by > 1);
-  hide.remove();
+  for (const element of hanging) element.style.setProperty('display', 'none', 'important');
+  const shifts = wide.map((element, index) => withMargin[index] - top(element));
+  for (const element of hanging) element.style.removeProperty('display');
+  const pushed = wide.map((element, index) => ({ block: describe(element), by: shifts[index] - (shifts[index - 1] || 0) })).filter(entry => entry.by > 1);
 
   const count = selector => [...document.querySelectorAll(selector)].filter(shown).length;
   return {
@@ -406,7 +409,7 @@ export function groupFindings(pages, field = 'issues') {
     const key = `${finding.type}\n${finding.message}`;
     if (!groups.has(key)) groups.set(key, { ...finding, pages: new Map() });
     const where = groups.get(key).pages;
-    where.set(page.route, [...(where.get(page.route) || []), page.viewport]);
+    where.set(page.route, [...new Set([...(where.get(page.route) || []), page.viewport])]);
   }
   return [...groups.values()].map(group => ({ type: group.type, message: group.message,
     pages: [...group.pages].map(([route, viewports]) => ({ route, viewports })) }));
