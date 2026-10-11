@@ -444,7 +444,7 @@ sup[id*="fnref:"] { font-size: var(--fs-small); line-height: 0; vertical-align: 
     .toc-margin > * { font-size: var(--fs-small); }
     .toc-margin .rule-heading { margin: 0 0 4px; }
     /* Wide blocks start below anything still hanging in the margin. */
-    .article-prose > :is(pre, figure, .table-scroll, .dev-flow, .footnotes) { clear: right; }
+    .article-prose > :is(pre, figure, .table-scroll, .footnotes) { clear: right; }
     /* Where a page has notes, the margin is theirs. A block keeps to the text column
        unless it needs the room (.wide), so it never has to wait for a note to end, and
        the "on this page" list folds under the title so notes sit beside their lines. */
@@ -452,17 +452,6 @@ sup[id*="fnref:"] { font-size: var(--fs-small); line-height: 0; vertical-align: 
     [data-margin="notes"] .toc-margin { display: none; }
     [data-margin="notes"] .toc-inline { display: block; }
 }
-
-/* A real setup diagram, not decorative chrome. */
-.dev-flow { margin: 24px 0 32px; padding: 14px 18px; border: 1px dotted var(--border-color); }
-.dev-flow figcaption { margin-bottom: 10px; color: var(--text-secondary); font: var(--fs-small)/1.5 var(--font-mono); }
-.dev-flow ol { list-style: none; padding: 0; margin: 0; }
-.dev-flow li { margin: 0; padding: 8px 0; line-height: 1.5; }
-.dev-flow li + li { border-top: 1px dashed var(--border-color); }
-.dev-flow-label { display: block; margin-bottom: 5px; color: var(--text-secondary); font: var(--fs-small)/1.5 var(--font-mono); }
-.dev-flow-route { display: grid; grid-template-columns: 9ch 34px 25ch 34px minmax(0, 1fr); align-items: center; gap: 4px 10px; font: var(--fs-small)/1.5 var(--font-mono); }
-.dev-flow-route img { width: 34px; height: auto; margin: 0; }
-.dev-flow-route code { padding: 0; background: none; font-size: 1em; overflow-wrap: anywhere; }
 
 @media (min-width: 48em) { body { padding: 2.5rem var(--page-pad); } }
 @media (max-width: 40em) {
@@ -480,9 +469,6 @@ sup[id*="fnref:"] { font-size: var(--fs-small); line-height: 0; vertical-align: 
     .ledger li { grid-template: "date" auto "title" auto / minmax(0, 1fr); padding: 4px 0; }
     .ledger.has-kind li { grid-template: "date kind" auto "title title" auto / 10ch minmax(0, 1fr); }
     .ledger.has-notes li { grid-template: "date date" auto "title code" auto "note note" auto / minmax(0, 1fr) auto; }
-    .dev-flow { padding: 12px 14px; }
-    .dev-flow-route { grid-template-columns: minmax(0, 1fr); gap: 2px; }
-    .dev-flow-route img { display: none; }
 }
 
 /* Paper. Browsers drop backgrounds when printing, so the roles move to ink on white
@@ -506,7 +492,7 @@ sup[id*="fnref:"] { font-size: var(--fs-small); line-height: 0; vertical-align: 
     }
     body { max-width: none; padding: 0; font-size: 11pt; }
     .skip-to-content, .site-nav, .toc, .archive-link, .heading-permalink, .footnote-backref,
-    .section-heading img, .section-directory img, .dev-flow-route img { display: none; }
+    .section-heading img, .section-directory img { display: none; }
     a[rel~="external"]::after { content: " <" attr(href) ">"; }
     pre { overflow: visible; white-space: pre-wrap; }
     .chroma, .chroma * { background: none !important; color: #000 !important; }
