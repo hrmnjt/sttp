@@ -12,7 +12,7 @@ How this site fits together.
 
 **Secure thought transfer protocol.** Opinions may be eventually consistent.
 
-The name of the site was a joke between Shashwat (a collegue and friend) and me
+The name of the site was a joke between Shashwat (a colleague and friend) and me
 long-ago and has no practical significance apart from a long running reference.
 The content on the site has changed multiple times and this name has carried
 along till now.
