@@ -1,5 +1,6 @@
 """Generated-site regression checks. Uses only Python's standard library and Hugo."""
 import base64
+import faulthandler
 import hashlib
 import json
 import os
@@ -133,6 +134,10 @@ class Page(HTMLParser):
 class SiteTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
+        # The suite takes seconds. If it is still running after three minutes, print where
+        # every thread is and stop, rather than hang until the CI job is killed.
+        faulthandler.dump_traceback_later(180, exit=True)
+        cls.addClassCleanup(faulthandler.cancel_dump_traceback_later)
         cls.tmp = tempfile.TemporaryDirectory(prefix="sttp-tests-")
         cls.addClassCleanup(cls.tmp.cleanup)
         cls.source = Path(cls.tmp.name) / "source"
@@ -200,12 +205,16 @@ class SiteTests(unittest.TestCase):
 
     @classmethod
     def build(cls, output, extra=()):
-        return subprocess.run(
-            [os.environ.get("HUGO_BIN", "hugo"), "--source", str(cls.source),
-             "--destination", str(output), "--cleanDestinationDir",
-             "--panicOnWarning", "--printPathWarnings", *extra],
-            stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True,
-        )
+        command = [os.environ.get("HUGO_BIN", "hugo"), "--source", str(cls.source),
+                   "--destination", str(output), "--cleanDestinationDir",
+                   "--panicOnWarning", "--printPathWarnings", *extra]
+        try:
+            return subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                                  text=True, timeout=60)
+        except subprocess.TimeoutExpired as stuck:
+            # A build takes well under a second. Name the one that hung and show what it printed.
+            printed = stuck.output.decode(errors="replace") if isinstance(stuck.output, bytes) else stuck.output
+            raise RuntimeError(f"hugo was still running after 60s: {' '.join(command)}\n{printed or ''}") from None
 
     def page(self, output, route):
         return self.pages[output][output / route]
