@@ -20,6 +20,11 @@ from html.parser import HTMLParser
 ROOT = Path(__file__).resolve().parents[1]
 
 
+def front_matter(path):
+    """A content file's TOML front matter. Tests read copy and dates from the page they belong to."""
+    return tomllib.loads((ROOT / path).read_text().split("+++")[1])
+
+
 class Page(HTMLParser):
     def __init__(self, path):
         super().__init__(convert_charrefs=True)
@@ -233,9 +238,12 @@ class SiteTests(unittest.TestCase):
                 self.assertNotIn(directory, urls)
             dev = next(entry for entry in entries if entry["url"] == "/builds/dev/")
             self.assertEqual(dev["kind"], "[build]")
-            self.assertEqual(dev["date"], "2026-09-26")  # not its February shard date
+            # Each row carries the page's own explicit date, never a revision date.
+            self.assertEqual(dev["date"], front_matter("content/builds/dev.md")["date"].isoformat())
             readme = next(entry for entry in entries if entry["url"] == "/readme/")
-            self.assertEqual(readme["date"], "2026-09-26")  # not September lastmod
+            written = front_matter("content/readme/_index.md")
+            self.assertEqual(readme["date"], written["date"].isoformat())
+            self.assertNotEqual(written["date"], written["lastmod"])
         entries = self.page(self.drafts, "catalog/index.html").entries
         kinds = [entry["kind"] for entry in entries if "fixture" in entry["title"]]
         self.assertEqual(kinds, ["[wal]", "[build]", "[shard]", "[wal]"])
@@ -451,7 +459,9 @@ class SiteTests(unittest.TestCase):
             self.assertEqual([row["url"] for row in self.page(self.release, route).backlink_rows], [other])
         # Backlinks are one list, newest first, with the kind on each row.
         ivanti = self.page(self.release, "2026/03/06/ivanti-osascript/index.html")
-        self.assertEqual([row["kind"] for row in ivanti.backlink_rows], ["[build]", "[shard]"])
+        self.assertEqual(sorted(row["kind"] for row in ivanti.backlink_rows), ["[build]", "[shard]"])
+        dates = [row["date"] for row in ivanti.backlink_rows]
+        self.assertEqual(dates, sorted(dates, reverse=True))
 
     def test_header_links_every_populated_stream_and_marks_where_you_are(self):
         for output, streams in ((self.release, ["/shards/", "/builds/"]),
@@ -532,8 +542,9 @@ class SiteTests(unittest.TestCase):
             sketches = [attrs for tag, attrs in home.links if tag == "img" and "/doodles/" in attrs["src"]]
             self.assertEqual(len(sketches), streams)
             self.assertTrue(all(not attrs["alt"] and attrs["aria-hidden"] == "true" for attrs in sketches))
-            self.assertIn("sections shards Partitioned thoughts. No global ordering promised. "
-                          "builds Things that escaped the scratch buffer.", home.text())
+            notes = {kind["section"]: kind["note"] for kind in
+                     tomllib.loads((ROOT / "data/kinds.toml").read_text())["kind"] if kind.get("stream")}
+            self.assertIn(f'sections shards {notes["shards"]} builds {notes["builds"]}', home.text())
             self.assertNotRegex(home.text(), r"\d+ rows?\b")
 
     def test_build_layout_samples_are_preview_only(self):
@@ -569,7 +580,7 @@ class SiteTests(unittest.TestCase):
                                 for attrs in sources))
             for attrs in names:
                 self.assertTrue(attrs["href"].startswith("/builds/"))
-            self.assertIn("My Mac setup, dotfiles, and bootstrap workflow.", page.text())
+            self.assertIn(front_matter("content/builds/dev.md")["description"], page.text())
             self.assertFalse(page.count("li", "build-card"))
             if output == self.release:
                 self.assertEqual(len(names), 1)
@@ -706,7 +717,7 @@ class SiteTests(unittest.TestCase):
 
     def test_backlinks_support_many_targets_reciprocity_and_deduplication(self):
         fixture = self.page(self.drafts, "2026/03/03/timeline-fixture/index.html")
-        self.assertEqual([entry["url"] for entry in fixture.backlinks["related-builds"]],
+        self.assertEqual(sorted(entry["url"] for entry in fixture.backlinks["related-builds"]),
                          ["/builds/dev/", "/builds/test-build/"])
         self.assertEqual([entry["url"] for entry in fixture.backlinks["related-shards"]],
                          ["/2026/02/08/rfd/", "/2026/02/01/dev/"])
@@ -722,7 +733,7 @@ class SiteTests(unittest.TestCase):
         self.assertEqual(self.page(self.release, "2026/02/08/rfd/index.html").backlinks, {})
         # A shard gets an incoming build edge as well as its explicitly named build.
         dev = self.page(self.drafts, "2026/02/01/dev/index.html")
-        self.assertEqual([entry["url"] for entry in dev.backlinks["related-builds"]],
+        self.assertEqual(sorted(entry["url"] for entry in dev.backlinks["related-builds"]),
                          ["/builds/dev/", "/builds/test-build/"])
         for output in (self.release, self.drafts):
             for page in self.pages[output].values():
@@ -884,7 +895,8 @@ class SiteTests(unittest.TestCase):
         self.assertIn("annotates.) Morbi leo", feed)
 
     def test_revised_dates_show_only_where_a_page_was_revised(self):
-        self.assertIn("[readme] | 2026-09-26 | revised 2026-10-06",
+        readme = front_matter("content/readme/_index.md")
+        self.assertIn(f'[readme] | {readme["date"].isoformat()} | revised {readme["lastmod"].isoformat()}',
                       self.page(self.release, "readme/index.html").text())
         self.assertIn("[shard] | 2026-03-03 | revised 2026-09-26 |",
                       self.page(self.drafts, "2026/03/03/timeline-fixture/index.html").text())

@@ -1,9 +1,8 @@
 +++
 title = "readme"
 description = "Documentation for this corner of the web."
-# Date the original readme page was written, not the redesign's release date.
 date = 2026-09-26
-lastmod = 2026-10-06
+lastmod = 2026-10-11
 outputs = ["HTML"]
 +++
 
@@ -13,25 +12,20 @@ How this site fits together.
 
 **Secure thought transfer protocol.** Opinions may be eventually consistent.
 
-- [shards](/shards/) are dated pieces of thinking, useful without the whole dataset.
-- [builds](/builds/) are things made or tried, with links to code and the thinking behind it.
-- [wal](/wal/) is the write-ahead log: short notes before a longer account takes shape.
+The name of the site was a joke between Shashwat (a collegue and friend) and me
+long-ago and has no practical significance apart from a long running reference.
+The content on the site has changed multiple times and this name has carried
+along till now.
+
+- [shards](/shards/) are sharp and rough pieces of thinking which is generally
+  not refined. They are mostly how I think in that moment. They are also a pun
+  on the process of "sharding" a database and shows a partition of my brain.
+- [builds](/builds/) are code riffs and experiments that keep evolving. Some of
+  them age with time and others just disappear into the side-project-graveyard.
+  Some also have a few thoughts and notes linked to them.
+- [wal](/wal/) is the write-ahead log: short notes before a longer account takes
+  shape.
 - [catalog](/catalog/) interleaves them in one timeline, including this page.
-
-Dates belong to the content, not to the latest Git commit. Build dates record
-when their pages were written, not when the projects started. Readme revisions
-are dated separately; editing a page doesn't republish it in the catalog.
-
-## how this is made
-
-Hugo turns Markdown into static HTML. Gruvbox colors and system monospace,
-with a shorter line length for articles. No font downloads or client-side framework.
-
-Small SVG sketches mark the sections. Dashed rules, heading links, and
-`[return]` footnotes carry over from the original site. Pages remain readable
-without JavaScript, with visible keyboard focus and scrollable code and tables.
-
-[Site source](https://github.com/hrmnjt/sttp) · [RSS](/index.xml)
 
 ## reuse
 
