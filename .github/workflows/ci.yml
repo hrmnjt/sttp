@@ -16,6 +16,8 @@ concurrency:
 jobs:
   check:
     runs-on: ubuntu-latest
+    # The whole job takes well under a minute; a hang must not run for hours.
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
 
