@@ -221,9 +221,12 @@ build.
 
 ## Deployment
 
-Cloudflare Pages builds with plain `hugo` and publishes `public/`; its Hugo
-version must match the one above. The base
-URL comes from `hugo.toml` (`https://hrmnjt.dev`), not `$CF_PAGES_URL`.
+Cloudflare Pages builds with plain `hugo` and publishes `public/`. Its default
+Hugo is far older than the one above, so set the `HUGO_VERSION` environment
+variable to `0.167.0` in the Pages project, for both Production and Preview.
+Without it the build fails with "can't evaluate field Data", because the
+templates use `hugo.Data` from Hugo 0.156. The base URL comes from `hugo.toml`
+(`https://hrmnjt.dev`), not `$CF_PAGES_URL`.
 The GitHub Actions workflow checks builds; it does not deploy the site.
 Verify headers and canonical/feed URLs on the deployed release.
 
