@@ -24,7 +24,7 @@ section = "shards"
 name = "shard"
 glyph = { box = "13 4 72 72", path = "M16 59 33 40 29 29 47 8 56 25 75 19 70 39 82 51 62 72 46 62 28 70Z M47 8 49 40 75 19 M49 40 16 59" }
 stream = true
-note = "Partitioned thoughts. No global ordering promised."
+note = "Sharp and rough thoughts. No global ordering promised."
 schema = "BlogPosting"
 reading = true
 related = true
@@ -34,7 +34,7 @@ section = "builds"
 name = "build"
 glyph = { box = "11 12 64 64", path = "M15 28 42 16 71 26 44 40Z M15 28 18 58 44 71 44 40 M71 26 69 57 44 71" }
 stream = true
-note = "Things that escaped the scratch buffer."
+note = "Things that escaped the scratch buffer. Code riffs and experiments."
 schema = "Article"
 lead = true
 related = true
