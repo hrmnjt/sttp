@@ -112,14 +112,15 @@ test('CLI defaults, draft opt-in, and strict option validation', () => {
 test('capture filenames are unique and article captures stay viewport-sized', () => {
   const names = ROUTES.flatMap(route => VIEWPORTS.flatMap(viewport =>
     route.shots.map(shot => screenshotName(route, viewport, shot))));
-  assert.equal(names.length, 24);
+  assert.equal(names.length, 26);
   assert.equal(names.length, new Set(names).size);
   assert.ok(names.includes('home-desktop.png'));
   assert.ok(names.includes('build-dev-phone.png'));
+  assert.ok(names.includes('shard-rfd-desktop-diagram.png'));
   const trees = ROUTES.flatMap(route => VIEWPORTS.map(viewport => treeName(route, viewport)));
   assert.equal(trees.length, 18);
   assert.ok(trees.includes('home-desktop.aria.yml'));
-  assert.equal(new Set([...names, ...trees]).size, 42);
+  assert.equal(new Set([...names, ...trees]).size, 44);
   for (const route of ROUTES.filter(route => route.name.startsWith('shard-'))) {
     assert.ok(route.shots.every(shot => !shot.fullPage));
   }

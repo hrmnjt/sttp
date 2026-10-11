@@ -46,7 +46,7 @@ down afterwards, and never reuses your existing `hugo server`. In one pass it:
 
 - measures every page in the sitemap, and the 404 page, at desktop (1440×1000)
   and phone (390×844) sizes;
-- captures 24 PNGs of the main routes at both sizes;
+- captures 26 PNGs of the main routes at both sizes;
 - writes each main route's accessibility tree as text (`*.aria.yml`): the page
   as a screen reader receives it.
 

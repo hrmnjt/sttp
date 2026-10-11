@@ -25,7 +25,7 @@ export const ROUTES = [
   { name: 'readme', route: '/readme/', shots: [full] },
   { name: 'shard-rfd', route: '/2026/02/08/rfd/', shots: [
     { name: 'top' }, { name: 'code', selector: 'article .code-block:has(.highlight)' },
-    { name: 'end', selector: 'article .source-trail' },
+    { name: 'diagram', selector: 'article .diagram' }, { name: 'end', selector: 'article .source-trail' },
   ] },
   { name: 'shard-harlequin', route: '/2024/12/02/readdatawithharlequin/', shots: [
     { name: 'top' }, { name: 'media', selector: 'article img' },
