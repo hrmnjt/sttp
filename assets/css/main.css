@@ -328,7 +328,9 @@ img { display: block; max-width: 100%; height: auto; margin: 1.5em 0; }
 .image-fullsize { display: block; width: fit-content; max-width: 100%; margin: 1.5em 0; cursor: zoom-in; }
 .article-image { margin: 1.5em 0; }
 .article-image .image-fullsize { margin: 0; }
-.article-image figcaption { margin-top: 8px; color: var(--text-secondary); font: var(--fs-small)/1.6 var(--font-mono); }
+.article-image figcaption, .article-prose > figure:not([class]) figcaption { margin-top: 8px; color: var(--text-secondary); font: var(--fs-small)/1.6 var(--font-mono); }
+.article-prose > figure:not([class]) { margin: 1.5em 0; }
+.article-prose > figure:not([class]) :is(img, p) { margin: 0; }
 .image-fullsize picture { display: block; }
 .image-fullsize img { margin: 0; }
 /* Native top-layer viewer; no layout changes until an image is opened. */
@@ -443,6 +445,12 @@ sup[id*="fnref:"] { font-size: var(--fs-small); line-height: 0; vertical-align: 
     .toc-margin .rule-heading { margin: 0 0 4px; }
     /* Wide blocks start below anything still hanging in the margin. */
     .article-prose > :is(pre, figure, .table-scroll, .dev-flow, .footnotes) { clear: right; }
+    /* Where a page has notes, the margin is theirs. A block keeps to the text column
+       unless it needs the room (.wide), so it never has to wait for a note to end, and
+       the "on this page" list folds under the title so notes sit beside their lines. */
+    [data-margin="notes"] .article-prose > :is(pre, figure, .table-scroll):not(.wide) { clear: none; max-width: var(--measure); }
+    [data-margin="notes"] .toc-margin { display: none; }
+    [data-margin="notes"] .toc-inline { display: block; }
 }
 
 /* A real setup diagram, not decorative chrome. */

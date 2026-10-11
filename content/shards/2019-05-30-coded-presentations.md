@@ -14,7 +14,7 @@ In a hurry? TL;DR:
 * [check out code](https://github.com/hrmnjt/way-to-go-present)
 * [check out an example presentation](https://talks.godoc.org/github.com/hrmnjt/way-to-go-present/example.slide)
 
-# Why do we make presentations?
+## Why do we make presentations?
 
 Visual communications are highly constructive and comprehensible form of
 creating memories.
@@ -40,7 +40,7 @@ permanent mark in memories about the concepts; which is skill worth learning.
 And mind you, this is not the excuse for the dirty diagrams and doodles in all
 my notebooks.
 
-# Motivation for better presentations - Sadness.pptx ;(
+## Motivation for better presentations - Sadness.pptx ;(
 
 I spent first four years of my work life in Mu Sigma (analytics services and
 consulting domain) and communication is second biggest part of your work share
@@ -66,11 +66,11 @@ illegible fonts, or overcrowded texts - nothing is more annoying than these
 * **my_presentation_last_final_v10_20190530_without_animations.pptx** - no
 version control = sad life
 
-{{< figure src="https://imgs.xkcd.com/comics/slideshow.gif" text="Source: XKCD 1264" >}}
+{{< figure src="https://imgs.xkcd.com/comics/slideshow.gif" alt="XKCD comic 1264, Slideshow" caption="Source: XKCD 1264" >}}
 
 I needed a lazier way of solving these problems and hence the hunt started.
 
-# Gophers way of presentations
+## Gophers way of presentations
 
 Have you ever noticed how Go community presents GoTalks? You will notice
 simplistic presentation with minimal but useful animations. They are not so
@@ -86,7 +86,7 @@ that I would like to showcase for quick feedback or improvement.To showcase the
 usage of the present tool, I've created a sample project with a example
 presentation. Following sections contain details about the project.
 
-# Project - Usage
+## Project - Usage
 
 Project can be found on https://github.com/hrmnjt/way-to-go-present
 
@@ -132,7 +132,7 @@ to share and view your slide
 For example slide and tutorial -
 https://talks.godoc.org/github.com/hrmnjt/way-to-go-present/example.slide
 
-# References
+## References
 
 Official documentation - https://godoc.org/golang.org/x/tools/present
 Example content - https://talks.golang.org/2017

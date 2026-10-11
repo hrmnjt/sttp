@@ -12,7 +12,7 @@
 {{- $drawing := . | resources.Fingerprint "sha256" -}}
 {{- $size := slice -}}
 {{- with findRE `viewBox="[^"]+"` .Content 1 }}{{ $size = last 2 (split (replaceRE `^viewBox="([^"]+)"$` "${1}" (index . 0)) " ") }}{{ end -}}
-<figure class="diagram">
+<figure class="diagram{{ if and (eq (len $size) 2) (gt (float (index $size 0)) 700) }} wide{{ end }}">
     <img src="{{ $drawing.RelPermalink }}" alt="{{ $.Attributes.alt | default "Diagram. Its source follows." }}"
         {{- if eq (len $size) 2 }} width="{{ math.Round (float (index $size 0)) }}" height="{{ math.Round (float (index $size 1)) }}"{{ end }} loading="lazy" decoding="async">
     <details class="diagram-source">

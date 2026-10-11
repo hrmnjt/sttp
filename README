@@ -196,7 +196,12 @@ Writing aids:
   an ordinary footnote under `-- footnotes ----` with a `[return]` link. Longer
   or reused footnotes always stay at the end.
 - A page with four or more `##` headings lists them "on this page", in the same
-  margin column or folded under the title.
+  margin column or folded under the title. Start a page's headings at `##`: the
+  title is its only `h1`, and the tests fail on a second one.
+- Where a page has notes, the margin is theirs. The "on this page" list folds
+  under the title, and a code block or image keeps to the text column unless it
+  needs the room: a line over 75 characters, or an image wider than the column.
+  On a page without notes, those blocks use the full frame.
 - A Markdown link that leaves the site is tagged `[ext]` by the link render
   hook. Link to other pages with `relref` so they stay internal.
 - `{{< img-optimized src="…" alt="…" caption="…" >}}` takes an optional caption.

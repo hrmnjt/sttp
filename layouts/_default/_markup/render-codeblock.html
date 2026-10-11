@@ -1,5 +1,8 @@
 {{- $highlight := transform.HighlightCodeBlock . -}}
-<figure class="code-block">
+{{- /* 75 characters fit the text column; a longer line needs the frame's full width. */ -}}
+{{- $longest := 0 -}}
+{{- range split .Inner "\n" }}{{ $longest = math.Max $longest (strings.RuneCount .) }}{{ end -}}
+<figure class="code-block{{ if gt $longest 75 }} wide{{ end }}">
     {{ with .Type }}<figcaption>{{ . }}</figcaption>{{ end }}
     {{ $highlight.Wrapped }}
 </figure>

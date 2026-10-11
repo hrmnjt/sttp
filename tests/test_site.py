@@ -304,8 +304,7 @@ class SiteTests(unittest.TestCase):
                 self.assertEqual(sum(tag == "div" and attrs.get("class") == "article-prose"
                                      for tag, attrs in page.elements), 1)
             harlequin = self.page(output, "2024/12/02/readdatawithharlequin/index.html")
-            self.assertEqual(sum(tag == "figure" and attrs.get("class") == "article-image"
-                                 for tag, attrs in harlequin.elements), 2)
+            self.assertEqual(harlequin.count("figure", "article-image"), 2)
 
     def test_backlinks_and_source_share_one_labelled_closing_area(self):
         for output in (self.release, self.drafts):
@@ -991,6 +990,42 @@ class SiteTests(unittest.TestCase):
         self.assertNotIn("table { display: block", css)
         # Body text and one smaller step; a third size has no token to reach for.
         self.assertEqual(sorted(set(re.findall(r"--fs-[a-z]+", css))), ["--fs-small"])
+
+    def test_every_page_has_one_title_and_every_image_an_alt(self):
+        # The measured report checks these in a browser; this keeps them checked without one.
+        for output in (self.release, self.drafts):
+            for path, page in self.pages[output].items():
+                route = str(path.relative_to(output))
+                self.assertEqual(sum(tag == "h1" for tag, _ in page.elements), 1, route)
+                levels = [int(tag[1]) for tag, _ in page.elements if tag in ("h1", "h2", "h3", "h4", "h5", "h6")]
+                for previous, level in zip(levels, levels[1:]):
+                    self.assertLessEqual(level, previous + 1, f"{route}: a heading level is skipped")
+                for tag, attrs in page.links:
+                    if tag == "img":
+                        self.assertIn("alt", attrs, f"{route}: {attrs.get('src')}")
+
+    def test_notes_take_the_margin_and_blocks_say_when_they_need_the_width(self):
+        margins = lambda page: [attrs.get("data-margin") for tag, attrs in page.elements
+                                if tag == "article" and attrs.get("class") == "article-wide"]
+        for output in (self.release, self.drafts):
+            # Footnotes set as sidenotes claim the margin; a page without notes leaves it free.
+            self.assertEqual(margins(self.page(output, "2024/12/02/readdatawithharlequin/index.html")), ["notes"])
+            self.assertEqual(margins(self.page(output, "2023/12/06/gitorg/index.html")), ["notes"])
+            self.assertEqual(margins(self.page(output, "2026/02/08/rfd/index.html")), [None])
+            self.assertEqual(margins(self.page(output, "builds/dev/index.html")), [None])
+            # A block is marked wide only when its content is wider than the text column.
+            classes = lambda page, name: [attrs["class"] for tag, attrs in page.elements
+                                          if tag == "figure" and name in attrs.get("class", "").split()]
+            harlequin = self.page(output, "2024/12/02/readdatawithharlequin/index.html")
+            self.assertEqual(classes(harlequin, "article-image"), ["article-image", "article-image wide"])
+            self.assertEqual(classes(self.page(output, "2026/02/08/rfd/index.html"), "code-block"), ["code-block wide"])
+            gitorg = classes(self.page(output, "2023/12/06/gitorg/index.html"), "code-block")
+            self.assertEqual((gitorg.count("code-block"), gitorg.count("code-block wide")), (7, 2))
+        self.assertEqual(margins(self.page(self.drafts, "builds/dolor-sit-amet/index.html")), ["notes"])
+        css = (ROOT / "assets/css/main.css").read_text()
+        self.assertIn('[data-margin="notes"] .article-prose > :is(pre, figure, .table-scroll):not(.wide) '
+                      '{ clear: none; max-width: var(--measure); }', css)
+        self.assertIn('[data-margin="notes"] .toc-margin { display: none; }', css)
 
     def test_generated_local_links_and_anchors(self):
         for output in (self.release, self.drafts):
