@@ -125,9 +125,19 @@ a:focus-visible, summary:focus-visible, [tabindex="0"]:focus-visible {
 }
 del::before { content: " [struck out: "; }
 del::after { content: "] "; }
-/* Struck-out text recedes: dimmer letters under a hairline one step quieter, so the
-   words read through it. A link inside dims with it and keeps its underline. */
-del { color: var(--text-secondary); text-decoration-color: var(--gb-fg4); text-decoration-thickness: 1px; }
+/* Struck-out text is crossed out by hand: dimmer letters under a wavy pencil line. The
+   line is one drawn tile that joins itself, laid along the middle of the lowercase
+   letters; its colour is --gb-fg4 written out, since an image cannot read a token.
+   A link inside dims with the text and keeps its underline. */
+del {
+    color: var(--text-secondary);
+    text-decoration: none;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 10'%3E%3Cpath d='M0 1.9c5 0 6.1 5.4 11.1 5.4s6.2-4.1 12-4.1s7.7 4 12.2 4s6.2-5.6 13.3-5.6s7.6 5.2 11.9 5.2s6.6-4.2 13.1-4.2s3.5 5.1 7.2 5.1s6.4-5.3 10.1-5.3s6.6 5.2 13.2 5.2s6.5-5.4 11.3-5.4s7 5.4 13 5.4s5-4.8 7.8-4.8s6.4 3.8 10.1 3.8s5.3-4.4 8.7-4.4s5 4.9 10.6 4.9s6.5-4.5 10.8-4.5s3.6 5.1 7.1 5.1s4-5.8 8.5-5.8' fill='none' stroke='%23a89984' stroke-width='1.3' stroke-linecap='round'/%3E%3C/svg%3E") 0 0.36em / 12em 0.625em repeat-x;
+}
+/* Neighbouring strikes start at different points along the line, so no two match. */
+del:nth-of-type(even) { background-position-x: -6.3em; }
+/* Where backgrounds are dropped or recoloured, the plain line returns. */
+@media (forced-colors: active) { del { background: none; text-decoration: line-through; } }
 del a:any-link { color: inherit; text-decoration-thickness: 1px; }
 del a:any-link:hover { color: var(--accent-hover); }
 
@@ -499,6 +509,7 @@ sup[id*="fnref:"] { font-size: var(--fs-small); line-height: 0; vertical-align: 
     .skip-to-content, .site-nav, .toc, .archive-link, .heading-permalink, .footnote-backref,
     .section-heading img, .section-directory img { display: none; }
     a[rel~="external"]::after { content: " <" attr(href) ">"; }
+    del { background: none; text-decoration: line-through; }
     pre { overflow: visible; white-space: pre-wrap; }
     .chroma, .chroma * { background: none !important; color: #000 !important; }
     h1, h2, h3 { break-after: avoid; }
