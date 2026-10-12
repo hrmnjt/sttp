@@ -998,10 +998,21 @@ class SiteTests(unittest.TestCase):
         for rule in ("@media print", "main:focus { outline: none; }", 'del::before { content: " [struck out: "; }',
                      ":visited { color: var(--accent-visited); }", "overflow-wrap: break-word;",
                      ".chroma .go { color: var(--gb-fg3); }",
-                     # A strike quieter than the letters under it, and no bright link inside one.
-                     "del { color: var(--text-secondary); text-decoration-color: var(--gb-fg4); text-decoration-thickness: 1px; }",
-                     "del a:any-link { color: inherit; text-decoration-thickness: 1px; }"):
+                     # No bright link inside a strike, and a plain line wherever the drawn one cannot show.
+                     "del a:any-link { color: inherit; text-decoration-thickness: 1px; }",
+                     "@media (forced-colors: active) { del { background: none; text-decoration: line-through; } }",
+                     "    del { background: none; text-decoration: line-through; }"):
             self.assertIn(rule, css)
+        # The strike is a drawn line in the palette's own grey, and it survives the minifier as an image.
+        grey = re.search(r"--gb-fg4: (#[0-9a-f]{6});", css).group(1)
+        strike = re.search(r"\ndel \{[^}]*\}", css).group(0)
+        self.assertIn("color: var(--text-secondary);", strike)
+        self.assertIn("text-decoration: none;", strike)
+        self.assertIn(f"stroke='%23{grey[1:]}'", strike)
+        built = next((self.release / "css").glob("*.css")).read_text()
+        drawing = unquote(re.search(r'del\{[^}]*url\("data:image/svg\+xml,([^"]*)"\)', built).group(1))
+        path = ET.fromstring(drawing).find("{http://www.w3.org/2000/svg}path")
+        self.assertEqual((path.get("stroke"), path.get("fill")), (grey, "none"))
         self.assertNotIn("table { display: block", css)
         # Body text and one smaller step; a third size has no token to reach for.
         self.assertEqual(sorted(set(re.findall(r"--fs-[a-z]+", css))), ["--fs-small"])
