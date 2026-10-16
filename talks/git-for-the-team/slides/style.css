@@ -1,0 +1,38 @@
+/* Gruvbox dark and system monospace, to match hrmnjt.dev. */
+:root {
+  --gb-bg: #282828;
+  --gb-bg1: #3c3836;
+  --gb-fg: #ebdbb2;
+  --gb-muted: #a89984;
+  --gb-green: #b8bb26;
+  --gb-yellow: #fabd2f;
+  --gb-purple: #d3869b;
+  --gb-orange: #fe8019;
+  --slidev-theme-primary: var(--gb-yellow);
+  --slidev-code-background: var(--gb-bg1);
+  --slidev-code-font-size: 17px;
+  --slidev-code-line-height: 1.5;
+}
+
+.slidev-layout {
+  background: var(--gb-bg);
+  color: var(--gb-fg);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  font-size: 1.15rem;
+}
+
+.slidev-layout h1 { color: var(--gb-yellow); }
+.slidev-layout h3 { color: var(--gb-purple); }
+.slidev-layout a { color: var(--gb-green); border-bottom: 1px dashed var(--gb-green); }
+.slidev-layout strong { color: var(--gb-orange); }
+.slidev-layout :not(pre) > code { color: var(--gb-green); background: var(--gb-bg1); padding: 0 0.25em; border-radius: 3px; }
+.slidev-layout blockquote { border-left: 3px dotted var(--gb-purple); color: var(--gb-muted); }
+
+.slidev-layout table { font-size: 0.9em; }
+.slidev-layout.dense table { font-size: 0.75em; }
+.slidev-layout td code { white-space: nowrap; }
+.slidev-layout th { color: var(--gb-yellow); border-bottom: 1px dashed var(--gb-muted); }
+.slidev-layout td { border-bottom: 1px dotted var(--gb-bg1); }
+
+.slidev-layout.cover .meta,
+.slidev-layout.section p { color: var(--gb-muted); opacity: 1; }
